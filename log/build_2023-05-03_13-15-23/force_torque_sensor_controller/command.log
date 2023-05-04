@@ -1,0 +1,2 @@
+Invoking command in '/home/yueju/led/build/force_torque_sensor_controller': /usr/bin/cmake /home/yueju/led/ros_controllers/force_torque_sensor_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/force_torque_sensor_controller
+Invoked command in '/home/yueju/led/build/force_torque_sensor_controller' returned '1': /usr/bin/cmake /home/yueju/led/ros_controllers/force_torque_sensor_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/force_torque_sensor_controller

@@ -1,0 +1,30 @@
+[0.053s] Invoking command in '/home/yueju/led/build/open62541': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/yueju/led/build/open62541 -- -j8 -l8
+[0.256s] [35m[1mConsolidate compiler generated dependencies of target open62541[0m
+[0.257s] [100%] Built target open62541
+[0.485s] Invoked command in '/home/yueju/led/build/open62541' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/yueju/led/build/open62541 -- -j8 -l8
+[0.529s] Invoking command in '/home/yueju/led/build/open62541': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/yueju/led/build/open62541
+[0.548s] -- Install configuration: ""
+[0.548s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/library_path.sh
+[0.548s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/library_path.dsv
+[0.549s] -- Up-to-date: /home/yueju/led/install/open62541/include/open62541
+[0.549s] -- Up-to-date: /home/yueju/led/install/open62541/include/open62541/open62541.h
+[0.549s] -- Up-to-date: /home/yueju/led/install/open62541/lib/libopen62541.a
+[0.549s] -- Up-to-date: /home/yueju/led/install/open62541/share/ament_index/resource_index/package_run_dependencies/open62541
+[0.549s] -- Up-to-date: /home/yueju/led/install/open62541/share/ament_index/resource_index/parent_prefix_path/open62541
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/ament_prefix_path.sh
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/ament_prefix_path.dsv
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/path.sh
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/path.dsv
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/local_setup.bash
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/local_setup.sh
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/local_setup.zsh
+[0.551s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/local_setup.dsv
+[0.551s] -- Installing: /home/yueju/led/install/open62541/share/open62541/package.dsv
+[0.552s] -- Up-to-date: /home/yueju/led/install/open62541/share/ament_index/resource_index/packages/open62541
+[0.552s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Export.cmake
+[0.552s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Export-noconfig.cmake
+[0.552s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/ament_cmake_export_targets-extras.cmake
+[0.552s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Config.cmake
+[0.552s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Config-version.cmake
+[0.552s] -- Up-to-date: /home/yueju/led/install/open62541/share/open62541/package.xml
+[0.574s] Invoked command in '/home/yueju/led/build/open62541' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/yueju/led/build/open62541

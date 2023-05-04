@@ -1,0 +1,33 @@
+[0.026s] Invoking command in '/home/yueju/led/build/opcua_server': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/yueju/led/build/opcua_server -- -j8 -l8
+[1.562s] -- Found ament_cmake: 1.3.3 (/opt/ros/humble/share/ament_cmake/cmake)
+[2.540s] -- Configuring done
+[2.708s] -- Generating done
+[2.715s] -- Build files have been written to: /home/yueju/led/build/opcua_server
+[2.803s] [35m[1mConsolidate compiler generated dependencies of target open62541[0m
+[2.851s] [ 25%] [32mBuilding C object CMakeFiles/open62541.dir/open62541/open62541.c.o[0m
+[10.417s] [ 50%] [32m[1mLinking C static library libopen62541.a[0m
+[11.037s] [ 50%] Built target open62541
+[11.067s] [35m[1mConsolidate compiler generated dependencies of target opcua_server[0m
+[11.083s] [ 75%] [32mBuilding CXX object CMakeFiles/opcua_server.dir/src/main.cpp.o[0m
+[12.974s] [100%] [32m[1mLinking CXX executable opcua_server[0m
+[13.214s] [100%] Built target opcua_server
+[13.225s] Invoked command in '/home/yueju/led/build/opcua_server' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/yueju/led/build/opcua_server -- -j8 -l8
+[13.253s] Invoking command in '/home/yueju/led/build/opcua_server': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/yueju/led/build/opcua_server
+[13.260s] -- Install configuration: ""
+[13.260s] -- Installing: /home/yueju/led/install/opcua_server/lib/opcua_server/opcua_server
+[13.263s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/ament_index/resource_index/package_run_dependencies/opcua_server
+[13.263s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/ament_index/resource_index/parent_prefix_path/opcua_server
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/opcua_server/environment/ament_prefix_path.sh
+[13.264s] -- Installing: /home/yueju/led/install/opcua_server/share/opcua_server/environment/ament_prefix_path.dsv
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/opcua_server/environment/path.sh
+[13.264s] -- Installing: /home/yueju/led/install/opcua_server/share/opcua_server/environment/path.dsv
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/opcua_server/local_setup.bash
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/opcua_server/local_setup.sh
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/opcua_server/local_setup.zsh
+[13.264s] -- Installing: /home/yueju/led/install/opcua_server/share/opcua_server/local_setup.dsv
+[13.264s] -- Installing: /home/yueju/led/install/opcua_server/share/opcua_server/package.dsv
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/ament_index/resource_index/packages/opcua_server
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/opcua_server/cmake/opcua_serverConfig.cmake
+[13.264s] -- Up-to-date: /home/yueju/led/install/opcua_server/share/opcua_server/cmake/opcua_serverConfig-version.cmake
+[13.264s] -- Installing: /home/yueju/led/install/opcua_server/share/opcua_server/package.xml
+[13.269s] Invoked command in '/home/yueju/led/build/opcua_server' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/yueju/led/build/opcua_server

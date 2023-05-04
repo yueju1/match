@@ -1,0 +1,2 @@
+/usr/bin/ar qc libpm_client.a CMakeFiles/pm_client.dir/src/client.cpp.o CMakeFiles/pm_client.dir/src/aerotech_axis.cpp.o
+/usr/bin/ranlib libpm_client.a

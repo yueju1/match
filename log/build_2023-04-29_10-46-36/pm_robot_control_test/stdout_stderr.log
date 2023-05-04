@@ -1,0 +1,37 @@
+running egg_info
+creating ../../build/pm_robot_control_test/pm_robot_control_test.egg-info
+writing ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/PKG-INFO
+writing dependency_links to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/dependency_links.txt
+writing entry points to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/entry_points.txt
+writing requirements to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/requires.txt
+writing top-level names to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/top_level.txt
+writing manifest file '../../build/pm_robot_control_test/pm_robot_control_test.egg-info/SOURCES.txt'
+reading manifest file '../../build/pm_robot_control_test/pm_robot_control_test.egg-info/SOURCES.txt'
+writing manifest file '../../build/pm_robot_control_test/pm_robot_control_test.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/yueju/led/build/pm_robot_control_test/build
+creating /home/yueju/led/build/pm_robot_control_test/build/lib
+creating /home/yueju/led/build/pm_robot_control_test/build/lib/pm_robot_control_test
+copying pm_robot_control_test/__init__.py -> /home/yueju/led/build/pm_robot_control_test/build/lib/pm_robot_control_test
+copying pm_robot_control_test/pm_robot_forward_position_publisher.py -> /home/yueju/led/build/pm_robot_control_test/build/lib/pm_robot_control_test
+running install
+/home/yueju/.local/lib/python3.10/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+  warnings.warn(
+running install_lib
+creating /home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test
+copying /home/yueju/led/build/pm_robot_control_test/build/lib/pm_robot_control_test/__init__.py -> /home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test
+copying /home/yueju/led/build/pm_robot_control_test/build/lib/pm_robot_control_test/pm_robot_forward_position_publisher.py -> /home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test
+byte-compiling /home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test/pm_robot_forward_position_publisher.py to pm_robot_forward_position_publisher.cpython-310.pyc
+running install_data
+creating /home/yueju/led/install/pm_robot_control_test/share/ament_index
+creating /home/yueju/led/install/pm_robot_control_test/share/ament_index/resource_index
+creating /home/yueju/led/install/pm_robot_control_test/share/ament_index/resource_index/packages
+copying resource/pm_robot_control_test -> /home/yueju/led/install/pm_robot_control_test/share/ament_index/resource_index/packages
+copying package.xml -> /home/yueju/led/install/pm_robot_control_test/share/pm_robot_control_test
+running install_egg_info
+Copying ../../build/pm_robot_control_test/pm_robot_control_test.egg-info to /home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test-0.0.0-py3.10.egg-info
+running install_scripts
+Installing pm_robot_forward_position_publisher script to /home/yueju/led/install/pm_robot_control_test/lib/pm_robot_control_test
+writing list of installed files to '/home/yueju/led/build/pm_robot_control_test/install.log'

@@ -1,0 +1,33 @@
+[0.039s] Invoking command in '/home/yueju/led/build/gripper_action_controller': /usr/bin/cmake /home/yueju/led/ros_controllers/gripper_action_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/gripper_action_controller
+[1.946s] -- The C compiler identification is GNU 11.3.0
+[2.580s] -- The CXX compiler identification is GNU 11.3.0
+[2.598s] -- Detecting C compiler ABI info
+[2.797s] -- Detecting C compiler ABI info - done
+[2.818s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.818s] -- Detecting C compile features
+[2.831s] -- Detecting C compile features - done
+[2.845s] -- Detecting CXX compiler ABI info
+[3.054s] -- Detecting CXX compiler ABI info - done
+[3.074s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.075s] -- Detecting CXX compile features
+[3.076s] -- Detecting CXX compile features - done
+[3.138s] [31mCMake Error at CMakeLists.txt:4 (find_package):
+[3.139s]   By not providing "Findcatkin.cmake" in CMAKE_MODULE_PATH this project has
+[3.140s]   asked CMake to find a package configuration file provided by "catkin", but
+[3.140s]   CMake did not find one.
+[3.140s] 
+[3.140s]   Could not find a package configuration file provided by "catkin" with any
+[3.140s]   of the following names:
+[3.141s] 
+[3.141s]     catkinConfig.cmake
+[3.141s]     catkin-config.cmake
+[3.141s] 
+[3.141s]   Add the installation prefix of "catkin" to CMAKE_PREFIX_PATH or set
+[3.141s]   "catkin_DIR" to a directory containing one of the above files.  If "catkin"
+[3.141s]   provides a separate development package or SDK, be sure it has been
+[3.142s]   installed.
+[3.142s] 
+[3.143s] [0m
+[3.156s] -- Configuring incomplete, errors occurred!
+[3.156s] See also "/home/yueju/led/build/gripper_action_controller/CMakeFiles/CMakeOutput.log".
+[3.187s] Invoked command in '/home/yueju/led/build/gripper_action_controller' returned '1': /usr/bin/cmake /home/yueju/led/ros_controllers/gripper_action_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/gripper_action_controller

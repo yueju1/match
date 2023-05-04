@@ -1,0 +1,25 @@
+[2.560s] Invoking command in '/home/yueju/led/open_cv': PYTHONPATH=/home/yueju/led/build/open_cv/prefix_override:/home/yueju/led/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/yueju/led/build/open_cv/build install --record /home/yueju/led/build/open_cv/install.log --single-version-externally-managed
+[2.789s] running egg_info
+[2.809s] writing ../build/open_cv/open_cv.egg-info/PKG-INFO
+[2.815s] writing dependency_links to ../build/open_cv/open_cv.egg-info/dependency_links.txt
+[2.815s] writing requirements to ../build/open_cv/open_cv.egg-info/requires.txt
+[2.816s] writing top-level names to ../build/open_cv/open_cv.egg-info/top_level.txt
+[2.858s] reading manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[2.865s] writing manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[2.865s] running build
+[2.865s] running build_py
+[2.867s] copying open_cv/cv_node.py -> /home/yueju/led/build/open_cv/build/lib/open_cv
+[2.880s] running install
+[2.880s] /home/yueju/.local/lib/python3.10/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[2.880s]   warnings.warn(
+[2.885s] running install_lib
+[2.900s] copying /home/yueju/led/build/open_cv/build/lib/open_cv/cv_node.py -> /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv
+[2.902s] byte-compiling /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv/cv_node.py to cv_node.cpython-310.pyc
+[2.903s] running install_data
+[2.917s] copying package.xml -> /home/yueju/led/install/open_cv/share/open_cv
+[2.917s] running install_egg_info
+[2.931s] removing '/home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv-0.0.0-py3.10.egg-info' (and everything under it)
+[2.931s] Copying ../build/open_cv/open_cv.egg-info to /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv-0.0.0-py3.10.egg-info
+[2.938s] running install_scripts
+[3.094s] writing list of installed files to '/home/yueju/led/build/open_cv/install.log'
+[3.127s] Invoked command in '/home/yueju/led/open_cv' returned '0': PYTHONPATH=/home/yueju/led/build/open_cv/prefix_override:/home/yueju/led/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/yueju/led/build/open_cv/build install --record /home/yueju/led/build/open_cv/install.log --single-version-externally-managed

@@ -1,0 +1,10 @@
+/home/yueju/led/build/pm_client/CMakeFiles/uninstall.dir
+/home/yueju/led/build/pm_client/CMakeFiles/pm_client_uninstall.dir
+/home/yueju/led/build/pm_client/CMakeFiles/pm_client.dir
+/home/yueju/led/build/pm_client/CMakeFiles/test.dir
+/home/yueju/led/build/pm_client/CMakeFiles/edit_cache.dir
+/home/yueju/led/build/pm_client/CMakeFiles/rebuild_cache.dir
+/home/yueju/led/build/pm_client/CMakeFiles/list_install_components.dir
+/home/yueju/led/build/pm_client/CMakeFiles/install.dir
+/home/yueju/led/build/pm_client/CMakeFiles/install/local.dir
+/home/yueju/led/build/pm_client/CMakeFiles/install/strip.dir

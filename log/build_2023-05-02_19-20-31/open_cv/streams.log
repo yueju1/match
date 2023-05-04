@@ -1,0 +1,21 @@
+[1.159s] Invoking command in '/home/yueju/led/open_cv': PYTHONPATH=/home/yueju/led/build/open_cv/prefix_override:/home/yueju/led/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/yueju/led/build/open_cv/build install --record /home/yueju/led/build/open_cv/install.log --single-version-externally-managed
+[1.412s] running egg_info
+[1.428s] writing ../build/open_cv/open_cv.egg-info/PKG-INFO
+[1.428s] writing dependency_links to ../build/open_cv/open_cv.egg-info/dependency_links.txt
+[1.428s] writing requirements to ../build/open_cv/open_cv.egg-info/requires.txt
+[1.429s] writing top-level names to ../build/open_cv/open_cv.egg-info/top_level.txt
+[1.471s] reading manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[1.472s] writing manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[1.472s] running build
+[1.472s] running build_py
+[1.473s] running install
+[1.473s] /home/yueju/.local/lib/python3.10/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[1.473s]   warnings.warn(
+[1.484s] running install_lib
+[1.505s] running install_data
+[1.528s] running install_egg_info
+[1.544s] removing '/home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv-0.0.0-py3.10.egg-info' (and everything under it)
+[1.545s] Copying ../build/open_cv/open_cv.egg-info to /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv-0.0.0-py3.10.egg-info
+[1.546s] running install_scripts
+[1.788s] writing list of installed files to '/home/yueju/led/build/open_cv/install.log'
+[1.857s] Invoked command in '/home/yueju/led/open_cv' returned '0': PYTHONPATH=/home/yueju/led/build/open_cv/prefix_override:/home/yueju/led/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/yueju/led/build/open_cv/build install --record /home/yueju/led/build/open_cv/install.log --single-version-externally-managed

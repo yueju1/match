@@ -1,0 +1,33 @@
+[0.044s] Invoking command in '/home/yueju/led/build/joint_state_controller': /usr/bin/cmake /home/yueju/led/ros_controllers/joint_state_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/joint_state_controller
+[1.952s] -- The C compiler identification is GNU 11.3.0
+[2.596s] -- The CXX compiler identification is GNU 11.3.0
+[2.614s] -- Detecting C compiler ABI info
+[2.814s] -- Detecting C compiler ABI info - done
+[2.832s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.834s] -- Detecting C compile features
+[2.848s] -- Detecting C compile features - done
+[2.860s] -- Detecting CXX compiler ABI info
+[3.070s] -- Detecting CXX compiler ABI info - done
+[3.086s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.087s] -- Detecting CXX compile features
+[3.088s] -- Detecting CXX compile features - done
+[3.144s] [31mCMake Error at CMakeLists.txt:5 (find_package):
+[3.145s]   By not providing "Findcatkin.cmake" in CMAKE_MODULE_PATH this project has
+[3.145s]   asked CMake to find a package configuration file provided by "catkin", but
+[3.145s]   CMake did not find one.
+[3.146s] 
+[3.146s]   Could not find a package configuration file provided by "catkin" with any
+[3.147s]   of the following names:
+[3.147s] 
+[3.147s]     catkinConfig.cmake
+[3.148s]     catkin-config.cmake
+[3.148s] 
+[3.151s]   Add the installation prefix of "catkin" to CMAKE_PREFIX_PATH or set
+[3.151s]   "catkin_DIR" to a directory containing one of the above files.  If "catkin"
+[3.151s]   provides a separate development package or SDK, be sure it has been
+[3.152s]   installed.
+[3.153s] 
+[3.154s] [0m
+[3.164s] -- Configuring incomplete, errors occurred!
+[3.165s] See also "/home/yueju/led/build/joint_state_controller/CMakeFiles/CMakeOutput.log".
+[3.204s] Invoked command in '/home/yueju/led/build/joint_state_controller' returned '1': /usr/bin/cmake /home/yueju/led/ros_controllers/joint_state_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/joint_state_controller

@@ -1,0 +1,23 @@
+[1.681s] Invoking command in '/home/yueju/led/match_pm_robot/pm_robot_control_test': PYTHONPATH=/home/yueju/led/build/pm_robot_control_test/prefix_override:/home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/pm_robot_control_test build --build-base /home/yueju/led/build/pm_robot_control_test/build install --record /home/yueju/led/build/pm_robot_control_test/install.log --single-version-externally-managed
+[1.999s] running egg_info
+[2.015s] writing ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/PKG-INFO
+[2.015s] writing dependency_links to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/dependency_links.txt
+[2.016s] writing entry points to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/entry_points.txt
+[2.016s] writing requirements to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/requires.txt
+[2.016s] writing top-level names to ../../build/pm_robot_control_test/pm_robot_control_test.egg-info/top_level.txt
+[2.057s] reading manifest file '../../build/pm_robot_control_test/pm_robot_control_test.egg-info/SOURCES.txt'
+[2.058s] writing manifest file '../../build/pm_robot_control_test/pm_robot_control_test.egg-info/SOURCES.txt'
+[2.058s] running build
+[2.059s] running build_py
+[2.059s] running install
+[2.059s] /home/yueju/.local/lib/python3.10/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[2.059s]   warnings.warn(
+[2.070s] running install_lib
+[2.095s] running install_data
+[2.117s] running install_egg_info
+[2.141s] removing '/home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test-0.0.0-py3.10.egg-info' (and everything under it)
+[2.142s] Copying ../../build/pm_robot_control_test/pm_robot_control_test.egg-info to /home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages/pm_robot_control_test-0.0.0-py3.10.egg-info
+[2.153s] running install_scripts
+[2.385s] Installing pm_robot_forward_position_publisher script to /home/yueju/led/install/pm_robot_control_test/lib/pm_robot_control_test
+[2.385s] writing list of installed files to '/home/yueju/led/build/pm_robot_control_test/install.log'
+[2.422s] Invoked command in '/home/yueju/led/match_pm_robot/pm_robot_control_test' returned '0': PYTHONPATH=/home/yueju/led/build/pm_robot_control_test/prefix_override:/home/yueju/led/install/pm_robot_control_test/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/pm_robot_control_test build --build-base /home/yueju/led/build/pm_robot_control_test/build install --record /home/yueju/led/build/pm_robot_control_test/install.log --single-version-externally-managed

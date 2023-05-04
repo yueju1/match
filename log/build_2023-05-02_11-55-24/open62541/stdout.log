@@ -1,0 +1,32 @@
+-- Found ament_cmake: 1.3.3 (/opt/ros/humble/share/ament_cmake/cmake)
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/yueju/led/build/open62541
+[35m[1mConsolidate compiler generated dependencies of target open62541[0m
+[ 50%] [32mBuilding C object CMakeFiles/open62541.dir/src/open62541.c.o[0m
+[100%] [32m[1mLinking C static library libopen62541.a[0m
+[100%] Built target open62541
+-- Install configuration: ""
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/library_path.sh
+-- Installing: /home/yueju/led/install/open62541/share/open62541/environment/library_path.dsv
+-- Up-to-date: /home/yueju/led/install/open62541/include/open62541
+-- Installing: /home/yueju/led/install/open62541/include/open62541/open62541.h
+-- Installing: /home/yueju/led/install/open62541/lib/libopen62541.a
+-- Up-to-date: /home/yueju/led/install/open62541/share/ament_index/resource_index/package_run_dependencies/open62541
+-- Up-to-date: /home/yueju/led/install/open62541/share/ament_index/resource_index/parent_prefix_path/open62541
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/ament_prefix_path.sh
+-- Installing: /home/yueju/led/install/open62541/share/open62541/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/environment/path.sh
+-- Installing: /home/yueju/led/install/open62541/share/open62541/environment/path.dsv
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/local_setup.bash
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/local_setup.sh
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/local_setup.zsh
+-- Installing: /home/yueju/led/install/open62541/share/open62541/local_setup.dsv
+-- Installing: /home/yueju/led/install/open62541/share/open62541/package.dsv
+-- Up-to-date: /home/yueju/led/install/open62541/share/ament_index/resource_index/packages/open62541
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Export.cmake
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Export-noconfig.cmake
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/ament_cmake_export_targets-extras.cmake
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Config.cmake
+-- Up-to-date: /home/yueju/led/install/open62541/share/open62541/cmake/open62541Config-version.cmake
+-- Installing: /home/yueju/led/install/open62541/share/open62541/package.xml

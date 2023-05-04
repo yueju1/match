@@ -1,0 +1,2 @@
+[console_scripts]
+pm_robot_forward_position_publisher = pm_robot_control_test.pm_robot_forward_position_publisher:main

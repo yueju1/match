@@ -1,0 +1,5 @@
+  File "/home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node/node_battery.py", line 15
+    request=SetLed. 
+                    ^
+SyntaxError: invalid syntax
+

@@ -1,0 +1,7 @@
+{
+  "package_name": "interface",
+  "non_idl_tuples": [
+    "/home/yueju/led/src/interface:msg/Led.msg",
+    "/home/yueju/led/src/interface:srv/SetLed.srv"
+  ]
+}

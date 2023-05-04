@@ -1,0 +1,28 @@
+[0.951s] Invoking command in '/home/yueju/led/src/battery_node': PYTHONPATH=/home/yueju/led/build/battery_node/prefix_override:/home/yueju/led/install/battery_node/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/battery_node build --build-base /home/yueju/led/build/battery_node/build install --record /home/yueju/led/build/battery_node/install.log --single-version-externally-managed
+[1.299s] running egg_info
+[1.300s] writing ../../build/battery_node/battery_node.egg-info/PKG-INFO
+[1.303s] writing dependency_links to ../../build/battery_node/battery_node.egg-info/dependency_links.txt
+[1.304s] writing entry points to ../../build/battery_node/battery_node.egg-info/entry_points.txt
+[1.304s] writing requirements to ../../build/battery_node/battery_node.egg-info/requires.txt
+[1.304s] writing top-level names to ../../build/battery_node/battery_node.egg-info/top_level.txt
+[1.310s] reading manifest file '../../build/battery_node/battery_node.egg-info/SOURCES.txt'
+[1.344s] writing manifest file '../../build/battery_node/battery_node.egg-info/SOURCES.txt'
+[1.344s] running build
+[1.344s] running build_py
+[1.346s] running install
+[1.347s] running install_lib
+[1.352s] byte-compiling /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node/node_battery.py to node_battery.cpython-310.pyc
+[1.354s]   File "/home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node/node_battery.py", line 15
+[1.354s]     request=SetLed. 
+[1.354s]                     ^
+[1.354s] SyntaxError: invalid syntax
+[1.354s] 
+[1.355s] running install_data
+[1.358s] running install_egg_info
+[1.362s] removing '/home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node-0.0.0-py3.10.egg-info' (and everything under it)
+[1.363s] Copying ../../build/battery_node/battery_node.egg-info to /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node-0.0.0-py3.10.egg-info
+[1.416s] running install_scripts
+[1.489s] Installing node_battery script to /home/yueju/led/install/battery_node/lib/battery_node
+[1.511s] Installing node_led script to /home/yueju/led/install/battery_node/lib/battery_node
+[1.512s] writing list of installed files to '/home/yueju/led/build/battery_node/install.log'
+[1.598s] Invoked command in '/home/yueju/led/src/battery_node' returned '0': PYTHONPATH=/home/yueju/led/build/battery_node/prefix_override:/home/yueju/led/install/battery_node/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/battery_node build --build-base /home/yueju/led/build/battery_node/build install --record /home/yueju/led/build/battery_node/install.log --single-version-externally-managed

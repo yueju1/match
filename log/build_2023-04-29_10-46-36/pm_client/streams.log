@@ -1,0 +1,56 @@
+[0.008s] Invoking command in '/home/yueju/led/build/pm_client': AMENT_PREFIX_PATH=/home/yueju/led/install/open62541:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/yueju/led/install/open62541:/opt/ros/humble LD_LIBRARY_PATH=/home/yueju/led/install/open62541/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/yueju/led/match_pm_robot/pm_client -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/pm_client
+[0.060s] -- The C compiler identification is GNU 11.3.0
+[0.118s] -- The CXX compiler identification is GNU 11.3.0
+[0.125s] -- Detecting C compiler ABI info
+[0.190s] -- Detecting C compiler ABI info - done
+[0.199s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.199s] -- Detecting C compile features
+[0.199s] -- Detecting C compile features - done
+[0.202s] -- Detecting CXX compiler ABI info
+[0.281s] -- Detecting CXX compiler ABI info - done
+[0.289s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.289s] -- Detecting CXX compile features
+[0.290s] -- Detecting CXX compile features - done
+[0.293s] -- Found ament_cmake: 1.3.3 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.660s] -- Found Python3: /usr/bin/python3.10 (found version "3.10.6") found components: Interpreter 
+[0.747s] -- Found open62541: 0.0.0 (/home/yueju/led/install/open62541/share/open62541/cmake)
+[0.846s] -- Configuring done
+[0.851s] -- Generating done
+[0.852s] -- Build files have been written to: /home/yueju/led/build/pm_client
+[0.857s] Invoked command in '/home/yueju/led/build/pm_client' returned '0': AMENT_PREFIX_PATH=/home/yueju/led/install/open62541:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/yueju/led/install/open62541:/opt/ros/humble LD_LIBRARY_PATH=/home/yueju/led/install/open62541/lib:${LD_LIBRARY_PATH} /usr/bin/cmake /home/yueju/led/match_pm_robot/pm_client -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/pm_client
+[0.859s] Invoking command in '/home/yueju/led/build/pm_client': AMENT_PREFIX_PATH=/home/yueju/led/install/open62541:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/yueju/led/install/open62541:/opt/ros/humble LD_LIBRARY_PATH=/home/yueju/led/install/open62541/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /home/yueju/led/build/pm_client -- -j8 -l8
+[0.903s] [ 66%] [32mBuilding CXX object CMakeFiles/pm_client.dir/src/aerotech_axis.cpp.o[0m
+[0.903s] [ 66%] [32mBuilding CXX object CMakeFiles/pm_client.dir/src/client.cpp.o[0m
+[1.489s] [100%] [32m[1mLinking CXX static library libpm_client.a[0m
+[1.518s] [100%] Built target pm_client
+[1.529s] Invoked command in '/home/yueju/led/build/pm_client' returned '0': AMENT_PREFIX_PATH=/home/yueju/led/install/open62541:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/yueju/led/install/open62541:/opt/ros/humble LD_LIBRARY_PATH=/home/yueju/led/install/open62541/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --build /home/yueju/led/build/pm_client -- -j8 -l8
+[1.554s] Invoking command in '/home/yueju/led/build/pm_client': AMENT_PREFIX_PATH=/home/yueju/led/install/open62541:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/yueju/led/install/open62541:/opt/ros/humble LD_LIBRARY_PATH=/home/yueju/led/install/open62541/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /home/yueju/led/build/pm_client
+[1.561s] -- Install configuration: ""
+[1.561s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/environment/library_path.sh
+[1.561s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/environment/library_path.dsv
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/include
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/include/pm_client
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/include/pm_client/aerotech_axis.hpp
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/include/pm_client/robot.hpp
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/include/pm_client/client.hpp
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/lib/libpm_client.a
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/share/ament_index/resource_index/package_run_dependencies/pm_client
+[1.562s] -- Installing: /home/yueju/led/install/pm_client/share/ament_index/resource_index/parent_prefix_path/pm_client
+[1.563s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/environment/ament_prefix_path.sh
+[1.563s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/environment/ament_prefix_path.dsv
+[1.563s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/environment/path.sh
+[1.563s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/environment/path.dsv
+[1.563s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/local_setup.bash
+[1.564s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/local_setup.sh
+[1.564s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/local_setup.zsh
+[1.564s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/local_setup.dsv
+[1.564s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/package.dsv
+[1.564s] -- Installing: /home/yueju/led/install/pm_client/share/ament_index/resource_index/packages/pm_client
+[1.564s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/cmake/pm_clientExport.cmake
+[1.565s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/cmake/pm_clientExport-noconfig.cmake
+[1.565s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/cmake/ament_cmake_export_targets-extras.cmake
+[1.565s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/cmake/ament_cmake_export_dependencies-extras.cmake
+[1.565s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/cmake/pm_clientConfig.cmake
+[1.565s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/cmake/pm_clientConfig-version.cmake
+[1.565s] -- Installing: /home/yueju/led/install/pm_client/share/pm_client/package.xml
+[1.567s] Invoked command in '/home/yueju/led/build/pm_client' returned '0': AMENT_PREFIX_PATH=/home/yueju/led/install/open62541:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/yueju/led/install/open62541:/opt/ros/humble LD_LIBRARY_PATH=/home/yueju/led/install/open62541/lib:${LD_LIBRARY_PATH} /usr/bin/cmake --install /home/yueju/led/build/pm_client

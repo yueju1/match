@@ -1,0 +1,2 @@
+source;share/opcua_server/environment/ament_prefix_path.sh
+source;share/opcua_server/environment/path.sh

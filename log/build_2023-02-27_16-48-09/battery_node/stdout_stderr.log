@@ -1,0 +1,39 @@
+running egg_info
+creating ../../build/battery_node/battery_node.egg-info
+writing ../../build/battery_node/battery_node.egg-info/PKG-INFO
+writing dependency_links to ../../build/battery_node/battery_node.egg-info/dependency_links.txt
+writing entry points to ../../build/battery_node/battery_node.egg-info/entry_points.txt
+writing requirements to ../../build/battery_node/battery_node.egg-info/requires.txt
+writing top-level names to ../../build/battery_node/battery_node.egg-info/top_level.txt
+writing manifest file '../../build/battery_node/battery_node.egg-info/SOURCES.txt'
+reading manifest file '../../build/battery_node/battery_node.egg-info/SOURCES.txt'
+writing manifest file '../../build/battery_node/battery_node.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/yueju/led/build/battery_node/build
+creating /home/yueju/led/build/battery_node/build/lib
+creating /home/yueju/led/build/battery_node/build/lib/battery_node
+copying battery_node/node_battery.py -> /home/yueju/led/build/battery_node/build/lib/battery_node
+copying battery_node/__init__.py -> /home/yueju/led/build/battery_node/build/lib/battery_node
+copying battery_node/node_led.py -> /home/yueju/led/build/battery_node/build/lib/battery_node
+running install
+running install_lib
+creating /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node
+copying /home/yueju/led/build/battery_node/build/lib/battery_node/node_battery.py -> /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node
+copying /home/yueju/led/build/battery_node/build/lib/battery_node/__init__.py -> /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node
+copying /home/yueju/led/build/battery_node/build/lib/battery_node/node_led.py -> /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node
+byte-compiling /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node/node_battery.py to node_battery.cpython-310.pyc
+byte-compiling /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node/node_led.py to node_led.cpython-310.pyc
+running install_data
+creating /home/yueju/led/install/battery_node/share/ament_index
+creating /home/yueju/led/install/battery_node/share/ament_index/resource_index
+creating /home/yueju/led/install/battery_node/share/ament_index/resource_index/packages
+copying resource/battery_node -> /home/yueju/led/install/battery_node/share/ament_index/resource_index/packages
+copying package.xml -> /home/yueju/led/install/battery_node/share/battery_node
+running install_egg_info
+Copying ../../build/battery_node/battery_node.egg-info to /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node-0.0.0-py3.10.egg-info
+running install_scripts
+Installing node_battery script to /home/yueju/led/install/battery_node/lib/battery_node
+Installing node_led script to /home/yueju/led/install/battery_node/lib/battery_node
+writing list of installed files to '/home/yueju/led/build/battery_node/install.log'

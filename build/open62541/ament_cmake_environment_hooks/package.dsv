@@ -1,0 +1,4 @@
+source;share/open62541/local_setup.bash
+source;share/open62541/local_setup.dsv
+source;share/open62541/local_setup.sh
+source;share/open62541/local_setup.zsh

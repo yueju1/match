@@ -1,0 +1,37 @@
+[1.122s] Invoking command in '/home/yueju/led/open_cv': PYTHONPATH=/home/yueju/led/build/open_cv/prefix_override:/home/yueju/led/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/yueju/led/build/open_cv/build install --record /home/yueju/led/build/open_cv/install.log --single-version-externally-managed
+[1.358s] running egg_info
+[1.359s] creating ../build/open_cv/open_cv.egg-info
+[1.374s] writing ../build/open_cv/open_cv.egg-info/PKG-INFO
+[1.374s] writing dependency_links to ../build/open_cv/open_cv.egg-info/dependency_links.txt
+[1.375s] writing requirements to ../build/open_cv/open_cv.egg-info/requires.txt
+[1.375s] writing top-level names to ../build/open_cv/open_cv.egg-info/top_level.txt
+[1.375s] writing manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[1.406s] reading manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[1.406s] writing manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[1.407s] running build
+[1.407s] running build_py
+[1.407s] creating /home/yueju/led/build/open_cv/build
+[1.407s] creating /home/yueju/led/build/open_cv/build/lib
+[1.407s] creating /home/yueju/led/build/open_cv/build/lib/open_cv
+[1.407s] copying open_cv/cv_node.py -> /home/yueju/led/build/open_cv/build/lib/open_cv
+[1.408s] copying open_cv/__init__.py -> /home/yueju/led/build/open_cv/build/lib/open_cv
+[1.408s] running install
+[1.408s] /home/yueju/.local/lib/python3.10/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[1.408s]   warnings.warn(
+[1.414s] running install_lib
+[1.430s] creating /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv
+[1.430s] copying /home/yueju/led/build/open_cv/build/lib/open_cv/cv_node.py -> /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv
+[1.430s] copying /home/yueju/led/build/open_cv/build/lib/open_cv/__init__.py -> /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv
+[1.431s] byte-compiling /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv/cv_node.py to cv_node.cpython-310.pyc
+[1.431s] byte-compiling /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv/__init__.py to __init__.cpython-310.pyc
+[1.431s] running install_data
+[1.446s] creating /home/yueju/led/install/open_cv/share/ament_index
+[1.446s] creating /home/yueju/led/install/open_cv/share/ament_index/resource_index
+[1.446s] creating /home/yueju/led/install/open_cv/share/ament_index/resource_index/packages
+[1.446s] copying resource/open_cv -> /home/yueju/led/install/open_cv/share/ament_index/resource_index/packages
+[1.446s] copying package.xml -> /home/yueju/led/install/open_cv/share/open_cv
+[1.447s] running install_egg_info
+[1.462s] Copying ../build/open_cv/open_cv.egg-info to /home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv-0.0.0-py3.10.egg-info
+[1.463s] running install_scripts
+[1.686s] writing list of installed files to '/home/yueju/led/build/open_cv/install.log'
+[1.752s] Invoked command in '/home/yueju/led/open_cv' returned '0': PYTHONPATH=/home/yueju/led/build/open_cv/prefix_override:/home/yueju/led/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/yueju/led/build/open_cv/build install --record /home/yueju/led/build/open_cv/install.log --single-version-externally-managed

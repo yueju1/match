@@ -1,0 +1,6 @@
+Invoking command in '/home/yueju/led/build/opcua_server': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/yueju/led/match_pm_robot/opcua_server -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/opcua_server
+Invoked command in '/home/yueju/led/build/opcua_server' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/yueju/led/match_pm_robot/opcua_server -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/opcua_server
+Invoking command in '/home/yueju/led/build/opcua_server': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/yueju/led/build/opcua_server -- -j8 -l8
+Invoked command in '/home/yueju/led/build/opcua_server' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/yueju/led/build/opcua_server -- -j8 -l8
+Invoking command in '/home/yueju/led/build/opcua_server': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/yueju/led/build/opcua_server
+Invoked command in '/home/yueju/led/build/opcua_server' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/yueju/led/build/opcua_server

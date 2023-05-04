@@ -1,0 +1,33 @@
+[0.048s] Invoking command in '/home/yueju/led/build/forward_command_controller': /usr/bin/cmake /home/yueju/led/ros_controllers/forward_command_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/forward_command_controller
+[1.965s] -- The C compiler identification is GNU 11.3.0
+[2.608s] -- The CXX compiler identification is GNU 11.3.0
+[2.626s] -- Detecting C compiler ABI info
+[2.831s] -- Detecting C compiler ABI info - done
+[2.849s] -- Check for working C compiler: /usr/bin/cc - skipped
+[2.849s] -- Detecting C compile features
+[2.858s] -- Detecting C compile features - done
+[2.872s] -- Detecting CXX compiler ABI info
+[3.066s] -- Detecting CXX compiler ABI info - done
+[3.083s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[3.084s] -- Detecting CXX compile features
+[3.085s] -- Detecting CXX compile features - done
+[3.143s] [31mCMake Error at CMakeLists.txt:5 (find_package):
+[3.143s]   By not providing "Findcatkin.cmake" in CMAKE_MODULE_PATH this project has
+[3.143s]   asked CMake to find a package configuration file provided by "catkin", but
+[3.143s]   CMake did not find one.
+[3.143s] 
+[3.143s]   Could not find a package configuration file provided by "catkin" with any
+[3.143s]   of the following names:
+[3.144s] 
+[3.144s]     catkinConfig.cmake
+[3.144s]     catkin-config.cmake
+[3.144s] 
+[3.144s]   Add the installation prefix of "catkin" to CMAKE_PREFIX_PATH or set
+[3.144s]   "catkin_DIR" to a directory containing one of the above files.  If "catkin"
+[3.144s]   provides a separate development package or SDK, be sure it has been
+[3.144s]   installed.
+[3.145s] 
+[3.145s] [0m
+[3.145s] -- Configuring incomplete, errors occurred!
+[3.145s] See also "/home/yueju/led/build/forward_command_controller/CMakeFiles/CMakeOutput.log".
+[3.192s] Invoked command in '/home/yueju/led/build/forward_command_controller' returned '1': /usr/bin/cmake /home/yueju/led/ros_controllers/forward_command_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/forward_command_controller

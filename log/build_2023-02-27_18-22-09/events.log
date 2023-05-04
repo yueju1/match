@@ -1,0 +1,228 @@
+[0.000000] (-) TimerEvent: {}
+[0.000370] (battery_node) JobQueued: {'identifier': 'battery_node', 'dependencies': OrderedDict()}
+[0.000543] (interface) JobQueued: {'identifier': 'interface', 'dependencies': OrderedDict()}
+[0.000625] (battery_node) JobStarted: {'identifier': 'battery_node'}
+[0.015977] (interface) JobStarted: {'identifier': 'interface'}
+[0.098273] (-) TimerEvent: {}
+[0.198563] (-) TimerEvent: {}
+[0.298938] (-) TimerEvent: {}
+[0.399526] (-) TimerEvent: {}
+[0.500156] (-) TimerEvent: {}
+[0.534895] (interface) JobProgress: {'identifier': 'interface', 'progress': 'cmake'}
+[0.535411] (interface) JobProgress: {'identifier': 'interface', 'progress': 'build'}
+[0.536143] (interface) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/yueju/led/build/interface', '--', '-j8', '-l8'], 'cwd': '/home/yueju/led/build/interface', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'yueju'), ('LC_TIME', 'de_DE.UTF-8'), ('XDG_SESSION_TYPE', 'wayland'), ('GIT_ASKPASS', '/usr/share/code/resources/app/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/yueju'), ('CHROME_DESKTOP', 'code-url-handler.desktop'), ('TERM_PROGRAM_VERSION', '1.75.1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/code.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('VSCODE_GIT_ASKPASS_MAIN', '/usr/share/code/resources/app/extensions/git/dist/askpass-main.js'), ('LC_MONETARY', 'de_DE.UTF-8'), ('VSCODE_GIT_ASKPASS_NODE', '/usr/share/code/code'), ('MANAGERPID', '1096'), ('SYSTEMD_EXEC_PID', '1289'), ('IM_CONFIG_CHECK_ENV', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '4567'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'yueju'), ('JOURNAL_STREAM', '8:30137'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'yueju'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/yueju/.fishros/bin/:/home/yueju/.fishros/bin/'), ('SESSION_MANAGER', 'local/juyue2:@/tmp/.ICE-unix/1259,unix/juyue2:/tmp/.ICE-unix/1259'), ('INVOCATION_ID', '6d038507b2a74eb88f6b3c8d9089843c'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'de_DE.UTF-8'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('DISPLAY', ':0'), ('LANG', 'zh_CN.UTF-8'), ('XDG_CURRENT_DESKTOP', 'Unity'), ('LC_TELEPHONE', 'de_DE.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.Z61Q01'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c0bed66d94.sock'), ('TERM_PROGRAM', 'vscode'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('ORIGINAL_XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('SHELL', '/bin/bash'), ('LC_NAME', 'de_DE.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'de_DE.UTF-8'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'de_DE.UTF-8'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', '--ms-enable-electron-run-as-node'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/yueju/led/build/interface'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'de_DE.UTF-8'), ('LC_PAPER', 'de_DE.UTF-8'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.587502] (interface) StdoutLine: {'line': b'[  2%] Built target interface__cpp\n'}
+[0.591466] (interface) StdoutLine: {'line': b'[ 12%] Built target interface__rosidl_generator_c\n'}
+[0.601387] (interface) StdoutLine: {'line': b'[ 12%] Built target ament_cmake_python_copy_interface\n'}
+[0.601684] (-) TimerEvent: {}
+[0.625296] (interface) StdoutLine: {'line': b'[ 28%] Built target interface__rosidl_typesupport_fastrtps_cpp\n'}
+[0.626781] (interface) StdoutLine: {'line': b'[ 33%] Built target interface__rosidl_typesupport_cpp\n'}
+[0.629974] (interface) StdoutLine: {'line': b'[ 64%] Built target interface__rosidl_typesupport_introspection_cpp\n'}
+[0.630208] (interface) StdoutLine: {'line': b'[ 64%] Built target interface__rosidl_typesupport_c\n'}
+[0.630369] (interface) StdoutLine: {'line': b'[ 64%] Built target interface__rosidl_typesupport_introspection_c\n'}
+[0.634046] (interface) StdoutLine: {'line': b'[ 74%] Built target interface__rosidl_typesupport_fastrtps_c\n'}
+[0.653563] (interface) StdoutLine: {'line': b'[ 74%] Built target interface\n'}
+[0.673295] (interface) StdoutLine: {'line': b'[ 76%] Built target interface__py\n'}
+[0.694588] (interface) StdoutLine: {'line': b'[ 84%] Built target interface__rosidl_generator_py\n'}
+[0.701791] (-) TimerEvent: {}
+[0.720265] (interface) StdoutLine: {'line': b'[ 94%] Built target interface__rosidl_typesupport_c__pyext\n'}
+[0.720474] (interface) StdoutLine: {'line': b'[ 94%] Built target interface__rosidl_typesupport_introspection_c__pyext\n'}
+[0.723960] (interface) StdoutLine: {'line': b'[100%] Built target interface__rosidl_typesupport_fastrtps_c__pyext\n'}
+[0.801906] (-) TimerEvent: {}
+[0.902151] (-) TimerEvent: {}
+[0.922168] (interface) StdoutLine: {'line': b'running egg_info\n'}
+[0.922883] (interface) StdoutLine: {'line': b'writing interface.egg-info/PKG-INFO\n'}
+[0.923132] (interface) StdoutLine: {'line': b'writing dependency_links to interface.egg-info/dependency_links.txt\n'}
+[0.923389] (interface) StdoutLine: {'line': b'writing top-level names to interface.egg-info/top_level.txt\n'}
+[0.925835] (interface) StdoutLine: {'line': b"reading manifest file 'interface.egg-info/SOURCES.txt'\n"}
+[0.926570] (interface) StdoutLine: {'line': b"writing manifest file 'interface.egg-info/SOURCES.txt'\n"}
+[0.949018] (battery_node) Command: {'cmd': ['/usr/bin/python3', 'setup.py', 'egg_info', '--egg-base', '../../build/battery_node', 'build', '--build-base', '/home/yueju/led/build/battery_node/build', 'install', '--record', '/home/yueju/led/build/battery_node/install.log', '--single-version-externally-managed'], 'cwd': '/home/yueju/led/src/battery_node', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'LANGUAGE': 'zh_CN:zh:en_US:en', 'USER': 'yueju', 'LC_TIME': 'de_DE.UTF-8', 'XDG_SESSION_TYPE': 'wayland', 'GIT_ASKPASS': '/usr/share/code/resources/app/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/yueju', 'CHROME_DESKTOP': 'code-url-handler.desktop', 'TERM_PROGRAM_VERSION': '1.75.1', 'DESKTOP_SESSION': 'ubuntu', 'GIO_LAUNCHED_DESKTOP_FILE': '/usr/share/applications/code.desktop', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'VSCODE_GIT_ASKPASS_MAIN': '/usr/share/code/resources/app/extensions/git/dist/askpass-main.js', 'LC_MONETARY': 'de_DE.UTF-8', 'VSCODE_GIT_ASKPASS_NODE': '/usr/share/code/code', 'MANAGERPID': '1096', 'SYSTEMD_EXEC_PID': '1289', 'IM_CONFIG_CHECK_ENV': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'GIO_LAUNCHED_DESKTOP_FILE_PID': '4567', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'yueju', 'JOURNAL_STREAM': '8:30137', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'yueju', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/yueju/.fishros/bin/:/home/yueju/.fishros/bin/', 'SESSION_MANAGER': 'local/juyue2:@/tmp/.ICE-unix/1259,unix/juyue2:/tmp/.ICE-unix/1259', 'INVOCATION_ID': '6d038507b2a74eb88f6b3c8d9089843c', 'XDG_MENU_PREFIX': 'gnome-', 'LC_ADDRESS': 'de_DE.UTF-8', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'GDK_BACKEND': 'x11', 'DISPLAY': ':0', 'LANG': 'zh_CN.UTF-8', 'XDG_CURRENT_DESKTOP': 'Unity', 'LC_TELEPHONE': 'de_DE.UTF-8', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.Z61Q01', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-c0bed66d94.sock', 'TERM_PROGRAM': 'vscode', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'ORIGINAL_XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'SHELL': '/bin/bash', 'LC_NAME': 'de_DE.UTF-8', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'LC_MEASUREMENT': 'de_DE.UTF-8', 'GJS_DEBUG_OUTPUT': 'stderr', 'LC_IDENTIFICATION': 'de_DE.UTF-8', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '--ms-enable-electron-run-as-node', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/yueju/led/build/battery_node', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/yueju/led/build/battery_node/prefix_override:/home/yueju/led/install/battery_node/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'LC_NUMERIC': 'de_DE.UTF-8', 'LC_PAPER': 'de_DE.UTF-8', 'COLCON': '1'}, 'shell': False}
+[0.957815] (interface) StdoutLine: {'line': b'[100%] Built target ament_cmake_python_build_interface_egg\n'}
+[0.970276] (interface) CommandEnded: {'returncode': 0}
+[1.002232] (-) TimerEvent: {}
+[1.050071] (interface) JobProgress: {'identifier': 'interface', 'progress': 'install'}
+[1.058831] (interface) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/yueju/led/build/interface'], 'cwd': '/home/yueju/led/build/interface', 'env': OrderedDict([('GJS_DEBUG_TOPICS', 'JS ERROR;JS LOG'), ('LESSOPEN', '| /usr/bin/lesspipe %s'), ('LANGUAGE', 'zh_CN:zh:en_US:en'), ('USER', 'yueju'), ('LC_TIME', 'de_DE.UTF-8'), ('XDG_SESSION_TYPE', 'wayland'), ('GIT_ASKPASS', '/usr/share/code/resources/app/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('HOME', '/home/yueju'), ('CHROME_DESKTOP', 'code-url-handler.desktop'), ('TERM_PROGRAM_VERSION', '1.75.1'), ('DESKTOP_SESSION', 'ubuntu'), ('GIO_LAUNCHED_DESKTOP_FILE', '/usr/share/applications/code.desktop'), ('ROS_PYTHON_VERSION', '3'), ('GNOME_SHELL_SESSION_MODE', 'ubuntu'), ('GTK_MODULES', 'gail:atk-bridge'), ('VSCODE_GIT_ASKPASS_MAIN', '/usr/share/code/resources/app/extensions/git/dist/askpass-main.js'), ('LC_MONETARY', 'de_DE.UTF-8'), ('VSCODE_GIT_ASKPASS_NODE', '/usr/share/code/code'), ('MANAGERPID', '1096'), ('SYSTEMD_EXEC_PID', '1289'), ('IM_CONFIG_CHECK_ENV', '1'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('GIO_LAUNCHED_DESKTOP_FILE_PID', '4567'), ('IM_CONFIG_PHASE', '1'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'yueju'), ('JOURNAL_STREAM', '8:30137'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('XDG_SESSION_CLASS', 'user'), ('USERNAME', 'yueju'), ('TERM', 'xterm-256color'), ('GNOME_DESKTOP_SESSION_ID', 'this-is-deprecated'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/yueju/.fishros/bin/:/home/yueju/.fishros/bin/'), ('SESSION_MANAGER', 'local/juyue2:@/tmp/.ICE-unix/1259,unix/juyue2:/tmp/.ICE-unix/1259'), ('INVOCATION_ID', '6d038507b2a74eb88f6b3c8d9089843c'), ('XDG_MENU_PREFIX', 'gnome-'), ('LC_ADDRESS', 'de_DE.UTF-8'), ('GNOME_SETUP_DISPLAY', ':1'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('GDK_BACKEND', 'x11'), ('DISPLAY', ':0'), ('LANG', 'zh_CN.UTF-8'), ('XDG_CURRENT_DESKTOP', 'Unity'), ('LC_TELEPHONE', 'de_DE.UTF-8'), ('XMODIFIERS', '@im=ibus'), ('XDG_SESSION_DESKTOP', 'ubuntu'), ('XAUTHORITY', '/run/user/1000/.mutter-Xwaylandauth.Z61Q01'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c0bed66d94.sock'), ('TERM_PROGRAM', 'vscode'), ('SSH_AGENT_LAUNCHER', 'gnome-keyring'), ('SSH_AUTH_SOCK', '/run/user/1000/keyring/ssh'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('ORIGINAL_XDG_CURRENT_DESKTOP', 'ubuntu:GNOME'), ('SHELL', '/bin/bash'), ('LC_NAME', 'de_DE.UTF-8'), ('QT_ACCESSIBILITY', '1'), ('GDMSESSION', 'ubuntu'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('LC_MEASUREMENT', 'de_DE.UTF-8'), ('GJS_DEBUG_OUTPUT', 'stderr'), ('LC_IDENTIFICATION', 'de_DE.UTF-8'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', '--ms-enable-electron-run-as-node'), ('QT_IM_MODULE', 'ibus'), ('PWD', '/home/yueju/led/build/interface'), ('XDG_CONFIG_DIRS', '/etc/xdg/xdg-ubuntu:/etc/xdg'), ('XDG_DATA_DIRS', '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('LC_NUMERIC', 'de_DE.UTF-8'), ('LC_PAPER', 'de_DE.UTF-8'), ('COLCON', '1'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[1.066869] (interface) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[1.067069] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/ament_index/resource_index/rosidl_interfaces/interface\n'}
+[1.067206] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface\n'}
+[1.067455] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv\n'}
+[1.067605] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail\n'}
+[1.067715] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__functions.h\n'}
+[1.067824] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__type_support.h\n'}
+[1.067889] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__functions.c\n'}
+[1.067951] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__struct.h\n'}
+[1.068013] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/set_led.h\n'}
+[1.068077] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg\n'}
+[1.068144] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail\n'}
+[1.068210] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__functions.h\n'}
+[1.068277] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__functions.c\n'}
+[1.068365] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__type_support.h\n'}
+[1.068431] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__struct.h\n'}
+[1.068546] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/led.h\n'}
+[1.068612] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/rosidl_generator_c__visibility_control.h\n'}
+[1.068678] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/library_path.sh\n'}
+[1.068767] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/library_path.dsv\n'}
+[1.068835] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_generator_c.so\n'}
+[1.068901] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface\n'}
+[1.069020] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv\n'}
+[1.069084] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail\n'}
+[1.069144] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__rosidl_typesupport_fastrtps_c.h\n'}
+[1.069204] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg\n'}
+[1.069263] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail\n'}
+[1.069327] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__rosidl_typesupport_fastrtps_c.h\n'}
+[1.069392] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[1.069458] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_typesupport_fastrtps_c.so\n'}
+[1.069564] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface\n'}
+[1.069737] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv\n'}
+[1.069799] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail\n'}
+[1.069858] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__type_support.c\n'}
+[1.069921] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__rosidl_typesupport_introspection_c.h\n'}
+[1.069987] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg\n'}
+[1.070053] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail\n'}
+[1.070118] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__type_support.c\n'}
+[1.070206] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__rosidl_typesupport_introspection_c.h\n'}
+[1.070266] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[1.070326] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_typesupport_introspection_c.so\n'}
+[1.070426] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_typesupport_c.so\n'}
+[1.070647] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface\n'}
+[1.070757] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv\n'}
+[1.070861] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail\n'}
+[1.070976] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__struct.hpp\n'}
+[1.071081] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__builder.hpp\n'}
+[1.071233] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__traits.hpp\n'}
+[1.071362] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/set_led.hpp\n'}
+[1.071464] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg\n'}
+[1.071532] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail\n'}
+[1.071600] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__struct.hpp\n'}
+[1.071667] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__builder.hpp\n'}
+[1.071765] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__traits.hpp\n'}
+[1.071834] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/led.hpp\n'}
+[1.071945] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface\n'}
+[1.072006] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv\n'}
+[1.072066] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail\n'}
+[1.072127] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/dds_fastrtps\n'}
+[1.072187] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[1.072300] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg\n'}
+[1.072367] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[1.072459] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail\n'}
+[1.072527] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/dds_fastrtps\n'}
+[1.072592] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[1.072658] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_typesupport_fastrtps_cpp.so\n'}
+[1.072723] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface\n'}
+[1.072788] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv\n'}
+[1.072889] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail\n'}
+[1.072958] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__type_support.cpp\n'}
+[1.073025] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/srv/detail/set_led__rosidl_typesupport_introspection_cpp.hpp\n'}
+[1.073118] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg\n'}
+[1.073187] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail\n'}
+[1.073247] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__rosidl_typesupport_introspection_cpp.hpp\n'}
+[1.073313] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/include/interface/interface/msg/detail/led__type_support.cpp\n'}
+[1.073379] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_typesupport_introspection_cpp.so\n'}
+[1.073484] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_typesupport_cpp.so\n'}
+[1.073582] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/pythonpath.sh\n'}
+[1.073667] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/pythonpath.dsv\n'}
+[1.073767] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface-0.0.0-py3.10.egg-info\n'}
+[1.073854] (interface) StdoutLine: {'line': b'-- Installing: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[1.073967] (interface) StdoutLine: {'line': b'-- Installing: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[1.074111] (interface) StdoutLine: {'line': b'-- Installing: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[1.074261] (interface) StdoutLine: {'line': b'-- Installing: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[1.074465] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface\n'}
+[1.074569] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/_interface_s.ep.rosidl_typesupport_c.c\n'}
+[1.074679] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/interface_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.074749] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/libinterface__rosidl_generator_py.so\n'}
+[1.074856] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/srv\n'}
+[1.074926] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/srv/_set_led_s.c\n'}
+[1.075045] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/srv/__init__.py\n'}
+[1.075249] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/srv/_set_led.py\n'}
+[1.075328] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/_interface_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[1.075392] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/msg\n'}
+[1.075564] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/msg/_led.py\n'}
+[1.075672] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/msg/__init__.py\n'}
+[1.075820] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/msg/_led_s.c\n'}
+[1.075901] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/_interface_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[1.075965] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/interface_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.076030] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/interface_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.076093] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/__init__.py\n'}
+[1.102349] (-) TimerEvent: {}
+[1.105288] (interface) StdoutLine: {'line': b"Listing '/home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface'...\n"}
+[1.105478] (interface) StdoutLine: {'line': b"Listing '/home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/msg'...\n"}
+[1.105626] (interface) StdoutLine: {'line': b"Listing '/home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/srv'...\n"}
+[1.112948] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/interface_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.113408] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/interface_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.113961] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/local/lib/python3.10/dist-packages/interface/interface_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[1.114517] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/lib/libinterface__rosidl_generator_py.so\n'}
+[1.114813] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/msg/Led.idl\n'}
+[1.115498] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/srv/SetLed.idl\n'}
+[1.115868] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/msg/Led.msg\n'}
+[1.116047] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/srv/SetLed.srv\n'}
+[1.116335] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/srv/SetLed_Request.msg\n'}
+[1.116411] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/srv/SetLed_Response.msg\n'}
+[1.116518] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/ament_index/resource_index/package_run_dependencies/interface\n'}
+[1.116589] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/ament_index/resource_index/parent_prefix_path/interface\n'}
+[1.116746] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/ament_prefix_path.sh\n'}
+[1.116859] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/ament_prefix_path.dsv\n'}
+[1.117007] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/path.sh\n'}
+[1.117123] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/environment/path.dsv\n'}
+[1.117289] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/local_setup.bash\n'}
+[1.117446] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/local_setup.sh\n'}
+[1.117579] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/local_setup.zsh\n'}
+[1.117712] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/local_setup.dsv\n'}
+[1.117866] (interface) StdoutLine: {'line': b'-- Installing: /home/yueju/led/install/interface/share/interface/package.dsv\n'}
+[1.118014] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/ament_index/resource_index/packages/interface\n'}
+[1.118170] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_generator_cExport.cmake\n'}
+[1.118325] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_generator_cExport-noconfig.cmake\n'}
+[1.118500] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[1.118663] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[1.118820] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_introspection_cExport.cmake\n'}
+[1.118925] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[1.119028] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_cExport.cmake\n'}
+[1.119143] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[1.119252] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_generator_cppExport.cmake\n'}
+[1.119356] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[1.119467] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[1.119570] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[1.119673] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[1.119776] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_cppExport.cmake\n'}
+[1.119879] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interface__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[1.119981] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_generator_pyExport.cmake\n'}
+[1.120083] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/export_interface__rosidl_generator_pyExport-noconfig.cmake\n'}
+[1.120186] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/rosidl_cmake-extras.cmake\n'}
+[1.120298] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[1.120409] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[1.120630] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[1.121089] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[1.121941] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[1.122077] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[1.123171] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interfaceConfig.cmake\n'}
+[1.123751] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/cmake/interfaceConfig-version.cmake\n'}
+[1.123988] (interface) StdoutLine: {'line': b'-- Up-to-date: /home/yueju/led/install/interface/share/interface/package.xml\n'}
+[1.124177] (interface) CommandEnded: {'returncode': 0}
+[1.202444] (-) TimerEvent: {}
+[1.241427] (interface) JobEnded: {'identifier': 'interface', 'rc': 0}
+[1.300933] (battery_node) StdoutLine: {'line': b'running egg_info\n'}
+[1.301584] (battery_node) StdoutLine: {'line': b'writing ../../build/battery_node/battery_node.egg-info/PKG-INFO\n'}
+[1.301809] (battery_node) StdoutLine: {'line': b'writing dependency_links to ../../build/battery_node/battery_node.egg-info/dependency_links.txt\n'}
+[1.301958] (battery_node) StdoutLine: {'line': b'writing entry points to ../../build/battery_node/battery_node.egg-info/entry_points.txt\n'}
+[1.302068] (battery_node) StdoutLine: {'line': b'writing requirements to ../../build/battery_node/battery_node.egg-info/requires.txt\n'}
+[1.302186] (battery_node) StdoutLine: {'line': b'writing top-level names to ../../build/battery_node/battery_node.egg-info/top_level.txt\n'}
+[1.302504] (-) TimerEvent: {}
+[1.304583] (battery_node) StdoutLine: {'line': b"reading manifest file '../../build/battery_node/battery_node.egg-info/SOURCES.txt'\n"}
+[1.305457] (battery_node) StdoutLine: {'line': b"writing manifest file '../../build/battery_node/battery_node.egg-info/SOURCES.txt'\n"}
+[1.305619] (battery_node) StdoutLine: {'line': b'running build\n'}
+[1.305709] (battery_node) StdoutLine: {'line': b'running build_py\n'}
+[1.305837] (battery_node) StdoutLine: {'line': b'copying battery_node/node_led.py -> /home/yueju/led/build/battery_node/build/lib/battery_node\n'}
+[1.306039] (battery_node) StdoutLine: {'line': b'running install\n'}
+[1.306353] (battery_node) StdoutLine: {'line': b'running install_lib\n'}
+[1.307085] (battery_node) StdoutLine: {'line': b'copying /home/yueju/led/build/battery_node/build/lib/battery_node/node_led.py -> /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node\n'}
+[1.307638] (battery_node) StdoutLine: {'line': b'byte-compiling /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node/node_led.py to node_led.cpython-310.pyc\n'}
+[1.308264] (battery_node) StdoutLine: {'line': b'running install_data\n'}
+[1.308816] (battery_node) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.310307] (battery_node) StdoutLine: {'line': b"removing '/home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node-0.0.0-py3.10.egg-info' (and everything under it)\n"}
+[1.310669] (battery_node) StdoutLine: {'line': b'Copying ../../build/battery_node/battery_node.egg-info to /home/yueju/led/install/battery_node/lib/python3.10/site-packages/battery_node-0.0.0-py3.10.egg-info\n'}
+[1.311548] (battery_node) StdoutLine: {'line': b'running install_scripts\n'}
+[1.337376] (battery_node) StdoutLine: {'line': b'Installing node_battery script to /home/yueju/led/install/battery_node/lib/battery_node\n'}
+[1.337550] (battery_node) StdoutLine: {'line': b'Installing node_led script to /home/yueju/led/install/battery_node/lib/battery_node\n'}
+[1.338005] (battery_node) StdoutLine: {'line': b"writing list of installed files to '/home/yueju/led/build/battery_node/install.log'\n"}
+[1.366418] (battery_node) CommandEnded: {'returncode': 0}
+[1.378212] (battery_node) JobEnded: {'identifier': 'battery_node', 'rc': 0}
+[1.378976] (-) EventReactorShutdown: {}
