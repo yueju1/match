@@ -11,7 +11,7 @@ from sensor_msgs.msg import Image # Image is the message type
 from cv_bridge import CvBridge # Package to convert between ROS and OpenCV Images
 import cv2 # OpenCV library
 
-
+      ！！！！！！！！！！！！！同心圆检测！！！！！！！！！！！！！
 "CV2.TM_CCOEFF_NORMED"
 class ImageSubscriber(Node):
   """
