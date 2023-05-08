@@ -7,23 +7,12 @@ import cv2
 import numpy
 
 
-"CV2.TM_CCOEFF_NORMED"
-
-
 class ImageSubscriber(Node):
-    """
-    Create an ImageSubscriber class, which is a subclass of the Node class.
-    """
 
     def __init__(self):
-        """
-        Class constructor to set up the node
-        """
-        # Initiate the Node class's constructor and give it a name
+
         super().__init__('image_subscriber')
 
-        # Create the subscriber. This subscriber will receive an Image
-        # from the video_frames topic. The queue size is 10 messages.
         self.subscription = self.create_subscription(
             Image,
             '/Cam2/image_raw',
@@ -31,37 +20,40 @@ class ImageSubscriber(Node):
             10)
         self.subscription  # prevent unused variable warning
 
-        # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
 
     def listener_callback(self, data):
-        """
-        Callback function.
-        """
-        # Display the message on the console
-
-        # Convert ROS Image message to OpenCV image
 
         current_frame = self.br.imgmsg_to_cv2(data)
         # print(current_frame.ndim)
+        a, b = current_frame.shape[0:2]
+        # print(current_frame.shape)
+        # dst = cv2.resize(current_frame, (4*x, 4*y))
 
-        # print(current_frame)
-        self.get_logger().info('Receiving video frame')
+        dst = cv2.pyrUp(current_frame)
+
+        print(current_frame)
+        print(current_frame.shape)
+        self.get_logger().info('Receiving')
         # bild=cv2.color
         # gray = cv2.cvtColor(current_frame, cv2.COLOR_GRAY2BGR)
         # rint(gray)
-        # gray2=cv2.GaussianBlur(current_frame, (19, 19),1)
-        # canny=cv2.Canny(gray2,75,200)
+        gray2 = cv2.GaussianBlur(dst, (19, 19), 1)
+        # canny = cv2.Canny(gray2, 75, 200)
         # casd = cv2.medianBlur(current_frame, 7)
-
-        edges = cv2.Canny(current_frame, threshold1=15, threshold2=30)
+        part = current_frame[960:1080, 1100:1200]
+        asd = cv2.resize(part, (0, 0), fx=10, fy=10)
+        edges = cv2.Canny(gray2, threshold1=15, threshold2=30)
+        dst2 = cv2.pyrDown(asd)
         #   filter?
         circles = cv2.HoughCircles(
-            current_frame, cv2.HOUGH_GRADIENT, 1, 50, param1=100, param2=30, minRadius=5, maxRadius=100)
-        print(circles)
-        for circle in circles[0, :]:
+            current_frame, cv2.HOUGH_GRADIENT, 1, 50, param1=100, param2=30, minRadius=1, maxRadius=100)
+        # print(circles)
 
-            print(circle[2])
+        # try: ? if there is no circle, output typeerror
+        for circle in circles[0]:
+
+            # print(circle[2])
 
             x = int(circle[0])
             y = int(circle[1])
@@ -70,25 +62,26 @@ class ImageSubscriber(Node):
 
             cv2.circle(current_frame, (x, y), r, (0, 0, 255), 3)
 
-            cv2.circle(current_frame, (x, y), 5, (0, 0, 255), -1)
+            # cv2.circle(current_frame, (x, y), 5, (0, 0, 255), -1)
+        print(x, y, r)
 
         cv2.namedWindow('camera', 0)
-        cv2.resizeWindow("camera", 1100, 1000)
+        cv2.resizeWindow("camera", 1000, 1000)
+        cv2.namedWindow('asd', 0)
+        cv2.resizeWindow("asd", 1000, 1000)
         # Display image
         cv2.imshow("camera", current_frame)
-
+        # cv2.imshow('asd', part)
+        cv2.imshow('asd', dst2)
         cv2.waitKey(1)
 
 
 def main(args=None):
 
-    # Initialize the rclpy library
     rclpy.init(args=args)
 
-    # Create the node
     image_subscriber = ImageSubscriber()
 
-    # Spin the node so the callback function is called.
     rclpy.spin(image_subscriber)
 
     # Destroy the node explicitly
