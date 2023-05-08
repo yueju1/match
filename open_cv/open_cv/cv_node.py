@@ -40,16 +40,17 @@ class ImageSubscriber(Node):
         # rint(gray)
         gray2 = cv2.GaussianBlur(dst, (19, 19), 1)
         # canny = cv2.Canny(gray2, 75, 200)
-        # casd = cv2.medianBlur(current_frame, 7)
-        part = current_frame[960:1080, 1100:1200]
-        asd = cv2.resize(part, (0, 0), fx=10, fy=10)
-        edges = cv2.Canny(gray2, threshold1=15, threshold2=30)
-        dst2 = cv2.pyrDown(asd)
-        #   filter?
-        circles = cv2.HoughCircles(
-            current_frame, cv2.HOUGH_GRADIENT, 1, 50, param1=100, param2=30, minRadius=1, maxRadius=100)
-        # print(circles)
 
+        part = current_frame[700:1100, 1100:1500]
+        asd = cv2.resize(part, (0, 0), fx=10, fy=10)
+        edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
+        dst2 = cv2.pyrDown(asd)
+        casd = cv2.medianBlur(dst2, 7)
+        # #   filter?
+        circles = cv2.HoughCircles(
+            dst2, cv2.HOUGH_GRADIENT, 1, 50, param1=100, param2=30, minRadius=4, maxRadius=150)
+        # print(circles)
+        hough param und cany param
         # try: ? if there is no circle, output typeerror
         for circle in circles[0]:
 
@@ -60,9 +61,9 @@ class ImageSubscriber(Node):
 
             r = int(circle[2])
 
-            cv2.circle(current_frame, (x, y), r, (0, 0, 255), 3)
+            cv2.circle(casd, (x, y), r, (0, 0, 255), 3)
 
-            # cv2.circle(current_frame, (x, y), 5, (0, 0, 255), -1)
+        cv2.circle(casd, (x, y), 5, (0, 0, 255), -1)
         print(x, y, r)
 
         cv2.namedWindow('camera', 0)
@@ -72,7 +73,7 @@ class ImageSubscriber(Node):
         # Display image
         cv2.imshow("camera", current_frame)
         # cv2.imshow('asd', part)
-        cv2.imshow('asd', dst2)
+        cv2.imshow('asd', casd)
         cv2.waitKey(1)
 
 
