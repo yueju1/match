@@ -1,5 +1,48 @@
 import numpy as np
+import cv2
+import rclpy  # Python library for ROS 2
+from rclpy.node import Node  # Handles the creation of nodes
+from sensor_msgs.msg import Image  # Image is the message type
+from cv_bridge import CvBridge
 
-a1 = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [11, 12, 13, 14], [2, 3, 4, 5]])
-print(a1)
-# print('截取矩阵第二三行，第二、三列：\n',a1[1:3,1:3])
+
+class ImageSubscriber(Node):
+
+    def __init__(self):
+
+        super().__init__('image_subscriber')
+
+        self.subscription = self.create_subscription(
+            Image,
+            '/Cam2/image_raw',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+
+        self.br = CvBridge()
+
+    def listener_callback(self, data):
+        image_color = self.br.imgmsg_to_cv2(data)
+
+     **  circles = cv2.HoughCircles(
+            asd, cv2.HOUGH_GRADIENT, 1.5, 50, param1=30, param2=50, minRadius=5, maxRadius=100) **
+
+def main(args=None):
+
+    rclpy.init(args=args)
+
+    image_subscriber = ImageSubscriber()
+
+    rclpy.spin(image_subscriber)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    image_subscriber.destroy_node()
+
+    # Shutdown the ROS client library for Python
+    rclpy.shutdown()
+
+
+if __name__ == '__main__':
+    main()
