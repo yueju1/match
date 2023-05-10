@@ -4,7 +4,13 @@ import rclpy  # Python library for ROS 2
 from rclpy.node import Node  # Handles the creation of nodes
 from sensor_msgs.msg import Image  # Image is the message type
 from cv_bridge import CvBridge
-
+2142 3110 44
+[[[-1 -1  1 -1]
+  [-1 -1  2  0]
+  [-1 -1 -1  1]]]
+1999 1999
+2145 3112
+2146 3113
 
 class ImageSubscriber(Node):
 
@@ -25,7 +31,8 @@ class ImageSubscriber(Node):
         image_color = self.br.imgmsg_to_cv2(data)
 
      **  circles = cv2.HoughCircles(
-            asd, cv2.HOUGH_GRADIENT, 1.5, 50, param1=30, param2=50, minRadius=5, maxRadius=100) **
+       klein     asd, cv2.HOUGH_GRADIENT, 1.5, 50, param1=30, param2=50, minRadius=5, maxRadius=100) **
+                        gross            1                                                      0
 
 def main(args=None):
 
