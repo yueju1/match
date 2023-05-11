@@ -52,11 +52,11 @@ class ImageSubscriber(Node):
         contours, hierarchy = cv2.findContours(
             thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE) # muss a binary bild
         # cv2.drawContours(asd, contours, -1, (0, 0, 255), 1)
-
+        
         #   filter?
         # double houghcircles to detect two times
-        # circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        # asd, cv2.HOUGH_GRADIENT, 1, 50, param1=30, param2=50, minRadius=5, maxRadius=0)
+        circles = cv2.HoughCircles(  # kleiner keris in 1.py
+        asd, cv2.HOUGH_GRADIENT, 1, 50, param1=30, param2=50, minRadius=5, maxRadius=0)
         # # print(circles)
         # # hough param und cany param
         # # try: ? if there is no circle, output typeerror
@@ -74,30 +74,34 @@ class ImageSubscriber(Node):
         #     cv2.circle(asd, (x, y), 5, (0, 0, 255), -1)
         # print(x, y, r)
 
-    kan moment function     append no use
-    ru guo bianyuan jiance li you zhixian  then  loesch
-    ru guo yuan de shuliang > 2 then ...
-        center_points = []
-        print(hierarchy)
+    
+    # ru guo bianyuan jiance li you zhixian  then  loesch
+    # ru guo yuan de shuliang > 2 then ...
+        # center_points = []
+        print(hierarchy[0])
         for contour in contours:
             moments = cv2.moments(contour)
             cX = int(moments["m10"] / moments["m00"])
             cY = int(moments["m01"] / moments["m00"])
-            center_points.append((cX, cY))
+            # center_points.append((cX, cY))
             print(cX, cY)
-        print(len(contours))
-        # try: durchschnitt ,  minus < 10
+            cv2.drawContours(asd, contours, -1, (0, 255, 0), 5)
+            cv2.circle(asd, (cX, cY), 5, (0, 0, 255), -1)
+            #cv2.circle(asd, (1999, 1999), 3, (0, 0, 255), -1)
+            
 
+        print(len(contours))
+        print(contours[0])
+        # try: durchschnitt ,  minus < 10
+        
     #three points, but drawed two ？
     #then first - -> track the Trajectory
-
-        cv2.drawContours(asd, contours, -1, (0, 255, 0), 15)
-        cv2.circle(asd, (cX, cY), 1, (0, 0, 255), -1)
-        cv2.circle(asd, (1999, 1999), 25, (0, 0, 255), -1)
+        
+       
         
 
 
-
+        
         cv2.namedWindow('camera', 0)
         cv2.resizeWindow("camera", 1000, 1000)
         # cv2.namedWindow('asd', 0)
