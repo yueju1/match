@@ -22,6 +22,7 @@ class ImageSubscriber(Node):
 
         self.br = CvBridge()
     # is the callbackfunction a must?
+
     def listener_callback(self, data):
 
         current_frame = self.br.imgmsg_to_cv2(data)
@@ -31,7 +32,7 @@ class ImageSubscriber(Node):
         # dst = cv2.resize(current_frame, (4*x, 4*y))
 
         dst = cv2.pyrUp(current_frame)
-
+        print(current_frame.max())
         # print(current_frame)
         # print(current_frame.shape)
         self.get_logger().info('Receiving')
@@ -41,22 +42,22 @@ class ImageSubscriber(Node):
         gray2 = cv2.GaussianBlur(dst, (19, 19), 1)
         canny = cv2.Canny(gray2, 75, 200)
 
-        part = current_frame[700:1100, 1100:1500]  # to be modified
+        part = current_frame[750:1300, 1000:1600]  # to be modified
         asd = cv2.resize(part, (0, 0), fx=10, fy=10)
         edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
         dst2 = cv2.pyrDown(current_frame)
-        casd = cv2.medianBlur(asd, 7)
+        # casd = cv2.medianBlur(asd, 7)
 
         ret, thresh = cv2.threshold(asd, 140, 220, cv2.THRESH_BINARY)
 
         contours, hierarchy = cv2.findContours(
-            thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE) # muss a binary bild
+            thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  # muss a binary bild
         # cv2.drawContours(asd, contours, -1, (0, 0, 255), 1)
-        
+
         #   filter?
         # double houghcircles to detect two times
-        circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        asd, cv2.HOUGH_GRADIENT, 1, 50, param1=30, param2=50, minRadius=5, maxRadius=0)
+        # circles = cv2.HoughCircles(  # kleiner keris in 1.py
+        #     asd, cv2.HOUGH_GRADIENT, 1, 50, param1=30, param2=50, minRadius=5, maxRadius=0)
         # # print(circles)
         # # hough param und cany param
         # # try: ? if there is no circle, output typeerror
@@ -74,41 +75,36 @@ class ImageSubscriber(Node):
         #     cv2.circle(asd, (x, y), 5, (0, 0, 255), -1)
         # print(x, y, r)
 
-    
     # ru guo bianyuan jiance li you zhixian  then  loesch
     # ru guo yuan de shuliang > 2 then ...
         # center_points = []
-        print(hierarchy[0])
+        # # print(hierarchy[0])
         for contour in contours:
             moments = cv2.moments(contour)
+            # ZeroDivisionError: float division by zero
             cX = int(moments["m10"] / moments["m00"])
-            cY = int(moments["m01"] / moments["m00"])
+            cY = int(moments["m01"] / moments["m00"])  # ausschneiden
             # center_points.append((cX, cY))
             print(cX, cY)
             cv2.drawContours(asd, contours, -1, (0, 255, 0), 5)
             cv2.circle(asd, (cX, cY), 5, (0, 0, 255), -1)
-            #cv2.circle(asd, (1999, 1999), 3, (0, 0, 255), -1)
-            
+        cv2.circle(asd, (1999, 1999), 3, (0, 0, 255), -1)
 
-        print(len(contours))
-        print(contours[0])
+        # print(len(contours))
+        # print(contours[0])
         # try: durchschnitt ,  minus < 10
-        
-    #three points, but drawed two ？
-    #then first - -> track the Trajectory
-        
-       
-        
 
+    # three points, but drawed two ？
+    # then first - -> track the Trajectory
 
-        
         cv2.namedWindow('camera', 0)
         cv2.resizeWindow("camera", 1000, 1000)
         # cv2.namedWindow('asd', 0)
         # cv2.resizeWindow("asd", 1000, 1000)
         # Display image
+
         cv2.imshow("camera", asd)
-        #cv2.imshow('asd', part)
+        # cv2.imshow('asd', part)
         # cv2.imshow('asd', casd)
         cv2.waitKey(1)
 
