@@ -1,3 +1,0 @@
-[console_scripts]
-node_battery = battery_node.node_battery:main
-node_led = battery_node.node_led:main
