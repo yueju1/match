@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/opcua_server.dir/src/main.cpp.o -o opcua_server  libopen62541.a -lpthread 

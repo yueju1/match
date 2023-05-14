@@ -1,9 +1,0 @@
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/uninstall.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/pm_robot_moveit_config_uninstall.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/test.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/edit_cache.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/rebuild_cache.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/list_install_components.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/install.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/install/local.dir
-/home/yueju/led/build/pm_robot_moveit_config/CMakeFiles/install/strip.dir
