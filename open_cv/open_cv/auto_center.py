@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
 from control_msgs.msg import JointTrajectoryControllerState
-
+from builtin_interfaces.msg import Duration
 from std_msgs.msg._header import Header
 
 
@@ -16,10 +16,10 @@ class Centering(Node):
                                          )
         jt = JointTrajectory()
         jt.header.frame_id = ''
-        jt.header.stamp = self.get_clock().now().to_msg()
+        # jt.header.stamp = self.get_clock().now().to_msg()
         
         jt.joint_names = ['X_Axis_Joint', 'Y_Axis_Joint',
-                          'Z_Axis_Joint', 'Gripper_Rot_Plate_Joint']
+                          'Z_Axis_Joint', 'T_Axis_Joint']
         # jt.desired.positions = [0.068, -0.04, -0.01, 0.0]
         # jt.desired.velocities = [100.0, 100.0, 0.05, 2.0]
         # jt.desired.accelerations = [5.0, 5.0, 5.0, 5.0]
@@ -27,11 +27,13 @@ class Centering(Node):
         # jt.actual.velocities = [100.0, 100.0, 0.5, 2.0]
         # jt.actual.accelerations = [5.0, 5.0, 5.0, 5.0]
         jt2 = JointTrajectoryPoint()
+        
         # 0 0 0 https://answers.ros.org/question/362943/joint-trajectory-published-but-not-executed/
-        jt2.positions = [0.068, -0.04, -0.01, 0.0]
-        jt2.velocities = [100.0, 100.0, 0.05, 2.0]
+        jt2.positions = [-0.7, -0.04, -0.01, 12.0]
+        print(jt2.velocities)
+        # jt2.velocities = [100.0, 100.0, 0.05, 2.0]
         # jt2.accelerations = [100.0, 100.0, 0.05, 2.0]
-
+        jt2.time_from_start = Duration(sec= 4)
         jt.points = [jt2]
 
         # jt.points.append(jt2)

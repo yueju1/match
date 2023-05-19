@@ -3,7 +3,7 @@ from rclpy.action import ActionClient
 from rclpy.node import Node
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-
+from builtin_interfaces.msg import Duration
 
 class CenteringClient(Node):
 
@@ -18,9 +18,11 @@ class CenteringClient(Node):
         
         jt2 = JointTrajectoryPoint()
         jt2.positions = points
+        jt2.velocities = [100.0, 100.0, 0.05, 2.0]
+        jt2.accelerations = [100.0, 100.0, 0.05, 2.0]
         # more smothly: x_joint by 0.08 und y,z,t......
         goal_msg = FollowJointTrajectory.Goal()
-
+        jt2.time_from_start = Duration(sec= 4)
         goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
                           'Z_Axis_Joint', 'T_Axis_Joint']
         goal_msg.trajectory.points = [jt2]
@@ -40,7 +42,7 @@ def main(args=None):
 
     rclpy.init(args=args)
     client = CenteringClient()
-    future = client.send_goal([0.068, -0.04, -0.01, 0.0]) 
+    future = client.send_goal([-0.05, -0.12, -0.01, 0.0]) 
     rclpy.spin_until_future_complete(client,future)
     rclpy.shutdown()
 
