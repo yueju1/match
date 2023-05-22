@@ -15,9 +15,9 @@ class Centering(Node):
         self.pub = self.create_publisher(JointTrajectory, '/joint_trajectory_controller/joint_trajectory', 10
                                          )
         jt = JointTrajectory()
-        jt.header.frame_id = ''
-        # jt.header.stamp = self.get_clock().now().to_msg()
         
+        # jt.header.stamp = self.get_clock().now().to_msg()
+    
         jt.joint_names = ['X_Axis_Joint', 'Y_Axis_Joint',
                           'Z_Axis_Joint', 'T_Axis_Joint']
         # jt.desired.positions = [0.068, -0.04, -0.01, 0.0]

@@ -52,7 +52,7 @@ class ImageSubscriber(Node):
     # casd = cv2.medianBlur(asd, 7)
 
         ret, thresh = cv2.threshold(asd, 140, 220, cv2.THRESH_BINARY)
-
+        na ge fangfa geng zhunque
         contours, hierarchy = cv2.findContours(
             thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  # muss a binary bild
     # cv2.drawContours(asd, contours, -1, (0, 0, 255), 1)
