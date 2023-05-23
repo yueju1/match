@@ -58,16 +58,14 @@ class CenteringClient(Node):
         self.get_logger().info('Goal reached!')
 
         # self.get_logger().info('Result: {0}'.format(result))  
-        
-
-       
-
+            
+         add some conditions ?
       # besser + diese👇?
     # def feedback_callback(self,feedcak_msg):
     #     self.get_logger().info('Approaching...')
         
     
-    # add conditions
+    
 
 
 
