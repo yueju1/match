@@ -18,7 +18,7 @@ import rclpy
 from rclpy.action import ActionClient
 from rclpy.node import Node
 from base_interfaces_demo.action import Progress
-
+from rclpy.action.client import ClientGoalHandle
 # 3.定义节点类；
 class ProgressActionClient(Node):
 
@@ -37,6 +37,7 @@ class ProgressActionClient(Node):
 
     def goal_response_callback(self, future):
 # 3-3.处理目标发送后的反馈；
+        
         goal_handle = future.result()
         if not goal_handle.accepted:
             self.get_logger().info('请求被拒绝')

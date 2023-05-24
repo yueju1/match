@@ -32,7 +32,7 @@ class ProgressActionServer(Node):
             'get_sum',
             self.execute_callback)
         self.get_logger().info('动作服务已经启动！')
-
+        self.create_timer
     def execute_callback(self, goal_handle):
         self.get_logger().info('开始执行任务....')
 
