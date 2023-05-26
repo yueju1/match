@@ -1,5 +1,10 @@
 import cv2 as cv 
+https://zhuanlan.zhihu.com/p/438542999
+https://zhuanlan.zhihu.com/p/603629524
+https://blog.csdn.net/Useless_csdn/article/details/102616576
 
+椭圆拟合3种方法：
+https://blog.csdn.net/weixin_41616991/article/details/126158231
  
 if __name__ == "__main__":
  
