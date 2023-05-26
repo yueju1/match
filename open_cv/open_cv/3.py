@@ -12,7 +12,7 @@ if __name__ == "__main__":
     contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)  # 轮廓查找
          最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
          # 检测椭圆内圈？
-    for i in contours:
+    for i in contours:  sobel? kaolv geng fuza yidian
         if len(i) >= 5 :
             retval = cv.fitEllipse(i)  # 取其中一个轮廓拟合椭圆
             cv.ellipse(im, retval, (0, 0, 255), thickness=1) # 在原图画椭圆
