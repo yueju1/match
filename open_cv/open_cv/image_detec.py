@@ -23,7 +23,7 @@ class ImageSubscriber(Node):
     # is the callbackfunction a must?
 
         current_frame = cv2.imread(
-        '/home/yueju/下载/Greifer_Unterseitenkamera.bmp')
+        '/home/pmlab/yueju3/robot/Greifer_Unterseitenkamera.bmp')
         
         #先看看canny,threshold值,对检测到的个数的影响.   再  搞一下转动之后圆有偏差的问题
     # def listener_callback(self, data):
@@ -49,7 +49,7 @@ class ImageSubscriber(Node):
         
 
         kernel = np.ones((5,5),np.uint8)
-        cv2.find
+        # cv2.findell
         kernel2 = np.ones((10,10),np.uint8)
         pengzhang = cv2.dilate(gray,kernel2)
         fushi =cv2.erode(pengzhang,kernel)
@@ -65,14 +65,14 @@ class ImageSubscriber(Node):
         ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
         #na ge fangfa geng zhunque
         contours, hierarchy = cv2.findContours(
-            thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  # muss a binary bild
+            thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # muss a binary bild
     # cv2.drawContours(asd, contours, -1, (0, 0, 255), 1)
 
     #   filter?
     # double houghcircles to detect two times
         #找轮廓的点，拟合圆
         circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        gray, cv2.HOUGH_GRADIENT, 1, 50, param1=30, param2=150, minRadius=5, maxRadius=150)
+        gray, cv2.HOUGH_GRADIENT, 1.5, 50, param1=50, param2=175, minRadius=5, maxRadius=100)
         print(circles)
     # hough param und cany param
     # try: ? if there is no circle, output typeerror
@@ -87,7 +87,7 @@ class ImageSubscriber(Node):
 
             
             col = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
-            cv2.circle(col, (x, y), r, (0, 0, 255), 3)
+            cv2.circle(col, (x, y), r, (0, 0, 255), 1)
             cv2.circle(col, (x, y), 5, (0, 0, 255), -1)
             print(x, y, r)
 
@@ -103,10 +103,11 @@ class ImageSubscriber(Node):
         #     cX = int(moments["m10"] / moments["m00"])
         #     cY = int(moments["m01"] / moments["m00"])  # ausschneiden
         # # center_points.append((cX, cY))
+        #     cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
         #     print(cX, cY)     
         #     col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-        #     cv2.drawContours(col, contours, -1, (0, 0, 255), 2)
-        #     cv2.circle(col, (cX, cY), 5, (0, 0, 255), -1)
+        #     cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+            #c v2.circle(col, (cX, cY), 2, (0, 0, 255), -1)
         
         # cv2.circle(current_frame, (1999, 1999), 4, (0, 0, 255), -1)
 
@@ -125,9 +126,9 @@ class ImageSubscriber(Node):
     # Display image
 
         cv2.imshow("camera", col)
-        cv2.namedWindow('asd', 0)
-        cv2.resizeWindow("asd", 1000, 1000)
-        cv2.imshow('asd', current_frame)
+        # cv2.namedWindow('asd', 0)
+        # cv2.resizeWindow("asd", 1000, 1000)
+        # cv2.imshow('asd', current_frame)
     # cv2.imshow('asd', casd)
         cv2.waitKey()
 
