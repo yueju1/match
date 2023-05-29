@@ -23,7 +23,7 @@ class ImageSubscriber(Node):
     # is the callbackfunction a must?
 
         current_frame = cv2.imread(
-        '/home/pmlab/yueju3/robot/Greifer_Unterseitenkamera.bmp')
+        '/home/yueju/下载/Greifer_Unterseitenkamera.bmp')
         
         #先看看canny,threshold值,对检测到的个数的影响.   再  搞一下转动之后圆有偏差的问题
     # def listener_callback(self, data):

@@ -8,7 +8,7 @@ from rosgraph_msgs.msg import Clock
 from decimal import Decimal
 from rclpy.action.client import ClientGoalHandle
 
-
+两个联系在一起，先执行哪个呢
 
 class CenteringClient(Node):
 

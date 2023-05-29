@@ -1,23 +1,18 @@
 import cv2 as cv 
-https://zhuanlan.zhihu.com/p/438542999
-https://zhuanlan.zhihu.com/p/603629524
-https://blog.csdn.net/Useless_csdn/article/details/102616576
 
-椭圆拟合3种方法：
-https://blog.csdn.net/weixin_41616991/article/details/126158231
  
 if __name__ == "__main__":
- 
-    im = cv.imread("/home/pmlab/yueju3/robot/Greifer_Unterseitenkamera.bmp")    # 读图
+                  #对比 圆 椭圆
+    im = cv.imread("/home/yueju/下载/Greifer_Unterseitenkamera.bmp")    # 读图
     gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)    # 转灰度图
     #gray2 = cv.GaussianBlur(gray, (5, 5), 1)
     gray2 = cv.medianBlur(gray, 7)
-    canny = cv.Canny(gray2, 460, 500) # (460,800)
+    canny = cv.Canny(gray2, 460, 800) # (460,500)
     _, thresh = cv.threshold(canny, 140, 220, cv.THRESH_BINARY)  # 二值化 
     contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)  # 轮廓查找
-         最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
+         #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
          # 检测椭圆内圈？
-    for i in contours:  sobel? kaolv geng fuza yidian
+    for i in contours:  #sobel? kaolv geng fuza yidian
         if len(i) >= 5 :
             retval = cv.fitEllipse(i)  # 取其中一个轮廓拟合椭圆
             cv.ellipse(im, retval, (0, 0, 255), thickness=1) # 在原图画椭圆
