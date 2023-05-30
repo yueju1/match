@@ -12,23 +12,23 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-        # self.subscription = self.create_subscription(
-        #     Image,
-        #     '/Cam2/image_raw',
-        #     self.listener_callback,
-        #     10)
-        # self.subscription  # prevent unused variable warning
+    #     self.subscription = self.create_subscription(
+    #         Image,
+    #         '/Cam2/image_raw',
+    #         self.listener_callback,
+    #         10)
+    #     self.subscription  # prevent unused variable warning
 
-        # self.br = CvBridge()
+    #     self.br = CvBridge()
     # is the callbackfunction a must?
 
         current_frame = cv2.imread(
-        '/home/yueju/下载/Greifer_Unterseitenkamera.bmp')
+        '/home/pmlab/yueju3/robot/Greifer_Unterseitenkamera.bmp')
         
-        #先看看canny,threshold值,对检测到的个数的影响.   再  搞一下转动之后圆有偏差的问题
+        # 先看看canny,threshold值,对检测到的个数的影响.   再  搞一下转动之后圆有偏差的问题
     # def listener_callback(self, data):
 
-        # current_frame = self.br.imgmsg_to_cv2(data)
+    #     current_frame = self.br.imgmsg_to_cv2(data)
         
         
     # print(current_frame.ndim)
@@ -37,7 +37,7 @@ class ImageSubscriber(Node):
     # dst = cv2.resize(current_frame, (4*x, 4*y))
         
         dst = cv2.pyrUp(current_frame)
-        (current_frame.max())
+        # (current_frame.max())
     # print(current_frame)
     # print(current_frame.shape)
     # self.get_logger().info('Receiving')
@@ -72,7 +72,7 @@ class ImageSubscriber(Node):
     # double houghcircles to detect two times
         #找轮廓的点，拟合圆
         circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        gray, cv2.HOUGH_GRADIENT, 1.5, 50, param1=50, param2=175, minRadius=5, maxRadius=100)
+        kai, cv2.HOUGH_GRADIENT, 0.6, 50, param1=1000, param2=50, minRadius=5, maxRadius=100)
         print(circles)
     # hough param und cany param
     # try: ? if there is no circle, output typeerror

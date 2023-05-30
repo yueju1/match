@@ -8,7 +8,7 @@ from rosgraph_msgs.msg import Clock
 from decimal import Decimal
 from rclpy.action.client import ClientGoalHandle
 
-两个联系在一起，先执行哪个呢
+    两个联系在一起，先执行哪个呢
 
 class CenteringClient(Node):
 
@@ -31,7 +31,7 @@ class CenteringClient(Node):
         goal_msg = FollowJointTrajectory.Goal()
         # goal_msg.trajectory.header.stamp = Clock().clock     use_sim_time in launch
        
-        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint'
+        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint','Z_Axis_Joint','T_Axis_Joint'
                           ]
         goal_msg.trajectory.points = [jt2]
         
@@ -73,7 +73,7 @@ def main(args=None):
 
     rclpy.init(args=args)
     client = CenteringClient()       #  decimal  kanxia jonit_state  position
-    future = client.send_goal([0.05, -0.04]) 
+    future = client.send_goal([-0.359, -0.0458, -0.026791, 1.08]) 
     # future = client.send_goal([Decimal(-0.7), Decimal(-0.04), Decimal(-0.01), Decimal(12.0)]) 
     rclpy.spin(client)
     rclpy.shutdown()

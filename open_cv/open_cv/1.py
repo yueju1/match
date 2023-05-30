@@ -1,73 +1,125 @@
-"""
-需求：编写动作服务端实习，可以提取客户端请求提交的整型数据，并累加从1到该数据之间的所有整数以求和，
-每累加一次都计算当前运算进度并连续反馈回客户端，最后，在将求和结果返回给客户端。
-步骤：
-1.导包；
-2.初始化 ROS2 客户端；
-3.定义节点类；
-3-1.创建动作服务端；
-3-2.生成连续反馈；
-3-3.生成最终响应。
-4.调用spin函数，并传入节点对象；
-5.释放资源。
-"""
+import rclpy  # Python library for ROS 2
+from rclpy.node import Node  # Handles the creation of nodes
+from sensor_msgs.msg import Image  # Image is the message type
+from cv_bridge import CvBridge  # Package to convert
+import cv2
+import numpy as np
 
-# 1.导包；
-import time
-import rclpy
-from rclpy.action import ActionServer
-from rclpy.node import Node
-
-from base_interfaces_demo.action import Progress
-
-# 3.定义节点类；
-class ProgressActionServer(Node):
+class ImageSubscriber(Node):
 
     def __init__(self):
-        super().__init__('progress_action_server')
-# 3-1.创建动作服务端；
-        self._action_server = ActionServer(
-            self,
-            Progress,
-            'get_sum',
-            self.execute_callback)
-        self.get_logger().info('动作服务已经启动！')
-        self.create_timer
-    def execute_callback(self, goal_handle):
-        self.get_logger().info('开始执行任务....')
 
+        super().__init__('image_detection')
+        
+        self.subscription = self.create_subscription(
+            Image,
+            '/Cam2/image_raw',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
 
-# 3-2.生成连续反馈；
-        feedback_msg = Progress.Feedback()
+        self.br = CvBridge()
+       
+    def listener_callback(self, data):
 
-        sum = 0
-        for i in range(1, goal_handle.request.num + 1):
-            sum += i
-            feedback_msg.progress = i / goal_handle.request.num
-            self.get_logger().info('连续反馈: %.2f' % feedback_msg.progress)
-            goal_handle.publish_feedback(feedback_msg)
-            time.sleep(1)
+        current_frame = self.br.imgmsg_to_cv2(data)
+        
+        
+    # print(current_frame.ndim)
+        a, b = current_frame.shape[0:2]
+    # print(current_frame.shape)
+    # dst = cv2.resize(current_frame, (4*x, 4*y))
+        
+        dst = cv2.pyrUp(current_frame)
 
-# 3-3.生成最终响应。
-        goal_handle.succeed()
-        result = Progress.Result()
-        result.sum = sum
-        self.get_logger().info('任务完成！')
+        # gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
+    
+        # casd = cv2.medianBlur(gray, 7)
+        
+        
+        kernel = np.ones((5,5),np.uint8)
+        
+        kernel2 = np.ones((10,10),np.uint8)
+        # pengzhang = cv2.dilate(gray,kernel2)
+        # fushi =cv2.erode(pengzhang,kernel)
+        # kai = cv2.morphologyEx(gray,cv2.MORPH_CLOSE,kernel2,iterations=1)
+       # cv2.sobel  Gradient
+        part = current_frame[360:2200, 70:1850]  # to be modified
+        # gray2 = cv2.GaussianBlur(part, (5, 5), 1)
+        gray2 = cv2.medianBlur(current_frame, 5)
+        asd = cv2.resize(part, (0, 0), fx=10, fy=10)
+        edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
+        dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
+        canny = cv2.Canny(gray2, 150, 200)
+        p2 = cv2.dilate(canny,kernel)
 
-        return result
+        #找轮廓的点，拟合圆
+
+        circles = cv2.HoughCircles(  # kleiner keris in 1.py
+        canny, cv2.HOUGH_GRADIENT, 1, 150, param1=20, param2=60, minRadius=15, maxRadius=1000)
+        print(circles)
+
+    # try: ? if there is no circle, output typeerror
+        for circle in circles[0]:
+
+            print(circle[2])
+
+            x = int(circle[0])
+            y = int(circle[1])
+
+            r = int(circle[2])
+
+            
+            col = cv2.cvtColor(current_frame, cv2.COLOR_GRAY2BGR)
+            cv2.circle(col, (x, y), r, (0, 0, 255), 1)
+            cv2.circle(col, (x, y), 5, (0, 0, 255), -1)
+            print(x, y, r)
+
+        # ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
+        # #na ge fangfa geng zhunque
+        # contours, hierarchy = cv2.findContours(
+        #     thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # muss a binary bild
+        # for contour in contours:
+        #     moments = cv2.moments(contour)
+        #     if moments['m00'] != 0:    # or try:...?
+        # # ZeroDivisionError: float division by zero
+        #         cX = int(moments["m10"] / moments["m00"])
+        #         cY = int(moments["m01"] / moments["m00"])  # ausschneiden
+        #         col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
+        #         cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+        #         cv2.circle(col, (cX, cY), 3, (0, 0, 255), -1)
+        #     # center_points.append((cX, cY))
+        #         cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
+        #         print(cX, cY)     
+                
+
+        cv2.namedWindow('camera', 0)
+        cv2.resizeWindow("camera", 1000, 1000)
+ 
+
+        cv2.imshow("camera", current_frame)
+        cv2.namedWindow('asd', 0)
+        cv2.resizeWindow("asd", 1000, 1000)
+        cv2.imshow('asd', col)
+        cv2.waitKey(1)
 
 
 def main(args=None):
 
-# 2.初始化 ROS2 客户端；
     rclpy.init(args=args)
 
-# 4.调用spin函数，并传入节点对象；
-    Progress_action_server = ProgressActionServer()
-    rclpy.spin(Progress_action_server)
+    image_subscriber = ImageSubscriber()
 
-# 5.释放资源。
+    rclpy.spin(image_subscriber)
+
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    image_subscriber.destroy_node()
+
+    # Shutdown the ROS client library for Python
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
