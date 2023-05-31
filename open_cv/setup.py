@@ -19,7 +19,8 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': [
+        'console_scripts': ['auto_centering = open_cv.auto_centering:main',
+                            'image_procesing = open_cv.image_processing:main'
         ],
     },
 )

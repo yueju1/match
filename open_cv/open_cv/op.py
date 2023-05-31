@@ -1,3 +1,4 @@
+#!/usr/bin/env/python3
 import cv2
 import rclpy
 from rclpy.node import Node
@@ -62,7 +63,7 @@ def main():
     image_subscriber = ImageSubscriber()
 
     rclpy.spin(image_subscriber)
-    #image_subscriber.destroy_node()
+    image_subscriber.destroy_node()
     rclpy.shutdown()
  
 if __name__ == "__main__":
