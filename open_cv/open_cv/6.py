@@ -23,6 +23,20 @@ class ImageSubscriber(Node):
 
         self.br = CvBridge()
 
+opencv特定点的追踪
+        https://github.com/makelove/OpenCV-Python-Tutorial/blob/master/my02-%E8%A7%86%E9%A2%91-%E5%AF%B9%E8%B1%A1%E8%B7%9F%E8%B8%AA/tracker.py
+        https://www.cnblogs.com/annie22wang/p/9366610.html
+        https://www.cvmart.net/community/detail/5856
+        https://zhuanlan.zhihu.com/p/479341525
+        https://www.google.com/search?channel=fs&client=ubuntu-sn&q=ros+opencv+%E7%89%B9%E5%AE%9A%E7%82%B9%E8%BF%BD%E8%B8%AA
+        https://www.guyuehome.com/23381/notice.html
+        https://www.guyuehome.com/34967
+        opencv point tracking
+        https://stackoverflow.com/questions/62079484/opencv-tracking-points-in-an-image
+        https://stackoverflow.com/questions/14689090/tracking-user-defined-points-with-opencv
+
+
+
     def listener_callback(self,msg):
         im = self.br.imgmsg_to_cv2(msg)
         (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')￼

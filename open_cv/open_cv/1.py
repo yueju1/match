@@ -60,37 +60,38 @@ class ImageSubscriber(Node):
         print(circles)
 
     # try: ? if there is no circle, output typeerror
-        for circle in circles[0]:
+        # for circle in circles[0]:
 
-            print(circle[2])
+        #     print(circle[2])
 
-            x = int(circle[0])
-            y = int(circle[1])
+        #     x = int(circle[0])
+        #     y = int(circle[1])
 
-            r = int(circle[2])
-
+        #     r = int(circle[2])
+                X: -0.359003  Y: -0.045798
+                Z: -0.040782  T: 2.76
             
-            col = cv2.cvtColor(current_frame, cv2.COLOR_GRAY2BGR)
-            cv2.circle(col, (x, y), r, (0, 0, 255), 1)
-            cv2.circle(col, (x, y), 5, (0, 0, 255), -1)
-            print(x, y, r)
+        #     col = cv2.cvtColor(current_frame, cv2.COLOR_GRAY2BGR)
+        #     cv2.circle(col, (x, y), r, (0, 0, 255), 1)
+        #     cv2.circle(col, (x, y), 5, (0, 0, 255), -1)
+        #     print(x, y, r)
 
-        # ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
-        # #na ge fangfa geng zhunque
-        # contours, hierarchy = cv2.findContours(
-        #     thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # muss a binary bild
-        # for contour in contours:
-        #     moments = cv2.moments(contour)
-        #     if moments['m00'] != 0:    # or try:...?
-        # # ZeroDivisionError: float division by zero
-        #         cX = int(moments["m10"] / moments["m00"])
-        #         cY = int(moments["m01"] / moments["m00"])  # ausschneiden
-        #         col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-        #         cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-        #         cv2.circle(col, (cX, cY), 3, (0, 0, 255), -1)
-        #     # center_points.append((cX, cY))
-        #         cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
-        #         print(cX, cY)     
+        ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
+        #na ge fangfa geng zhunque
+        contours, hierarchy = cv2.findContours(
+            thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # muss a binary bild
+        for contour in contours:
+            moments = cv2.moments(contour)
+            if moments['m00'] != 0:    # or try:...?
+        # ZeroDivisionError: float division by zero
+                cX = moments["m10"] / moments["m00"]
+                cY = moments["m01"] / moments["m00"] # ausschneiden
+                col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
+                #cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+                #cv2.circle(col, (cX, cY), 3, (0, 0, 255), -1)
+            # center_points.append((cX, cY))
+                #cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
+                print(cX, cY)     
                 
 
         cv2.namedWindow('camera', 0)
