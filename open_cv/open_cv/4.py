@@ -35,7 +35,7 @@ class ImageSubscriber(Node):
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5),1)
         # gray2 = cv2.medianBlur(im, 5)
-        canny = cv2.Canny(im, 55, 230) # , apertureSize = 3)
+        canny = cv2.Canny(im, 55, 230) # , apertureSize = 3) #(55, 230)
         _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
@@ -50,17 +50,17 @@ class ImageSubscriber(Node):
                 col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
                 #cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
              
-                print(retval)
+                #print(retval)
 
                 if retval[1][0] < 240.0 and retval[1][1] > 220:
                       #  noch durchschnittswert
                     if cv2.fitEllipse(contours[i])[0] not in self.list:
                         self.list.append(cv2.fitEllipse(contours[i])[0])
                         print(i)
-                        print(self.list)
+                        #print(self.list)     # T_Axis: 5.64 --> leer
                         print(cv2.fitEllipse(contours[i])[0])
         print('-------------------------------------')
-            
+        print(self.list)
         
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)

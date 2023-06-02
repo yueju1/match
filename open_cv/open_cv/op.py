@@ -27,9 +27,9 @@ class ImageSubscriber(Node):
 
     def listener_callback(self, data):
 
-        im = self.br.imgmsg_to_cv2(data)
+        # im = self.br.imgmsg_to_cv2(data)
 
-        # im = cv2.imread("/home/pmlab/yueju3/robot/Greifer_Unterseitenkamera.bmp")    
+        im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5), 1)
         #gray2 = cv2.medianBlur(gray, 7)
@@ -45,7 +45,7 @@ class ImageSubscriber(Node):
                 cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),3, (0, 0, 255), -2)
                 col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
                 cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-        #         print(retval) 
+            print(retval) 
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)

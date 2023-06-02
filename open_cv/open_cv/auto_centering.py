@@ -83,7 +83,7 @@ def main(args=None):
     #os.system('/home/pmlab/yueju/change/open_cv/open_cv/op.py')
     rclpy.init(args=args)
     client = CenteringClient()       #  decimal  kanxia jonit_state  position
-    future = client.send_goal([-0.359, -0.0458, -0.026791, 1.08]) 
+    future = client.send_goal([-0.359, -0.0458, -0.051544, 1.08]) 
     # future = client.send_goal([Decimal(-0.7), Decimal(-0.04), Decimal(-0.01), Decimal(12.0)]) 
     rclpy.spin(client)
     client.destroy_node()

@@ -28,7 +28,7 @@ class ImageSubscriber(Node):
                                              '/joint_trajectory_controller/state',
                                              self.state_callback,
                                              10)
-        
+        #  self.subscription  # prevent unused variable warning ?
         self.br = CvBridge()
     
         self.rotate_client = ActionClient(self,FollowJointTrajectory,
@@ -40,7 +40,7 @@ class ImageSubscriber(Node):
         self.get_logger().info('%s'%msg.desired.positions)
         #self.get_logger().info('%s'%msg.joint_names)
         for i in range(4):
-            if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.026791, 1.08]):
+            if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 1.08]):
                 self.sub = self.create_subscription(Image,
                     '/Cam2/image_raw',
                     self.listener_callback,
@@ -65,7 +65,7 @@ class ImageSubscriber(Node):
             self.get_logger().info('asdadasdasdasdasdasd')
 
             jt2 = JointTrajectoryPoint()
-            jt2.positions = [-0.359, -0.0458, -0.026791, 12.0]
+            jt2.positions = [-0.359, -0.0458, -0.051544, 12.0]
             jt2.time_from_start = Duration(sec=4)   # langer for more points detection
             
             goal_msg = FollowJointTrajectory.Goal()

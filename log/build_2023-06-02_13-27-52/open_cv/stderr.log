@@ -1,0 +1,4 @@
+/usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+  warnings.warn(
+Sorry: IndentationError: unexpected indent (1.py, line 71)
+Sorry: IndentationError: unexpected indent (6.py, line 27)
