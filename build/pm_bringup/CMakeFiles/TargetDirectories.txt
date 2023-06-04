@@ -1,0 +1,9 @@
+/home/yueju/led/build/pm_bringup/CMakeFiles/uninstall.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/pm_bringup_uninstall.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/test.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/edit_cache.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/rebuild_cache.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/list_install_components.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/install.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/install/local.dir
+/home/yueju/led/build/pm_bringup/CMakeFiles/install/strip.dir

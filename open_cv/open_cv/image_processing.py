@@ -14,7 +14,8 @@ from builtin_interfaces.msg import Duration
 import time
 
 
-
+程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。
+也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
 
 
 class ImageSubscriber(Node):
