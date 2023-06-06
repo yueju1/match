@@ -12,23 +12,23 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-    #     self.subscription = self.create_subscription(
-    #         Image,
-    #         '/Cam2/image_raw',
-    #         self.listener_callback,
-    #         10)
-    #     self.subscription  # prevent unused variable warning
+        self.subscription = self.create_subscription(
+            Image,
+            '/Cam2/image_raw',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
 
-    #     self.br = CvBridge()
+        self.br = CvBridge()
     # is the callbackfunction a must?
 
-        current_frame = cv2.imread(
-        '/home/pmlab/yueju3/robot/Greifer_Unterseitenkamera.bmp')
+        # current_frame = cv2.imread(
+        # '/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp')
         
         # 先看看canny,threshold值,对检测到的个数的影响.   再  搞一下转动之后圆有偏差的问题
-    # def listener_callback(self, data):
+    def listener_callback(self, data):
 
-    #     current_frame = self.br.imgmsg_to_cv2(data)
+        current_frame = self.br.imgmsg_to_cv2(data)
         
         
     # print(current_frame.ndim)
@@ -42,25 +42,25 @@ class ImageSubscriber(Node):
     # print(current_frame.shape)
     # self.get_logger().info('Receiving')
     # bild=cv2.color
-        gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
+        # gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
     # rint(gray)
-        casd = cv2.medianBlur(gray, 7)
-        gray2 = cv2.GaussianBlur(gray, (5, 5), 1)
+        # casd = cv2.medianBlur(gray, 7)
+        gray2 = cv2.GaussianBlur(current_frame, (5, 5), 1)
         
 
-        kernel = np.ones((5,5),np.uint8)
-        # cv2.findell
-        kernel2 = np.ones((10,10),np.uint8)
-        pengzhang = cv2.dilate(gray,kernel2)
-        fushi =cv2.erode(pengzhang,kernel)
-        kai = cv2.morphologyEx(gray,cv2.MORPH_CLOSE,kernel2,iterations=1)
+        # kernel = np.ones((5,5),np.uint8)
+        # # cv2.findell
+        # kernel2 = np.ones((10,10),np.uint8)
+        # pengzhang = cv2.dilate(gray,kernel2)
+        # fushi =cv2.erode(pengzhang,kernel)
+        # kai = cv2.morphologyEx(gray,cv2.MORPH_CLOSE,kernel2,iterations=1)
        # cv2.sobel  Gradient
-        part = current_frame[680:1550, 750:1750]  # to be modified
-        asd = cv2.resize(part, (0, 0), fx=10, fy=10)
-        edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
-        dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
+        # part = current_frame[680:1550, 750:1750]  # to be modified
+        # asd = cv2.resize(part, (0, 0), fx=10, fy=10)
+        # edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
+        # dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
         canny = cv2.Canny(gray2, 140, 220, 800)
-        p2 = cv2.dilate(canny,kernel)
+        # p2 = cv2.dilate(canny,kernel)
         
         ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
         #na ge fangfa geng zhunque
@@ -72,7 +72,7 @@ class ImageSubscriber(Node):
     # double houghcircles to detect two times
         #找轮廓的点，拟合圆
         circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=160, param2=30, minRadius=15, maxRadius=0)
+        gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=160, param2=15, minRadius=15, maxRadius=90)
         print(circles)
     # hough param und cany param
     # try: ? if there is no circle, output typeerror
@@ -86,9 +86,9 @@ class ImageSubscriber(Node):
             r = int(circle[2])
 
             
-            col = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
-            cv2.circle(col, (x, y), r, (0, 0, 255), 1)
-            cv2.circle(col, (x, y), 5, (0, 0, 255), -1)
+            col = cv2.cvtColor(gray2, cv2.COLOR_GRAY2BGR)
+            cv2.circle(current_frame, (x, y), r, (0, 0, 255), 1)
+            cv2.circle(current_frame, (x, y), 5, (0, 0, 255), -1)
             print(x, y, r)
 
     # ru guo bianyuan jiance li you zhixian  then  loesch
@@ -125,12 +125,12 @@ class ImageSubscriber(Node):
     # cv2.resizeWindow("asd", 1000, 1000)
     # Display image
 
-        cv2.imshow("camera", col)
+        cv2.imshow("camera", current_frame)
         # cv2.namedWindow('asd', 0)
         # cv2.resizeWindow("asd", 1000, 1000)
         # cv2.imshow('asd', current_frame)
     # cv2.imshow('asd', casd)
-        cv2.waitKey()
+        cv2.waitKey(1)
 
 
 def main(args=None):

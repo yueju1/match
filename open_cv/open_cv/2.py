@@ -17,7 +17,7 @@ class CenteringClient(Node):
         
         print('asdasd')
         
-        time.sleep(5.0)
+        # time.sleep(5.0)
 
     def send_g(self,points): # kann ohne points sein, und jt2.positions = []
         self.get_logger().info('213')
@@ -27,8 +27,7 @@ class CenteringClient(Node):
         # more smothly: x_joint by 0.08 und y,z,t......
         goal_msg = FollowJointTrajectory.Goal()
 
-        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',  
-                                            'Z_Axis_Joint', 'T_Axis_Joint']
+        goal_msg.trajectory.joint_names= ['T_Axis_Joint']
         goal_msg.trajectory.points = [jt2]
         
         self.client.wait_for_server()
@@ -42,7 +41,7 @@ def main(args=None):
 
     rclpy.init(args=args)
     client = CenteringClient()
-    future = client.send_g([-0.7, -0.0458, -0.026791, 1.08]) 
+    future = client.send_g([12.0]) 
     rclpy.spin_until_future_complete(client,future)
     rclpy.shutdown()
 

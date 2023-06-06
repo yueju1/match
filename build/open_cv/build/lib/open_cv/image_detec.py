@@ -59,7 +59,7 @@ class ImageSubscriber(Node):
         asd = cv2.resize(part, (0, 0), fx=10, fy=10)
         edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
         dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
-        canny = cv2.Canny(gray2, 10, 800)
+        canny = cv2.Canny(gray2, 140, 220, 800)
         p2 = cv2.dilate(canny,kernel)
         
         ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
@@ -72,7 +72,7 @@ class ImageSubscriber(Node):
     # double houghcircles to detect two times
         #找轮廓的点，拟合圆
         circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        kai, cv2.HOUGH_GRADIENT, 0.6, 50, param1=1000, param2=50, minRadius=5, maxRadius=100)
+        gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=160, param2=30, minRadius=15, maxRadius=0)
         print(circles)
     # hough param und cany param
     # try: ? if there is no circle, output typeerror

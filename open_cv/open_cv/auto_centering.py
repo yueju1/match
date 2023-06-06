@@ -11,8 +11,8 @@ from rclpy.action.client import ClientGoalHandle
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
-float: 每次运动到相同的坐标，看下actual的值一样吗，运行了看看  以及后面 for i in range(4)的条件
-        add conditions
+# float: 每次运动到相同的坐标，看下actual的值一样吗，运行了看看  以及后面 for i in range(4)的条件
+#         add conditions
 class CenteringClient(Node):
 
     def __init__(self):
@@ -22,7 +22,7 @@ class CenteringClient(Node):
         self.action_client = ActionClient(self,FollowJointTrajectory,
                                    '/joint_trajectory_controller/follow_joint_trajectory')
 
-
+        
     def send_goal(self,points): # kann ohne points sein, und target_point.positions = []
         
         target_point = JointTrajectoryPoint()
@@ -59,26 +59,29 @@ class CenteringClient(Node):
 
 
     def get_result_callback(self,future):
-        self.get_logger().info('Goal reached!\nThe present position is %future.actual' )
+        self.get_logger().info('Goal reached!\tThe present position is %future.actual' )
         
         rclpy.shutdown()
         
          # add some conditions ?
       
     def feedback_callback(self,feedcak_msg):
+
         self.get_logger().info('Approaching...')
 
 
 def main(args=None):
     #os.system('/home/pmlab/yueju/change/open_cv/open_cv/op.py')
+    
     rclpy.init(args=args)
+    
     client = CenteringClient()       #  decimal  kanxia jonit_state  position
-    client.send_goal([-0.359, -0.0458, -0.051544, 1.08]) 
+    client.send_goal([-0.359, -0.0458, -0.051544, 0.0]) 
     # future = client.send_goal([Decimal(-0.7), Decimal(-0.04), Decimal(-0.01), Decimal(12.0)]) 
     rclpy.spin(client)
+    client.destroy_node()
     
-    rclpy.shutdown()
-
+    
 
 if __name__ == '__main__':
     main()

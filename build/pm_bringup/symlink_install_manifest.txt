@@ -1,0 +1,16 @@
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/launch/auto_calibrating.launch.py
+/home/pmlab/yueju2/install/pm_bringup/share/ament_index/resource_index/package_run_dependencies/pm_bringup
+/home/pmlab/yueju2/install/pm_bringup/share/ament_index/resource_index/parent_prefix_path/pm_bringup
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/environment/ament_prefix_path.sh
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/environment/ament_prefix_path.dsv
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/environment/path.sh
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/environment/path.dsv
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/local_setup.bash
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/local_setup.sh
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/local_setup.zsh
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/local_setup.dsv
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/package.dsv
+/home/pmlab/yueju2/install/pm_bringup/share/ament_index/resource_index/packages/pm_bringup
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/cmake/pm_bringupConfig.cmake
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/cmake/pm_bringupConfig-version.cmake
+/home/pmlab/yueju2/install/pm_bringup/share/pm_bringup/package.xml

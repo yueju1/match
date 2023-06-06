@@ -22,8 +22,8 @@ class ImageSubscriber(Node):
        
     def listener_callback(self, data):
 
-        # current_frame = self.br.imgmsg_to_cv2(data)
-        current_frame = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")
+        current_frame = self.br.imgmsg_to_cv2(data)
+        #current_frame = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")
         
     # print(current_frame.ndim)
         a, b = current_frame.shape[0:2]
@@ -32,32 +32,32 @@ class ImageSubscriber(Node):
         
         dst = cv2.pyrUp(current_frame)
 
-        gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
+    #     gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
     
-        # casd = cv2.medianBlur(gray, 7)
+    #     # casd = cv2.medianBlur(gray, 7)
         
         
-        kernel = np.ones((5,5),np.uint8)
+    #     kernel = np.ones((5,5),np.uint8)
         
-        kernel2 = np.ones((10,10),np.uint8)
-        # pengzhang = cv2.dilate(gray,kernel2)
-        # fushi =cv2.erode(pengzhang,kernel)
-        # kai = cv2.morphologyEx(gray,cv2.MORPH_CLOSE,kernel2,iterations=1)
-       # cv2.sobel  Gradient
-        part = current_frame[360:2200, 70:1850]  # to be modified
-        # gray2 = cv2.GaussianBlur(part, (5, 5), 1)
-        # gray2 = cv2.medianBlur(current_frame, 5)
-        gray2 = cv2.GaussianBlur(gray, (5, 5),1)
-        #asd = cv2.resize(part, (0, 0), fx=10, fy=10)
-        edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
-        dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
+    #     kernel2 = np.ones((10,10),np.uint8)
+    #     # pengzhang = cv2.dilate(gray,kernel2)
+    #     # fushi =cv2.erode(pengzhang,kernel)
+    #     # kai = cv2.morphologyEx(gray,cv2.MORPH_CLOSE,kernel2,iterations=1)
+    #    # cv2.sobel  Gradient
+    #     part = current_frame[360:2200, 70:1850]  # to be modified
+    #     # gray2 = cv2.GaussianBlur(part, (5, 5), 1)
+    #     # gray2 = cv2.medianBlur(current_frame, 5)
+        gray2 = cv2.GaussianBlur(current_frame, (5, 5),1)
+    #     #asd = cv2.resize(part, (0, 0), fx=10, fy=10)
+    #     edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
+    #     dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
         canny = cv2.Canny(gray2, 150, 200)
-        p2 = cv2.dilate(canny,kernel)
+        # p2 = cv2.dilate(canny,kernel)
 
         #找轮廓的点，拟合圆
 
         circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        gray2, cv2.HOUGH_GRADIENT, 1, 5, param1=160, param2=30, minRadius=15, maxRadius=0)
+        gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=160, param2=15, minRadius=15, maxRadius=90)
         print(circles)
         print('---------------------------')
     # try: ? if there is no circle, output typeerror
