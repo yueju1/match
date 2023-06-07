@@ -47,18 +47,19 @@ class ImageSubscriber(Node):
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 200:
                 retval = cv2.fitEllipse(contours[i])  
+                
                 cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
                 cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                 
                 col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-                #cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+                cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
              
                 # print(retval)
                 
                   # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
                 if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]- retval[1][0]) <= 10:
                       #  noch durchschnittswert            
-                    
+                    print('sdadasdasdasd',contours[i])
                     a.append(retval)
                     b += retval[0][0]
                     c += retval[0][1]
@@ -74,13 +75,16 @@ class ImageSubscriber(Node):
         print(m1,m2)
         print('length:',len(a))
         print('its b',b)
-        if (m1, m2) not in self.list:
-            self.list.append((m1,m2))
+        if [m1, m2] not in self.list:
+            self.list.append([m1,m2])
         
         # print(self.list)     # T_Axis: 5.64 --> leer
                     
                         #print(cv2.fitEllipse(contours[i])[0])
-        
+        for point in self.list:
+  
+    
+            cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
             
             #轨迹
         print('-------------------------------------')

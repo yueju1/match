@@ -13,26 +13,25 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-        # self.subscription = self.create_subscription(
-        #     Image,
-        #     '/Cam2/image_raw',
-        #     self.listener_callback,
-        #     10)
-        # self.subscription  # prevent unused variable warning
+        self.subscription = self.create_subscription(
+            Image,
+            '/Cam2/image_raw',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
 
-        # self.br = CvBridge()
+        self.br = CvBridge()
     # is the callbackfunction a must?
 
-        
-
-    # def listener_callback(self, data):
-        # im = self.br.imgmsg_to_cv2(data)
+     
+    def listener_callback(self, data):
+        im = self.br.imgmsg_to_cv2(data)
         self.list=[]
-        im = cv2.imread("/home/yueju/yue.arbeit/robot/Greifer_Unterseitenkamera.bmp")    
+        #im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5), 1)
         #gray2 = cv2.medianBlur(gray, 7)
-        canny = cv2.Canny(gray2, 460, 800) # (460,500)  有些值检测不到
+        canny = cv2.Canny(im, 40, 500) # (460,500)  有些值检测不到
         _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
@@ -45,17 +44,17 @@ class ImageSubscriber(Node):
                 col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
                 cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
                 
-                if retval[1][0] < 240.0 and retval[1][1] > 220:
-                    #  noch durchschnittswert
-                    if cv2.fitEllipse(contours[i])[0] not in self.list:
-                        self.list.append(cv2.fitEllipse(contours[i])[0])
-                        #print(i)
-                        print(self.list)     # T_Axis: 5.64 --> leer
+                # if retval[1][0] < 240.0 and retval[1][1] > 220:
+                #     #  noch durchschnittswert
+                #     if cv2.fitEllipse(contours[i])[0] not in self.list:
+                #         self.list.append(cv2.fitEllipse(contours[i])[0])
+                #         #print(i)
+                #         print(self.list)     # T_Axis: 5.64 --> leer
                         #print(cv2.fitEllipse(contours[i])[0])
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
-        cv2.imshow("ellip", col)
+        cv2.imshow("ellip", im)
 
         # cv2.namedWindow('ellips',0)
         # cv2.resizeWindow('ellips',1000,1000)

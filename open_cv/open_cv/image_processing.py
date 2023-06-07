@@ -70,10 +70,10 @@ class ImageSubscriber(Node):
             
 
             target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = [7.3]
+            target_rotation.positions = [6.5]
             target_rotation.time_from_start = Duration(sec=6)   # langer for more points detection
-            target_rotation.velocities = [0.0]
-            target_rotation.accelerations = [0.0]
+            #target_rotation.velocities = [0.0]
+            #target_rotation.accelerations = [0.0]
             
             goal_msg = FollowJointTrajectory.Goal()
 
@@ -115,7 +115,7 @@ class ImageSubscriber(Node):
 
 
 def main():
-    time.sleep(1.0)
+    time.sleep(5.0)
     
     rclpy.init()
    

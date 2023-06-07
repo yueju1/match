@@ -18,7 +18,7 @@ class Centering(Node):
         
         # jt.header.stamp = self.get_clock().now().to_msg()
     
-        jt.joint_names = ['X_Axis_Joint', 'Y_Axis_Joint'
+        jt.joint_names = ['T_Axis_Joint'
                           ]
         # jt.desired.positions = [0.068, -0.04, -0.01, 0.0]
         # jt.desired.velocities = [100.0, 100.0, 0.05, 2.0]
@@ -29,7 +29,7 @@ class Centering(Node):
         jt2 = JointTrajectoryPoint()
         
         # 0 0 0 https://answers.ros.org/question/362943/joint-trajectory-published-but-not-executed/
-        jt2.positions = [0.05, -0.04]
+        jt2.positions = [7.3]
         print(jt2.velocities)
         # jt2.velocities = [100.0, 100.0, 0.05, 2.0]
         # jt2.accelerations = [100.0, 100.0, 0.05, 2.0]

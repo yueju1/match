@@ -5,7 +5,12 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-
+import time
+from rclpy.action import ActionClient
+from rclpy.node import Node
+from control_msgs.action import FollowJointTrajectory
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from builtin_interfaces.msg import Duration
 
 
 class ImageSubscriber(Node):
@@ -14,127 +19,87 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-        self.subscription = self.create_subscription(
-            Image,
-            '/Cam2/image_raw',
-            self.listener_callback,
-            10)
-        self.subscription  # prevent unused variable warning
-
-        self.br = CvBridge()
-
-opencv特定点的追踪
-        https://github.com/makelove/OpenCV-Python-Tutorial/blob/master/my02-%E8%A7%86%E9%A2%91-%E5%AF%B9%E8%B1%A1%E8%B7%9F%E8%B8%AA/tracker.py
-        https://www.cnblogs.com/annie22wang/p/9366610.html
-        https://www.cvmart.net/community/detail/5856
-        https://zhuanlan.zhihu.com/p/479341525
-        https://www.google.com/search?channel=fs&client=ubuntu-sn&q=ros+opencv+%E7%89%B9%E5%AE%9A%E7%82%B9%E8%BF%BD%E8%B8%AA
-        https://www.guyuehome.com/23381/notice.html
-        https://www.guyuehome.com/34967
-        opencv point tracking
-        https://stackoverflow.com/questions/62079484/opencv-tracking-points-in-an-image
-        https://stackoverflow.com/questions/14689090/tracking-user-defined-points-with-opencv
+       
+        self.rotate_client = ActionClient(self,FollowJointTrajectory,
+                                  '/joint_trajectory_controller/follow_joint_trajectory')
+# opencv特定点的追踪
+#         https://github.com/makelove/OpenCV-Python-Tutorial/blob/master/my02-%E8%A7%86%E9%A2%91-%E5%AF%B9%E8%B1%A1%E8%B7%9F%E8%B8%AA/tracker.py
+#         https://www.cnblogs.com/annie22wang/p/9366610.html
+#         https://www.cvmart.net/community/detail/5856
+#         https://zhuanlan.zhihu.com/p/479341525
+#         https://www.google.com/search?channel=fs&client=ubuntu-sn&q=ros+opencv+%E7%89%B9%E5%AE%9A%E7%82%B9%E8%BF%BD%E8%B8%AA
+#         https://www.guyuehome.com/23381/notice.html
+#         https://www.guyuehome.com/34967
+#         opencv point tracking
+#         https://stackoverflow.com/questions/62079484/opencv-tracking-points-in-an-image
+#         https://stackoverflow.com/questions/14689090/tracking-user-defined-points-with-opencv
 
 
 
-    def listener_callback(self,msg):
-        im = self.br.imgmsg_to_cv2(msg)
-        (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')￼
-        tracker_types = ['BOOSTING', 'MIL','KCF', 'TLD', 'MEDIANFLOW', 'GOTURN', 'MOSSE']
-        tracker_type = tracker_types[2]
-    
-        if int(minor_ver) < 3:
-            tracker = cv2.Tracker_create(tracker_type)
-        else:
-            if tracker_type == 'BOOSTING':
-                tracker = cv2.TrackerBoosting_create()
-            if tracker_type == 'MIL':
-                tracker = cv2.TrackerMIL_create()
-            if tracker_type == 'KCF':
-                tracker = cv2.TrackerKCF_create()
-            if tracker_type == 'TLD':
-                tracker = cv2.TrackerTLD_create()
-            if tracker_type == 'MEDIANFLOW':
-                tracker = cv2.TrackerMedianFlow_create()
-            if tracker_type == 'GOTURN':
-                tracker = cv2.TrackerGOTURN_create()
-            if tracker_type == 'MOSSE':
-                tracker = cv2.TrackerMOSSE_create()
-    
-        # Read video
-        video = cv2.VideoCapture(im)
-    
-        # Exit if video not opened.
-        if not video.isOpened():
-            print ("Could not open video")
-            sys.exit()
-    
-        # Read first frame.
-        ok, frame = video.read()
-        if not ok:
-            print ('Cannot read video file')
-            sys.exit()
-        
-        # Define an initial bounding box
-        bbox = (287, 23, 86, 320)
-    
-        # Uncomment the line below to select a different bounding box
-        bbox = cv2.selectROI(frame, False)
-    
-        # Initialize tracker with first frame and bounding box
-        ok = tracker.init(frame, bbox)
-    
-        while True:
-            # Read a new frame
-            ok, frame = video.read()
-            if not ok:
-                break
+    def listener_callback(self,points):
             
-            # Start timer
-            timer = cv2.getTickCount()
-    
-            # Update tracker
-            ok, bbox = tracker.update(frame)
-    
-            # Calculate Frames per second (FPS)
-            fps = cv2.getTickFrequency() / (cv2.getTickCount() - timer);
-    
-            # Draw bounding box
-            if ok:
-                # Tracking success
-                p1 = (int(bbox[0]), int(bbox[1]))
-                p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
-                cv2.rectangle(frame, p1, p2, (255,0,0), 2, 1)
-            else :
-                # Tracking failure
-                cv2.putText(frame, "Tracking failure detected", (100,80), cv2.FONT_HERSHEY_SIMPLEX, 0.75,(0,0,255),2)
-    
-            # Display tracker type on frame
-            cv2.putText(frame, tracker_type + " Tracker", (100,20), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50),2);
         
-            # Display FPS on frame
-            cv2.putText(frame, "FPS : " + str(int(fps)), (100,50), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (50,170,50), 2);
     
-            # Display result
-            cv2.imshow("Tracking", frame)
-    
-            # Exit if ESC pressed
-            k = cv2.waitKey(1) & 0xff
-            if k == 27 : break
+            # self.get_logger().info('mllllllllllllllllll')
+            # else:...
+            
+            
 
+            target_rotation = JointTrajectoryPoint()
+            target_rotation.positions = points
+            target_rotation.time_from_start = Duration(sec=6)   # langer for more points detection
+            target_rotation.velocities = [0.0]
+            target_rotation.accelerations = [0.0]
+            
+            goal_msg = FollowJointTrajectory.Goal()
+
+            goal_msg.trajectory.joint_names = ['T_Axis_Joint']
+            goal_msg.trajectory.points = [target_rotation]
+            self.get_logger().info('asdadasdasdasdasdasd')
+            # self.rotate_client.wait_for_server() ?
+
+
+            self.rotate_client.wait_for_server()
+            self.send_goal_future = self.rotate_client.send_goal_async(goal_msg
+                                                                  ,feedback_callback=self.feedback_callback)
+            self.send_goal_future.add_done_callback(self.goal_response_callback)
+
+    def goal_response_callback(self, future):
+        #goal_handle = future.re
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().info('Rotation rejected.') # add error type
+            print(future.exception())
+            return                      # 校准多个bauteil看下这里的 if not 循环
+        
+        self.get_logger().info('Rotation starts.')
+        self.get_result_future = goal_handle.get_result_async()
+        self.get_result_future.add_done_callback(self.get_result_callback)
+
+
+    def get_result_callback(self,future):
+        # result = future.result().result.points
+        self.get_logger().info('Rotation finished!\tThe present position is' )
+        
+        # rclpy.shutdown()
+        
+         # add some conditions ?
+      
+    def feedback_callback(self,feedcak_msg):
+        self.get_logger().info('Rotating...')
 
 def main():
+    time.sleep(3.0)
     rclpy.init()
     image_subscriber = ImageSubscriber()
-
+    image_subscriber.listener_callback([7.3])
     rclpy.spin(image_subscriber)
     #image_subscriber.destroy_node()
     rclpy.shutdown()
  
 if __name__ == "__main__":
     main()
-if __name__ == '__main__' :
+
  
-    # Set up tracker.
-    # Instead of MIL, you can also use
+
  

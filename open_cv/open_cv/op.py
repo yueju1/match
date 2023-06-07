@@ -4,7 +4,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-
+import numpy as np
 
 
 class ImageSubscriber(Node):
@@ -52,6 +52,12 @@ class ImageSubscriber(Node):
                 #         print(self.list)     # T_Axis: 5.64 --> leer
                         #print(cv2.fitEllipse(contours[i])[0])
             # 还有别的方法画椭圆中心吗
+
+        print('-------')
+        print(contours)
+        print('-------')
+
+
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
         cv2.imshow("ellip", im)
@@ -61,8 +67,7 @@ class ImageSubscriber(Node):
         # cv2.imshow("ellips", canny)
         1300.6314697265625, 967.3241577148438
         cv2.waitKey(1)
-
-
+        
 def main():
     rclpy.init()
     image_subscriber = ImageSubscriber()

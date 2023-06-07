@@ -38,10 +38,10 @@ class ImageSubscriber(Node):
     def state_callback(self, msg):
         
         #self.get_logger().info('%s'%msg.actual)
-        self.get_logger().info('%s'%msg.desired.positions)
+        #self.get_logger().info('%s'%msg.desired.positions)
         #self.get_logger().info('%s'%msg.joint_names)
         for i in range(4):
-            if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 1.08]):
+            if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 0.0]):
                 self.sub = self.create_subscription(Image,
                     '/Cam2/image_raw',
                     self.detection_callback,
@@ -58,26 +58,28 @@ class ImageSubscriber(Node):
         cv2.waitKey(1)
         self.get_logger().info('Detecting...')
         self.ok = 1
-    
+        # self.get_logger().info('mokokokokokokokokokokokokok')
 
     def rotate_action(self):
+        
         if self.ok == 1:
-            # else:...
             time.sleep(0.5)
-            self.get_logger().info('asdadasdasdasdasdasd')
+            # self.get_logger().info('mllllllllllllllllll')
+            # else:...
+            
+            
 
             target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = [-0.359, -0.0458, -0.051544, 3.3]
-            target_rotation.time_from_start = Duration(sec=4)   # langer for more points detection
-            target_rotation.velocities = [0.0, 0.0, 0.0, 0.0]
-            target_rotation.accelerations = [0.0, 0.0, 0.0, 0.0]
+            target_rotation.positions = [7.3]
+            target_rotation.time_from_start = Duration(sec=6)   # langer for more points detection
+            target_rotation.velocities = [0.0]
+            target_rotation.accelerations = [0.0]
             
             goal_msg = FollowJointTrajectory.Goal()
 
-            goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',  
-                                                'Z_Axis_Joint', 'T_Axis_Joint']
+            goal_msg.trajectory.joint_names = ['T_Axis_Joint']
             goal_msg.trajectory.points = [target_rotation]
-            
+            self.get_logger().info('asdadasdasdasdasdasd')
             # self.rotate_client.wait_for_server() ?
             self.send_goal_future = self.rotate_client.send_goal_async(goal_msg
                                                                   ,feedback_callback=self.feedback_callback)
@@ -97,9 +99,10 @@ class ImageSubscriber(Node):
 
 
     def get_result_callback(self,future):
-        self.get_logger().info('Rotation finished!\nThe present position is %future.actual' )
+        # result = future.result().result.points
+        self.get_logger().info('Rotation finished!\tThe present position is' )
         
-        rclpy.shutdown()
+        # rclpy.shutdown()
         
          # add some conditions ?
       
@@ -112,7 +115,11 @@ class ImageSubscriber(Node):
 
 
 def main():
+    time.sleep(5.0)
+    
     rclpy.init()
+   
+     
 
     image_subscriber = ImageSubscriber()
     # rclpy.spin(image_subscriber)
