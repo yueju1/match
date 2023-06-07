@@ -18,7 +18,7 @@ d = np.array(point2)
 e = np.array(dian)
 print(e.shape)
 x = d.reshape(181,1,2)
-print(x)
+print(d)
 print(d.shape)
 
 # for i in range(len(point)):
@@ -38,7 +38,7 @@ print(np.array([[[1102,  922]],
        [[1103,  921]],
 
        [[1107,  921]],
-https://opencv-laboratory.readthedocs.io/en/stable/nodes/imgproc/fitEllipse.html
+
        [[1108,  922]],
 
        [[1110,  922]],
@@ -57,7 +57,7 @@ https://opencv-laboratory.readthedocs.io/en/stable/nodes/imgproc/fitEllipse.html
 # for i in point2:
   
 #     cv2.circle(im, (int(i[0]),int(i[1])),1, (0, 0, 255), -2)
-cv2.fitEllipse(x)
+cv2.fitEllipse(d)
 cv2.namedWindow('ellip',0)
 cv2.resizeWindow('ellip',1000,1000)
 cv2.imshow("ellip", im)
