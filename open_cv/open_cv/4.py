@@ -1,4 +1,3 @@
-from typing import List
 import cv2
 from rcl_interfaces.msg import SetParametersResult
 import rclpy
@@ -7,7 +6,8 @@ from rclpy.parameter import Parameter
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from control_msgs.msg import JointControllerState
-
+import numpy as np
+ 
 
 class ImageSubscriber(Node):
 
@@ -29,6 +29,12 @@ class ImageSubscriber(Node):
                                                                  #     1483 943     1365 943
     def listener_callback(self, data):
 
+        a = []
+        b = 0
+        c = 0
+        m1 = 0
+        m2 = 0
+
         im = self.br.imgmsg_to_cv2(data)
         
         #im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
@@ -40,12 +46,13 @@ class ImageSubscriber(Node):
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
             # 检测椭圆内圈？
-        a = []
-        b = 0
-        c = 0
+        #print(11111111111,np.size(contours))
+        
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 200:
+                #print(222222222222,np.size(contours))
+                #print(hierarchy)
                 retval = cv2.fitEllipse(contours[i])  
                 
                 cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
@@ -59,7 +66,7 @@ class ImageSubscriber(Node):
                   # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
                 if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]- retval[1][0]) <= 10:
                       #  noch durchschnittswert            
-                    print('sdadasdasdasd',contours[i])
+                   # print('sdadasdasdasd',contours[i])
                     a.append(retval)
                     b += retval[0][0]
                     c += retval[0][1]
@@ -70,9 +77,11 @@ class ImageSubscriber(Node):
             #                 self.list.append(retval[0])
             print(i)
             print(retval)
-        m1, m2 = b/len(a), c/len(a)
+        if len(a) != 0:
+            m1 += b/len(a)
+            m2 += c/len(a)
         
-        print(m1,m2)
+        #print(m1,m2)
         print('length:',len(a))
         print('its b',b)
         if [m1, m2] not in self.list:
@@ -82,14 +91,13 @@ class ImageSubscriber(Node):
                     
                         #print(cv2.fitEllipse(contours[i])[0])
         for point in self.list:
-  
     
             cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
             
             #轨迹
         print('-------------------------------------')
-        print(self.list)
-        
+        #print(self.list)
+       # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
@@ -100,6 +108,15 @@ class ImageSubscriber(Node):
         cv2.imshow("ellips", canny)
         
         cv2.waitKey(1)
+    
+     # first detection finished then fitellipse
+    def fit_ellipse(self): # codition in image_processing.py
+        self.get_logger().info('qweweqweqweqweqweqweqwe')
+        points = (np.array(self.list)*1000).astype(int)
+        data = cv2.fitEllipse(points)
+        x,y = data[0][0]/1000, data[0][0]/1000
+
+        self.get_logger().info('%s'%points)
 
 
 def main():

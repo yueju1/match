@@ -25,9 +25,9 @@ class ImageSubscriber(Node):
 
      
     def listener_callback(self, data):
-        im = self.br.imgmsg_to_cv2(data)
+        # im = self.br.imgmsg_to_cv2(data)
         self.list=[]
-        #im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
+        im = cv2.imread("/home/pmlab/Downloads/_cgi-bin_mmwebwx-bin_webwxgetmsgimg &MsgID=1358576217481722585&skey=@crypt_8a8c9738_83d96d0556651145eeb32fcff426c4de&mmweb_appid=wx_webfilehelper.jpeg")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5), 1)
         #gray2 = cv2.medianBlur(gray, 7)
@@ -39,6 +39,9 @@ class ImageSubscriber(Node):
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             if len(contours[i]) >= 5 :
                 retval = cv2.fitEllipse(contours[i])  
+                print('-------')
+                print(contours[i])
+                print('-------')
                 cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
                 cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),3, (0, 0, 255), -2)
                 col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
@@ -53,18 +56,16 @@ class ImageSubscriber(Node):
                         #print(cv2.fitEllipse(contours[i])[0])
             # 还有别的方法画椭圆中心吗
 
-        print('-------')
-        print(contours)
-        print('-------')
+        
 
 
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
         cv2.imshow("ellip", im)
 
-        # cv2.namedWindow('ellips',0)
-        # cv2.resizeWindow('ellips',1000,1000)
-        # cv2.imshow("ellips", canny)
+        cv2.namedWindow('ellips',0)
+        cv2.resizeWindow('ellips',1000,1000)
+        cv2.imshow("ellips", canny)
         1300.6314697265625, 967.3241577148438
         cv2.waitKey(1)
         

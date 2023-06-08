@@ -55,7 +55,7 @@ class ImageSubscriber(Node):
         # fushi =cv2.erode(pengzhang,kernel)
         # kai = cv2.morphologyEx(gray,cv2.MORPH_CLOSE,kernel2,iterations=1)
        # cv2.sobel  Gradient
-        # part = current_frame[680:1550, 750:1750]  # to be modified
+        part = current_frame[680:1550, 750:1750]  # to be modified
         # asd = cv2.resize(part, (0, 0), fx=10, fy=10)
         # edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
         # dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
@@ -71,43 +71,44 @@ class ImageSubscriber(Node):
     #   filter?
     # double houghcircles to detect two times
         #找轮廓的点，拟合圆
-        circles = cv2.HoughCircles(  # kleiner keris in 1.py
-        gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=160, param2=15, minRadius=15, maxRadius=90)
-        print(circles)
-    # hough param und cany param
-    # try: ? if there is no circle, output typeerror
-        for circle in circles[0]:
 
-            print(circle[2])
+    #     circles = cv2.HoughCircles(  # kleiner keris in 1.py
+    #     gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=160, param2=15, minRadius=15, maxRadius=90)
+    #     print(circles)
+    # # hough param und cany param
+    # # try: ? if there is no circle, output typeerror
+    #     for circle in circles[0]:
 
-            x = int(circle[0])
-            y = int(circle[1])
+    #         print(circle[2])
 
-            r = int(circle[2])
+    #         x = int(circle[0])
+    #         y = int(circle[1])
+
+    #         r = int(circle[2])
 
             
-            col = cv2.cvtColor(gray2, cv2.COLOR_GRAY2BGR)
-            cv2.circle(current_frame, (x, y), r, (0, 0, 255), 1)
-            cv2.circle(current_frame, (x, y), 5, (0, 0, 255), -1)
-            print(x, y, r)
+    #         col = cv2.cvtColor(gray2, cv2.COLOR_GRAY2BGR)
+    #         cv2.circle(current_frame, (x, y), r, (0, 0, 255), 1)
+    #         cv2.circle(current_frame, (x, y), 5, (0, 0, 255), -1)
+    #         print(x, y, r)
 
     # ru guo bianyuan jiance li you zhixian  then  loesch
     # ru guo yuan de shuliang > 2 then ...
     # center_points = []
     # # print(hierarchy[0])
 
-        # for contour in contours:
-        #     moments = cv2.moments(contour)
-        #     # if moments['m00'] != 0:    # or try:...?
-        # # ZeroDivisionError: float division by zero
-        #     cX = int(moments["m10"] / moments["m00"])
-        #     cY = int(moments["m01"] / moments["m00"])  # ausschneiden
-        # # center_points.append((cX, cY))
-        #     cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
-        #     print(cX, cY)     
-        #     col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-        #     cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-            #c v2.circle(col, (cX, cY), 2, (0, 0, 255), -1)
+        for contour in contours:
+            moments = cv2.moments(contour)
+            # if moments['m00'] != 0:    # or try:...?
+        # ZeroDivisionError: float division by zero
+            cX = int(moments["m10"] / moments["m00"])
+            cY = int(moments["m01"] / moments["m00"])  # ausschneiden
+        # center_points.append((cX, cY))
+            cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
+            print(cX, cY)     
+            col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
+            cv2.drawContours(col, contour, -1, (0, 0, 255), 1)
+            cv2.circle(col, (cX, cY), 2, (0, 0, 255), -1)
         
         # cv2.circle(current_frame, (1999, 1999), 4, (0, 0, 255), -1)
 
@@ -125,7 +126,7 @@ class ImageSubscriber(Node):
     # cv2.resizeWindow("asd", 1000, 1000)
     # Display image
 
-        cv2.imshow("camera", current_frame)
+        cv2.imshow("camera", col)
         # cv2.namedWindow('asd', 0)
         # cv2.resizeWindow("asd", 1000, 1000)
         # cv2.imshow('asd', current_frame)
