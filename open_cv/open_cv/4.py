@@ -28,7 +28,7 @@ class ImageSubscriber(Node):
         self.list = []
                                                                  #     1483 943     1365 943
     def listener_callback(self, data):
-
+        图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
         a = []
         b = 0
         c = 0
@@ -114,7 +114,7 @@ class ImageSubscriber(Node):
         self.get_logger().info('qweweqweqweqweqweqweqwe')
         points = (np.array(self.list)*1000).astype(int)
         data = cv2.fitEllipse(points)
-        x,y = data[0][0]/1000, data[0][0]/1000
+        x,y = data[0][0]/1000, data[0][1]/1000
 
         self.get_logger().info('%s'%points)
 

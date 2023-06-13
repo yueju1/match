@@ -13,21 +13,21 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-        self.subscription = self.create_subscription(
-            Image,
-            '/Cam2/image_raw',
-            self.listener_callback,
-            10)
-        self.subscription  # prevent unused variable warning
+#         self.subscription = self.create_subscription(
+#             Image,
+#             '/Cam2/image_raw',
+#             self.listener_callback,
+#             10)
+#         self.subscription  # prevent unused variable warning
 
-        self.br = CvBridge()
+#         self.br = CvBridge()
     # is the callbackfunction a must?
-
-     
-    def listener_callback(self, data):
-        # im = self.br.imgmsg_to_cv2(data)
         self.list=[]
-        im = cv2.imread("/home/pmlab/Downloads/_cgi-bin_mmwebwx-bin_webwxgetmsgimg &MsgID=1358576217481722585&skey=@crypt_8a8c9738_83d96d0556651145eeb32fcff426c4de&mmweb_appid=wx_webfilehelper.jpeg")    
+        print("asdasdasd")
+    # def listener_callback(self, data):
+        # im = self.br.imgmsg_to_cv2(data)
+        
+        im = cv2.imread("/home/yueju/yue.arbeit/robot/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5), 1)
         #gray2 = cv2.medianBlur(gray, 7)
@@ -38,15 +38,15 @@ class ImageSubscriber(Node):
             # 检测椭圆内圈？
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             if len(contours[i]) >= 5 :
-                retval = cv2.fitEllipse(contours[i])  
-                print('-------')
-                print(contours[i])
-                print('-------')
+                retval = cv2.fitEllipseAMS(contours[i])  
+                # print('-------')
+                # print(contours[i])
+                # print('-------')
                 cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
                 cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),3, (0, 0, 255), -2)
                 col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
                 cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-                
+                print(retval)
                 # if retval[1][0] < 240.0 and retval[1][1] > 220:
                 #     #  noch durchschnittswert
                 #     if cv2.fitEllipse(contours[i])[0] not in self.list:
@@ -59,14 +59,14 @@ class ImageSubscriber(Node):
         
 
 
-        cv2.namedWindow('ellip',0)
-        cv2.resizeWindow('ellip',1000,1000)
-        cv2.imshow("ellip", im)
+        # cv2.namedWindow('ellip',0)
+        # cv2.resizeWindow('ellip',1000,1000)
+        # cv2.imshow("ellip", im)
 
-        cv2.namedWindow('ellips',0)
-        cv2.resizeWindow('ellips',1000,1000)
-        cv2.imshow("ellips", canny)
-        1300.6314697265625, 967.3241577148438
+        # cv2.namedWindow('ellips',0)
+        # cv2.resizeWindow('ellips',1000,1000)
+        # cv2.imshow("ellips", canny)
+        # 1300.6314697265625, 967.3241577148438
         cv2.waitKey(1)
         
 def main():

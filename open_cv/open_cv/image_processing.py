@@ -21,9 +21,8 @@ import numpy as np
 class ImageSubscriber(Node):
 
     def __init__(self):
-
+        这里面的不报位置吗     在这之前先看下 RETR_EXTERNAL mode
         super().__init__('image_detection')
-        
         
         self.sub2 = self.create_subscription(JointTrajectoryControllerState,
                                              '/joint_trajectory_controller/state',
@@ -47,8 +46,9 @@ class ImageSubscriber(Node):
                     '/Cam2/image_raw',
                     self.detection_callback,
                     10)
+                time.sleep(0.5)  
                 self.rotate_action()
-        # time.sleep(2.0)   加了这个降频了？  卡
+        
 
         # for i in range(4):
         #     if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 6.4]):
