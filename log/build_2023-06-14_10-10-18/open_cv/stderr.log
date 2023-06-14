@@ -1,0 +1,12 @@
+/usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+  warnings.warn(
+  File "/home/pmlab/yueju2/install/open_cv/lib/python3.10/site-packages/open_cv/4.py", line 31
+    图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
+                  ^
+SyntaxError: invalid character '，' (U+FF0C)
+
+  File "/home/pmlab/yueju2/install/open_cv/lib/python3.10/site-packages/open_cv/image_processing.py", line 24
+    这里面的不报位置吗     在这之前先看下 RETR_EXTERNAL mode
+                                    ^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax
+
