@@ -12,8 +12,8 @@ from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 import time
-import numpy as np
-
+import numpy as np                #  folge 
+ 试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
 # 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
 # 也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
 
@@ -142,7 +142,8 @@ class ImageSubscriber(Node):
         # self.ok = 1
         # self.get_logger().info('mokokokokokokokokokokokokok')
     def fit_ellipse(self): # codition in image_processing.py
-        
+        类型错误问题看下这个： https://codeantenna.com/a/yuQYvN9qTT
+        https://docs.ros.org/en/humble/Concepts/About-ROS-Interfaces.html
         points = (np.array(self.list)*1000).astype(int)
         data = cv2.fitEllipse(points)
         x,y = data[0][0]/1000, data[0][1]/1000

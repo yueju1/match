@@ -7,10 +7,11 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from control_msgs.msg import JointControllerState
 import numpy as np
- 
+ https://blog.csdn.net/a083614/article/details/78579163
+ https://juejin.cn/post/7026284378665811975
 
 class ImageSubscriber(Node):
-
+ 
     def __init__(self):
 
         super().__init__('image_detection')
