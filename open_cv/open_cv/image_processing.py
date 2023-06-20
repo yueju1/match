@@ -12,11 +12,12 @@ from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 import time
+from ruamel.yaml import YAML
 import numpy as np                #  folge 
- 试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
+ #试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
 # 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
-# 也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
-
+ 也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
+   搞像素坐标转真实的
 #     add conditions
 class ImageSubscriber(Node):
 
@@ -51,8 +52,11 @@ class ImageSubscriber(Node):
 
         # for i in range(4):
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 6.4]):
-            time.sleep(0.5)
+            #time.sleep(0.5)
             self.fit_ellipse()
+            self.adjust_yaml()
+            exit(0)
+    
 
     def detection_callback(self,data):
         #图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
@@ -62,7 +66,7 @@ class ImageSubscriber(Node):
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5),1)
         # gray2 = cv2.medianBlur(im, 5)
-        canny = cv2.Canny(im, 40, 500) # , apertureSize = 3) #(55, 230)
+        canny = cv2.Canny(im, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)
         _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
@@ -142,15 +146,15 @@ class ImageSubscriber(Node):
         # self.ok = 1
         # self.get_logger().info('mokokokokokokokokokokokokok')
     def fit_ellipse(self): # codition in image_processing.py
-        类型错误问题看下这个： https://codeantenna.com/a/yuQYvN9qTT
-        https://docs.ros.org/en/humble/Concepts/About-ROS-Interfaces.html
+        # 类型错误问题看下这个： https://codeantenna.com/a/yuQYvN9qTT
+        # https://docs.ros.org/en/humble/Concepts/About-ROS-Interfaces.html
         points = (np.array(self.list)*1000).astype(int)
         data = cv2.fitEllipse(points)
-        x,y = data[0][0]/1000, data[0][1]/1000
-        error = (x - self.list[0][0], y - self.list[0][1])
+        self.x, self.y = data[0][0]/1000, data[0][1]/1000
+        error = (self.x - self.list[0][0], self.y - self.list[0][1])
         # self.get_logger().info('%s'%points)
         self.get_logger().info('%s'%self.list[0])
-        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(x,y))
+        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(self.x,self.y))
         self.get_logger().info('The error is: {0}'.format(error))
                # !!! degree !!!
     def rotate_action(self): 
@@ -209,7 +213,18 @@ class ImageSubscriber(Node):
         self.get_logger().info('The present position is: %s'%(position) )
         # value of velocity is not 0
         
-        
+    def adjust_yaml(self):
+        yaml = YAML()
+    
+        with open ("/home/pmlab/ros2_ws/src/match_pm_robot/pm_robot_description/calibration_config/pm_robot_joint_calibration.yaml"
+            , "r") as file:
+            joint_calibration = yaml.load(file)
+                                                                 
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.x
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = self.y
+
+        with open('/home/pmlab/asd.yaml','w') as new_file:
+            yaml.dump(joint_calibration, new_file)
 
 
 

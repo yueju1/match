@@ -7,10 +7,11 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from control_msgs.msg import JointControllerState
 import numpy as np
- 
+ https://blog.csdn.net/a083614/article/details/78579163
+ https://juejin.cn/post/7026284378665811975
 
 class ImageSubscriber(Node):
-
+ 
     def __init__(self):
 
         super().__init__('image_detection')
@@ -28,21 +29,21 @@ class ImageSubscriber(Node):
         self.list = []
                                                                  #     1483 943     1365 943
     def listener_callback(self, data):
-        图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
+        
         a = []
         b = 0
         c = 0
         m1 = 0
         m2 = 0
 
-        im = self.br.imgmsg_to_cv2(data)
+        # im = self.br.imgmsg_to_cv2(data)
         
-        #im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
+        im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5),1)
         # gray2 = cv2.medianBlur(im, 5)
         canny = cv2.Canny(im, 40, 500) # , apertureSize = 3) #(55, 230)
-        _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
+        _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  # ret
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
             # 检测椭圆内圈？
@@ -76,7 +77,7 @@ class ImageSubscriber(Node):
             #             # if (m1, m2) not in self.list:
             #                 self.list.append(retval[0])
             print(i)
-            print(retval)
+            #print(retval)
         if len(a) != 0:
             m1 += b/len(a)
             m2 += c/len(a)
@@ -115,7 +116,7 @@ class ImageSubscriber(Node):
         points = (np.array(self.list)*1000).astype(int)
         data = cv2.fitEllipse(points)
         x,y = data[0][0]/1000, data[0][1]/1000
-
+        
         self.get_logger().info('%s'%points)
 
 

@@ -12,8 +12,8 @@ from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 import time
-import numpy as np
-
+import numpy as np                #  folge 
+ 试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
 # 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
 # 也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
 
@@ -24,7 +24,7 @@ class ImageSubscriber(Node):
         #这里面的不报位置吗     
         super().__init__('image_detection')
         
-        self.sub2 = self.create_subscription(JointTrajectoryControllerState,
+        self.sub = self.create_subscription(JointTrajectoryControllerState,
                                              '/joint_trajectory_controller/state',
                                              self.state_callback,
                                              10)
@@ -40,26 +40,25 @@ class ImageSubscriber(Node):
         #self.get_logger().info('%s'%msg.actual)
         #self.get_logger().info('%s'%msg.desired.positions)
         #self.get_logger().info('%s'%msg.joint_names)
-        for i in range(4):
-            if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 0.0]):
-                self.sub = self.create_subscription(Image,
+        # for i in range(4):
+        if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 0.0]):
+            self.sub = self.create_subscription(Image,
                     '/Cam2/image_raw',
-                    self.detection_callback,
+            self.detection_callback,
                     10)
-                time.sleep(0.5)  
-                self.rotate_action()
-        
+                #time.sleep(0.5)  
+            self.rotate_action()
 
         # for i in range(4):
-        #     if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 6.4]):
-        #         time.sleep(0.5)
-        #         self.fit_ellipse()
+        if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 6.4]):
+            time.sleep(0.5)
+            self.fit_ellipse()
 
     def detection_callback(self,data):
-        
+        #图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
         im = self.br.imgmsg_to_cv2(data)
         
-        #im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
+        # im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5),1)
         # gray2 = cv2.medianBlur(im, 5)
@@ -72,6 +71,9 @@ class ImageSubscriber(Node):
         a = []
         b = 0
         c = 0
+        m1 = 0
+        m2 = 0
+
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 200:
@@ -99,9 +101,11 @@ class ImageSubscriber(Node):
             #         #if cv2.fitEllipse(contours[i])[0] not in self.list:
             #             # if (m1, m2) not in self.list:
             #                 self.list.append(retval[0])
-            print(i)
-            print(retval)
-        m1, m2 = b/len(a), c/len(a)
+                print(i)
+                print(retval)
+        if len(a) != 0:
+            m1 += b/len(a)
+            m2 += c/len(a)
         
         print(m1,m2)
         print('length:',len(a))
@@ -115,19 +119,17 @@ class ImageSubscriber(Node):
         for point in self.list:
     
             cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
-            
-            #轨迹
         print('-------------------------------------')
-        self.get_logger().info('%s'%(self.list))
+        #self.get_logger().info('%s'%(self.list))
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
         cv2.imshow("ellip", im)
 
-        # cv2.namedWindow('ellips',0)
-        # cv2.resizeWindow('ellips',1000,1000)
-        # cv2.imshow("ellips", col)
+        cv2.namedWindow('ellips',0)
+        cv2.resizeWindow('ellips',1000,1000)
+        cv2.imshow("ellips", canny)
         
         cv2.waitKey(1)
         
@@ -139,10 +141,23 @@ class ImageSubscriber(Node):
         # self.get_logger().info('Detecting...')
         # self.ok = 1
         # self.get_logger().info('mokokokokokokokokokokokokok')
-
+    def fit_ellipse(self): # codition in image_processing.py
+        类型错误问题看下这个： https://codeantenna.com/a/yuQYvN9qTT
+        https://docs.ros.org/en/humble/Concepts/About-ROS-Interfaces.html
+        points = (np.array(self.list)*1000).astype(int)
+        data = cv2.fitEllipse(points)
+        x,y = data[0][0]/1000, data[0][1]/1000
+        error = (x - self.list[0][0], y - self.list[0][1])
+        # self.get_logger().info('%s'%points)
+        self.get_logger().info('%s'%self.list[0])
+        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(x,y))
+        self.get_logger().info('The error is: {0}'.format(error))
+               # !!! degree !!!
     def rotate_action(self): 
-        
-        #if self.ok == 1:
+            [1292.5015,977.7195625]
+
+
+        # if self.ok == 1:
             
             # self.get_logger().info('mllllllllllllllllll')
             # else:...
@@ -150,8 +165,8 @@ class ImageSubscriber(Node):
             
 
             target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = [6.5]
-            target_rotation.time_from_start = Duration(sec=6)   # langer for more points detection
+            target_rotation.positions = [6.4]
+            target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
             #target_rotation.velocities = [0.0]
             #target_rotation.accelerations = [0.0]
             
@@ -161,6 +176,7 @@ class ImageSubscriber(Node):
             goal_msg.trajectory.points = [target_rotation]
             self.get_logger().info('asdadasdasdasdasdasd')
             # self.rotate_client.wait_for_server() ?
+            
             self.send_goal_future = self.rotate_client.send_goal_async(goal_msg
                                                                   ,feedback_callback=self.feedback_callback)
             self.send_goal_future.add_done_callback(self.goal_response_callback)
@@ -179,16 +195,21 @@ class ImageSubscriber(Node):
 
 
     def get_result_callback(self,future):
-        # result = future.result().result.points
-        self.get_logger().info('Rotation finished!\tThe present position is' )
+        result = future.result().result
+        self.get_logger().info('Rotation finished!')
         
         # rclpy.shutdown()
         
          # add some conditions ?
       
-    def feedback_callback(self,feedcak_msg):
+    def feedback_callback(self,feedback_msg):
+        feedback = feedback_msg.feedback
         self.get_logger().info('Rotating...')
-
+        position =  np.array(feedback.actual.positions).tolist()
+        self.get_logger().info('The present position is: %s'%(position) )
+        # value of velocity is not 0
+        
+        
 
 
 

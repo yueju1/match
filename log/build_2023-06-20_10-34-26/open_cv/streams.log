@@ -1,0 +1,66 @@
+[0.483s] Invoking command in '/home/pmlab/yueju/change/open_cv': PYTHONPATH=/home/pmlab/yueju/change/build/open_cv/prefix_override:/home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/pmlab/yueju/change/build/open_cv/build install --record /home/pmlab/yueju/change/build/open_cv/install.log --single-version-externally-managed
+[0.665s] running egg_info
+[0.665s] creating ../build/open_cv/open_cv.egg-info
+[0.665s] writing ../build/open_cv/open_cv.egg-info/PKG-INFO
+[0.665s] writing dependency_links to ../build/open_cv/open_cv.egg-info/dependency_links.txt
+[0.665s] writing entry points to ../build/open_cv/open_cv.egg-info/entry_points.txt
+[0.665s] writing requirements to ../build/open_cv/open_cv.egg-info/requires.txt
+[0.666s] writing top-level names to ../build/open_cv/open_cv.egg-info/top_level.txt
+[0.666s] writing manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[0.667s] reading manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[0.667s] writing manifest file '../build/open_cv/open_cv.egg-info/SOURCES.txt'
+[0.667s] running build
+[0.667s] running build_py
+[0.667s] creating /home/pmlab/yueju/change/build/open_cv/build
+[0.668s] creating /home/pmlab/yueju/change/build/open_cv/build/lib
+[0.668s] creating /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/auto_center.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/vergleich.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/image_detec.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/__init__.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/image_processing.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/6.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/op.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/4.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/x.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/a.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/2.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.668s] copying open_cv/auto_centering.py -> /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv
+[0.669s] running install
+[0.669s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.669s]   warnings.warn(
+[0.669s] running install_lib
+[0.669s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/auto_center.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.669s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/vergleich.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.669s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/image_detec.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/__init__.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/image_processing.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/6.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/op.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/4.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/x.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/a.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/2.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.670s] copying /home/pmlab/yueju/change/build/open_cv/build/lib/open_cv/auto_centering.py -> /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv
+[0.671s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/auto_center.py to auto_center.cpython-310.pyc
+[0.671s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/vergleich.py to vergleich.cpython-310.pyc
+[0.671s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/image_detec.py to image_detec.cpython-310.pyc
+[0.672s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/__init__.py to __init__.cpython-310.pyc
+[0.672s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/image_processing.py to image_processing.cpython-310.pyc
+[0.672s] Sorry: IndentationError: unexpected indent (image_processing.py, line 16)
+[0.672s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/6.py to 6.cpython-310.pyc
+[0.672s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/op.py to op.cpython-310.pyc
+[0.673s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/4.py to 4.cpython-310.pyc
+[0.673s] Sorry: IndentationError: unexpected indent (4.py, line 10)
+[0.673s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/x.py to x.cpython-310.pyc
+[0.675s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/a.py to a.cpython-310.pyc
+[0.675s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/2.py to 2.cpython-310.pyc
+[0.675s] byte-compiling /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv/auto_centering.py to auto_centering.cpython-310.pyc
+[0.676s] running install_data
+[0.676s] running install_egg_info
+[0.677s] Copying ../build/open_cv/open_cv.egg-info to /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open_cv-0.0.0-py3.10.egg-info
+[0.678s] running install_scripts
+[0.691s] Installing auto_centering script to /home/pmlab/yueju/change/install/open_cv/lib/open_cv
+[0.691s] Installing image_processing script to /home/pmlab/yueju/change/install/open_cv/lib/open_cv
+[0.691s] writing list of installed files to '/home/pmlab/yueju/change/build/open_cv/install.log'
+[0.706s] Invoked command in '/home/pmlab/yueju/change/open_cv' returned '0': PYTHONPATH=/home/pmlab/yueju/change/build/open_cv/prefix_override:/home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/open_cv build --build-base /home/pmlab/yueju/change/build/open_cv/build install --record /home/pmlab/yueju/change/build/open_cv/install.log --single-version-externally-managed

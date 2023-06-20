@@ -23,7 +23,7 @@ function(ament_cmake_symlink_install_directory cmake_current_source_dir)
 
   # make destination absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/pmlab/yueju2/install/pm_bringup/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/pmlab/yueju/change/install/pm_bringup/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -123,7 +123,7 @@ function(ament_cmake_symlink_install_files cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/pmlab/yueju2/install/pm_bringup/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/pmlab/yueju/change/install/pm_bringup/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -181,7 +181,7 @@ function(ament_cmake_symlink_install_programs cmake_current_source_dir)
 
   # make destination an absolute path and ensure that it exists
   if(NOT IS_ABSOLUTE "${ARG_DESTINATION}")
-    set(ARG_DESTINATION "/home/pmlab/yueju2/install/pm_bringup/${ARG_DESTINATION}")
+    set(ARG_DESTINATION "/home/pmlab/yueju/change/install/pm_bringup/${ARG_DESTINATION}")
   endif()
   if(NOT EXISTS "${ARG_DESTINATION}")
     file(MAKE_DIRECTORY "${ARG_DESTINATION}")
@@ -251,7 +251,7 @@ function(ament_cmake_symlink_install_targets)
 
     # make destination an absolute path and ensure that it exists
     if(NOT IS_ABSOLUTE "${destination}")
-      set(destination "/home/pmlab/yueju2/install/pm_bringup/${destination}")
+      set(destination "/home/pmlab/yueju/change/install/pm_bringup/${destination}")
     endif()
     if(NOT EXISTS "${destination}")
       file(MAKE_DIRECTORY "${destination}")
@@ -311,46 +311,46 @@ message(STATUS "Execute custom install script")
 # begin of custom install code
 
 # install(DIRECTORY "launch" "DESTINATION" "share/pm_bringup")
-ament_cmake_symlink_install_directory("/home/pmlab/yueju2/pm_bringup" DIRECTORY "launch" "DESTINATION" "share/pm_bringup")
+ament_cmake_symlink_install_directory("/home/pmlab/yueju/change/pm_bringup" DIRECTORY "launch" "DESTINATION" "share/pm_bringup")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/pm_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/pm_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/pm_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/pm_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/pm_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/pm_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/pm_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/pm_bringup" "DESTINATION" "share/ament_index/resource_index/parent_prefix_path")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/pm_bringup/environment")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/pm_bringup/environment")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/ament_prefix_path.sh" "DESTINATION" "share/pm_bringup/environment")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/pm_bringup/environment")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/pm_bringup/environment")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/pm_bringup/environment")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/pm_bringup/environment")
 
 # install(FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/pm_bringup/environment")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/pm_bringup/environment")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/opt/ros/humble/share/ament_cmake_core/cmake/environment_hooks/environment/path.sh" "DESTINATION" "share/pm_bringup/environment")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/pm_bringup/environment")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/pm_bringup/environment")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/pm_bringup/environment")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/path.dsv" "DESTINATION" "share/pm_bringup/environment")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/pm_bringup")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/pm_bringup")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/pm_bringup")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/pm_bringup")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/pm_bringup")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/pm_bringup")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/pm_bringup")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.sh" "DESTINATION" "share/pm_bringup")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/pm_bringup")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/pm_bringup")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/pm_bringup")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.zsh" "DESTINATION" "share/pm_bringup")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/pm_bringup")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/pm_bringup")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/pm_bringup")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.dsv" "DESTINATION" "share/pm_bringup")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/pm_bringup")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/pm_bringup")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/pm_bringup")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/package.dsv" "DESTINATION" "share/pm_bringup")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/packages/pm_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/packages/pm_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/packages/pm_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_index/share/ament_index/resource_index/packages/pm_bringup" "DESTINATION" "share/ament_index/resource_index/packages")
 
-# install(FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_core/pm_bringupConfig.cmake" "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_core/pm_bringupConfig-version.cmake" "DESTINATION" "share/pm_bringup/cmake")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_core/pm_bringupConfig.cmake" "/home/pmlab/yueju2/build/pm_bringup/ament_cmake_core/pm_bringupConfig-version.cmake" "DESTINATION" "share/pm_bringup/cmake")
+# install(FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_core/pm_bringupConfig.cmake" "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_core/pm_bringupConfig-version.cmake" "DESTINATION" "share/pm_bringup/cmake")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_core/pm_bringupConfig.cmake" "/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_core/pm_bringupConfig-version.cmake" "DESTINATION" "share/pm_bringup/cmake")
 
-# install(FILES "/home/pmlab/yueju2/pm_bringup/package.xml" "DESTINATION" "share/pm_bringup")
-ament_cmake_symlink_install_files("/home/pmlab/yueju2/pm_bringup" FILES "/home/pmlab/yueju2/pm_bringup/package.xml" "DESTINATION" "share/pm_bringup")
+# install(FILES "/home/pmlab/yueju/change/pm_bringup/package.xml" "DESTINATION" "share/pm_bringup")
+ament_cmake_symlink_install_files("/home/pmlab/yueju/change/pm_bringup" FILES "/home/pmlab/yueju/change/pm_bringup/package.xml" "DESTINATION" "share/pm_bringup")

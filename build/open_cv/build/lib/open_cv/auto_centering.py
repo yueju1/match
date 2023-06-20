@@ -59,7 +59,7 @@ class CenteringClient(Node):
 
 
     def get_result_callback(self,future):
-        self.get_logger().info('Goal reached!\tThe present position is %future.actual' )
+        self.get_logger().info('Goal reached!')
         
         rclpy.shutdown()
         
