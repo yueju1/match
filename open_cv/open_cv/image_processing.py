@@ -13,11 +13,12 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 import time
 from ruamel.yaml import YAML
+
 import numpy as np                #  folge 
  #试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
 # 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
- 也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
-   搞像素坐标转真实的
+ #也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
+   #搞像素坐标转真实的
 #     add conditions
 class ImageSubscriber(Node):
 
@@ -45,7 +46,7 @@ class ImageSubscriber(Node):
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 0.0]):
             self.sub = self.create_subscription(Image,
                     '/Cam2/image_raw',
-            self.detection_callback,
+                    self.detection_callback,
                     10)
                 #time.sleep(0.5)  
             self.rotate_action()
@@ -53,10 +54,10 @@ class ImageSubscriber(Node):
         # for i in range(4):
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 6.4]):
             #time.sleep(0.5)
+            
             self.fit_ellipse()
-            self.adjust_yaml()
+                
             exit(0)
-    
 
     def detection_callback(self,data):
         #图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
@@ -94,7 +95,7 @@ class ImageSubscriber(Node):
                 # print(retval)
                 
                   # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
-                if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]- retval[1][0]) <= 10:
+                if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]-retval[1][0]) <= 10:
                       #  noch durchschnittswert            
                    # print('sdadasdasdasd',contours[i])
                     a.append(retval)
@@ -105,8 +106,8 @@ class ImageSubscriber(Node):
             #         #if cv2.fitEllipse(contours[i])[0] not in self.list:
             #             # if (m1, m2) not in self.list:
             #                 self.list.append(retval[0])
-                print(i)
-                print(retval)
+                #print(i)
+               # print(retval)
         if len(a) != 0:
             m1 += b/len(a)
             m2 += c/len(a)
@@ -131,9 +132,9 @@ class ImageSubscriber(Node):
         cv2.resizeWindow('ellip',1000,1000)
         cv2.imshow("ellip", im)
 
-        cv2.namedWindow('ellips',0)
-        cv2.resizeWindow('ellips',1000,1000)
-        cv2.imshow("ellips", canny)
+        # cv2.namedWindow('ellips',0)
+        # cv2.resizeWindow('ellips',1000,1000)
+        # cv2.imshow("ellips", canny)
         
         cv2.waitKey(1)
         
@@ -142,37 +143,65 @@ class ImageSubscriber(Node):
         # cv2.resizeWindow('ellip',1000,1000)
         # cv2.imshow("ellip", im)
         # cv2.waitKey(1)
-        # self.get_logger().info('Detecting...')
-        # self.ok = 1
-        # self.get_logger().info('mokokokokokokokokokokokokok')
+
     def fit_ellipse(self): # codition in image_processing.py
-        # 类型错误问题看下这个： https://codeantenna.com/a/yuQYvN9qTT
-        # https://docs.ros.org/en/humble/Concepts/About-ROS-Interfaces.html
-        points = (np.array(self.list)*1000).astype(int)
-        data = cv2.fitEllipse(points)
-        self.x, self.y = data[0][0]/1000, data[0][1]/1000
-        error = (self.x - self.list[0][0], self.y - self.list[0][1])
-        # self.get_logger().info('%s'%points)
-        self.get_logger().info('%s'%self.list[0])
-        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(self.x,self.y))
-        self.get_logger().info('The error is: {0}'.format(error))
+       
+        #if len(self.list) >= 5:
+        try:
+            points = (np.array(self.list,dtype=np.float32))#.astype(float)
+            #print(1232131231, type(self.list[1][1]))
+            print(points)
+            print(type(points))
+            data = cv2.fitEllipse(points)
+            print(data)
+            self.x, self.y = data[0][0], data[0][1] # /1000
+            error = (self.x - self.list[0][0], self.y - self.list[0][1])
+            # self.get_logger().info('%s'%points)
+            self.get_logger().info('%s'%self.list[0])
+            self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(self.x,self.y))
+            self.get_logger().info('The error is: {0}'.format(error))  error in x, y
+        except cv2.error: 
+            self.get_logger().error('Error: not enough points collected!')
+
+        except:
+            self.get_logger().error('Unknown error!')
+
+        else:
+            self.adjust_yaml()
+        # print(data)
                # !!! degree !!!
-    def rotate_action(self): 
-            [1292.5015,977.7195625]
+        
+            #return
+            
+    def adjust_yaml(self):
+        # joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.x
+    # AttributeError: 'ImageSubscriber' object has no attribute 'x'
+        
+        yaml = YAML()
+    
+        with open ("/home/pmlab/ros2_ws/src/match_pm_robot/pm_robot_description/calibration_config/pm_robot_joint_calibration.yaml"
+            , "r") as file:
+            joint_calibration = yaml.load(file)
+                                                                
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.x
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = self.y
+
+        with open('/home/pmlab/asd.yaml','w') as new_file:
+            yaml.dump(joint_calibration, new_file)
+        
+        self.get_logger().info('Calibration successful!')
+        # except AttributeError:
+        #     self.get_logger().error('Error: ')
 
 
-        # if self.ok == 1:
-            
-            # self.get_logger().info('mllllllllllllllllll')
-            # else:...
-            
-            
+        
+    def rotate_action(self):  
 
             target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = [6.4]
+            target_rotation.positions = [6.4]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
             target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
-            #target_rotation.velocities = [0.0]
-            #target_rotation.accelerations = [0.0]
+            target_rotation.velocities = [0.0]
+            target_rotation.accelerations = [0.0] # if added, offset in x or y
             
             goal_msg = FollowJointTrajectory.Goal()
 
@@ -213,19 +242,7 @@ class ImageSubscriber(Node):
         self.get_logger().info('The present position is: %s'%(position) )
         # value of velocity is not 0
         
-    def adjust_yaml(self):
-        yaml = YAML()
     
-        with open ("/home/pmlab/ros2_ws/src/match_pm_robot/pm_robot_description/calibration_config/pm_robot_joint_calibration.yaml"
-            , "r") as file:
-            joint_calibration = yaml.load(file)
-                                                                 
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.x
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = self.y
-
-        with open('/home/pmlab/asd.yaml','w') as new_file:
-            yaml.dump(joint_calibration, new_file)
-
 
 
 

@@ -104,7 +104,7 @@ class ImageSubscriber(Node):
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
-        cv2.resizeWindow('ellip',1000,1000)
+        cv2.resizeWindow('ellip',1200,1100)
         cv2.imshow("ellip", im)
 
         # cv2.namedWindow('ellips',0)
