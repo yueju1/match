@@ -7,8 +7,10 @@ from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 from control_msgs.msg import JointControllerState
 import numpy as np
- https://blog.csdn.net/a083614/article/details/78579163
- https://juejin.cn/post/7026284378665811975
+import time
+import os
+#  https://blog.csdn.net/a083614/article/details/78579163
+#  https://juejin.cn/post/7026284378665811975
 
 class ImageSubscriber(Node):
  
@@ -36,14 +38,15 @@ class ImageSubscriber(Node):
         m1 = 0
         m2 = 0
 
-        # im = self.br.imgmsg_to_cv2(data)
+        #im = self.br.imgmsg_to_cv2(data)
         
-        im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
+        im = cv2.imread("/home/pmlab/yue.arbeit/robot/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5),1)
-        # gray2 = cv2.medianBlur(im, 5)
-        canny = cv2.Canny(im, 40, 500) # , apertureSize = 3) #(55, 230)
-        _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  # ret
+        #gray2 = cv2.medianBlur(im, 7)
+        #gray2 = cv2.bilateralFilter(im, d=5, sigmaColor=50, sigmaSpace=50)
+        canny = cv2.Canny(gray2, 5, 15,apertureSize=3) # , apertureSize = 3) #(55, 230)
+        _, thresh = cv2.threshold(canny, 140, 120, cv2.THRESH_BINARY)  # ret
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
             # 检测椭圆内圈？
@@ -76,7 +79,7 @@ class ImageSubscriber(Node):
             #         #if cv2.fitEllipse(contours[i])[0] not in self.list:
             #             # if (m1, m2) not in self.list:
             #                 self.list.append(retval[0])
-            print(i)
+            # print(i)
             #print(retval)
         if len(a) != 0:
             m1 += b/len(a)
@@ -88,7 +91,7 @@ class ImageSubscriber(Node):
         if [m1, m2] not in self.list:
             self.list.append([m1,m2])
         
-        # print(self.list)     # T_Axis: 5.64 --> leer
+        print(self.list)     # T_Axis: 5.64 --> leer
                     
                         #print(cv2.fitEllipse(contours[i])[0])
         for point in self.list:
@@ -101,12 +104,12 @@ class ImageSubscriber(Node):
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
-        cv2.resizeWindow('ellip',1000,1000)
+        cv2.resizeWindow('ellip',1200,1100)
         cv2.imshow("ellip", im)
 
-        cv2.namedWindow('ellips',0)
-        cv2.resizeWindow('ellips',1000,1000)
-        cv2.imshow("ellips", canny)
+        # cv2.namedWindow('ellips',0)
+        # cv2.resizeWindow('ellips',1000,1000)
+        # cv2.imshow("ellips", gray2)
         
         cv2.waitKey(1)
     
@@ -118,7 +121,7 @@ class ImageSubscriber(Node):
         x,y = data[0][0]/1000, data[0][1]/1000
         
         self.get_logger().info('%s'%points)
-
+        
 
 def main():
     rclpy.init()
@@ -127,6 +130,8 @@ def main():
     rclpy.spin(image_subscriber)
     #image_subscriber.destroy_node()
     rclpy.shutdown()
- 
+    
 if __name__ == "__main__":
     main()
+    
+    

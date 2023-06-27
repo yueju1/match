@@ -13,6 +13,7 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 import time
 from ruamel.yaml import YAML
+import math
 
 import numpy as np                #  folge 
  #试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
@@ -36,6 +37,7 @@ class ImageSubscriber(Node):
         self.rotate_client = ActionClient(self,FollowJointTrajectory,
                                   '/joint_trajectory_controller/follow_joint_trajectory')
         self.list = []
+        self.r_r = 0
         # self.ok = 0
     def state_callback(self, msg):
         
@@ -56,8 +58,30 @@ class ImageSubscriber(Node):
             #time.sleep(0.5)
             
             self.fit_ellipse()
-                
-            exit(0)
+
+            #self.go_back_action()  
+            
+            # exit(0)
+    # def go_back_action(self):
+    #         target_point = JointTrajectoryPoint()
+    #         target_point.positions = [0.0, 0.0, 0.0, 0.0]         # ros::Time::now()  ros2 li shisha
+    #         target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+    #         # target_point.velocities = [0.0, 0.0, 0.0, 0.0]
+    #         # target_point.accelerations = [0.0, 0.0, 0.0, 0.0]
+    #         # more smoothly: x_joint by 0.08 und y,z,t......
+    #         goal_msg = FollowJointTrajectory.Goal()
+    #         # goal_msg.trajectory.header.stamp = Clock().clock     use_sim_time in launch
+        
+    #         goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
+    #                                         'Z_Axis_Joint','T_Axis_Joint'
+    #                                             ]
+    #         goal_msg.trajectory.points = [target_point]
+    #         # + velocity accelerate  速度和duration2选1吗 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+    #         self.rotate_client.send_goal_async(goal_msg)
+
+           # exit()
+
 
     def detection_callback(self,data):
         #图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
@@ -65,8 +89,8 @@ class ImageSubscriber(Node):
         
         # im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
-        gray2 = cv2.GaussianBlur(im, (5, 5),1)
-        # gray2 = cv2.medianBlur(im, 5)
+        # gray2 = cv2.GaussianBlur(im, (5, 5),1)
+        # gray2 = cv2.medianBlur(im, 5)  # 40, 500
         canny = cv2.Canny(im, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)
         _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
@@ -78,47 +102,55 @@ class ImageSubscriber(Node):
         c = 0
         m1 = 0
         m2 = 0
+        r = 0
 
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 200:
                 
-                print(hierarchy)
+                # print(hierarchy)
                 retval = cv2.fitEllipse(contours[i])  
                 
-                cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
-                cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                 
-                col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-                cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
              
                 # print(retval)
                 
                   # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
-                if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]-retval[1][0]) <= 10:
+                if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]-retval[1][0]) <= 5:
                       #  noch durchschnittswert            
                    # print('sdadasdasdasd',contours[i])
+                    cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
+                    cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
+                    
+                    col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
+                    cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+                    
                     a.append(retval)
                     b += retval[0][0]
                     c += retval[0][1]
+                    
+                    
+                    r += (retval[1][0]/2 + retval[1][1]/2)/2
+                    
                     
             #         if retval[0] not in self.list:
             #         #if cv2.fitEllipse(contours[i])[0] not in self.list:
             #             # if (m1, m2) not in self.list:
             #                 self.list.append(retval[0])
-                #print(i)
-               # print(retval)
+                    print(i)
+                    print(retval)
         if len(a) != 0:
             m1 += b/len(a)
             m2 += c/len(a)
-        
-        print(m1,m2)
+            self.r_r += r/len(a)
+        # print(m1,m2)
         print('length:',len(a))
         print('its b',b)
-        if [m1, m2] not in self.list:
-            self.list.append([m1,m2])
-        
-        # print(self.list)     # T_Axis: 5.64 --> leer
+        # if [m1, m2] not in self.list:
+        self.list.append([m1,m2])
+        self.RR = self.r_r/len(self.list)
+        self.get_logger().info('last mittelpunkt:%s'%self.list[-1])
+        #print(self.list)     # T_Axis: 5.64 --> leer
         # self.ok = 1         
                         #print(cv2.fitEllipse(contours[i])[0])
         for point in self.list:
@@ -145,29 +177,36 @@ class ImageSubscriber(Node):
         # cv2.waitKey(1)
 
     def fit_ellipse(self): # codition in image_processing.py
-       
+        sim_pixel = 250/self.RR
         #if len(self.list) >= 5:
         try:
-            points = (np.array(self.list,dtype=np.float32))#.astype(float)
+            points = (np.array(self.list, dtype=np.float32))#.astype(float)
             #print(1232131231, type(self.list[1][1]))
-            print(points)
-            print(type(points))
+            # print(points)
+            # print(type(points))
             data = cv2.fitEllipse(points)
-            print(data)
+            # print(data)
             self.x, self.y = data[0][0], data[0][1] # /1000
             error = (self.x - self.list[0][0], self.y - self.list[0][1])
+            x = error[1]*error[1]+error[0]*error[0]
+            errer2 = math.sqrt(x)*sim_pixel
             # self.get_logger().info('%s'%points)
-            self.get_logger().info('%s'%self.list[0])
+            self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
             self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(self.x,self.y))
-            self.get_logger().info('The error is: {0}'.format(error))  error in x, y
+            self.get_logger().info('The error is: {0}'.format(errer2))  #error in x, y
+            
         except cv2.error: 
             self.get_logger().error('Error: not enough points collected!')
 
         except:
             self.get_logger().error('Unknown error!')
 
-        else:
-            self.adjust_yaml()
+        # else:
+        #     if error < 0:
+        #         pass
+        #     self.adjust_yaml()
+
+            #return
         # print(data)
                # !!! degree !!!
         
@@ -194,14 +233,14 @@ class ImageSubscriber(Node):
         #     self.get_logger().error('Error: ')
 
 
-        
+                                                    
     def rotate_action(self):  
 
             target_rotation = JointTrajectoryPoint()
             target_rotation.positions = [6.4]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
             target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
-            target_rotation.velocities = [0.0]
-            target_rotation.accelerations = [0.0] # if added, offset in x or y
+            #target_rotation.velocities = [0.0]
+            #target_rotation.accelerations = [0.0] # if added, offset in x or y
             
             goal_msg = FollowJointTrajectory.Goal()
 
