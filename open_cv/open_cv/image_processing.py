@@ -26,7 +26,7 @@ class ImageSubscriber(Node):
     def __init__(self):
         #这里面的不报位置吗     
         super().__init__('image_detection')
-        
+        # try self.sub?
         self.sub = self.create_subscription(JointTrajectoryControllerState,
                                              '/joint_trajectory_controller/state',
                                              self.state_callback,
@@ -34,17 +34,20 @@ class ImageSubscriber(Node):
         #  self.subscription  # prevent unused variable warning ?
         self.br = CvBridge()
     
-        self.rotate_client = ActionClient(self,FollowJointTrajectory,
+        self.action_client = ActionClient(self,FollowJointTrajectory,
                                   '/joint_trajectory_controller/follow_joint_trajectory')
         self.list = []
+        self.first_point = []
         self.r_r = 0
+        self.m = 0
+        
+        self.align_action()   不写这个行吗
         # self.ok = 0
     def state_callback(self, msg):
         
-        #self.get_logger().info('%s'%msg.actual)
-        #self.get_logger().info('%s'%msg.desired.positions)
-        #self.get_logger().info('%s'%msg.joint_names)
         # for i in range(4):
+
+                # desired position is meaningful?
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 0.0]):
             self.sub = self.create_subscription(Image,
                     '/Cam2/image_raw',
@@ -59,10 +62,10 @@ class ImageSubscriber(Node):
             
             self.fit_ellipse()
 
-            #self.go_back_action()  
+            #self.return_action()  
             
             # exit(0)
-    # def go_back_action(self):
+    # def return_action(self):
     #         target_point = JointTrajectoryPoint()
     #         target_point.positions = [0.0, 0.0, 0.0, 0.0]         # ros::Time::now()  ros2 li shisha
     #         target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
@@ -78,7 +81,7 @@ class ImageSubscriber(Node):
     #         goal_msg.trajectory.points = [target_point]
     #         # + velocity accelerate  速度和duration2选1吗 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
-    #         self.rotate_client.send_goal_async(goal_msg)
+    #         self.action_client.send_goal_async(goal_msg)
 
            # exit()
 
@@ -96,22 +99,22 @@ class ImageSubscriber(Node):
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
             # 检测椭圆内圈？
-        # print(11111111111,np.size(contours))
+        
         a = []
         b = 0
         c = 0
         m1 = 0
         m2 = 0
         r = 0
-
+        diff = 0
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 200:
                 
-                # print(hierarchy)
                 retval = cv2.fitEllipse(contours[i])  
                 
-                
+                不要launch了，下面的改yaml的改了，再看下畸变比例能不能算，下面fit_ellipse里的
+                if error写一下，不行就运动回去，镜子折射的tf转换搞掉。tf 直接看gazebo运动
              
                 # print(retval)
                 
@@ -128,27 +131,31 @@ class ImageSubscriber(Node):
                     a.append(retval)
                     b += retval[0][0]
                     c += retval[0][1]
-                    
-                    
+                    while len(self.first_point) < 1:
+                        self.first_point.append(retval)
+                     成像大小再想想
+                                     确保第一个ellipse的b
                     r += (retval[1][0]/2 + retval[1][1]/2)/2
-                    
+                    diff += (retval[1][0]/2 / r)  # or (a-b)/2
                     
             #         if retval[0] not in self.list:
             #         #if cv2.fitEllipse(contours[i])[0] not in self.list:
             #             # if (m1, m2) not in self.list:
             #                 self.list.append(retval[0])
-                    print(i)
-                    print(retval)
-        if len(a) != 0:
+                    # print(i)
+                    # print(retval)
+        if len(a) != 0: 
             m1 += b/len(a)
             m2 += c/len(a)
             self.r_r += r/len(a)
+            self.m += diff/len(a)
         # print(m1,m2)
         print('length:',len(a))
         print('its b',b)
         # if [m1, m2] not in self.list:
         self.list.append([m1,m2])
         self.RR = self.r_r/len(self.list)
+        self.mm = self.m/len(self.list) 
         self.get_logger().info('last mittelpunkt:%s'%self.list[-1])
         #print(self.list)     # T_Axis: 5.64 --> leer
         # self.ok = 1         
@@ -157,7 +164,7 @@ class ImageSubscriber(Node):
     
             cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
         print('-------------------------------------')
-        #self.get_logger().info('%s'%(self.list))
+
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
@@ -170,29 +177,31 @@ class ImageSubscriber(Node):
         
         cv2.waitKey(1)
         
-        # im = self.br.imgmsg_to_cv2(data)
-        # cv2.namedWindow('ellip',0)
-        # cv2.resizeWindow('ellip',1000,1000)
-        # cv2.imshow("ellip", im)
-        # cv2.waitKey(1)
-
-    def fit_ellipse(self): # codition in image_processing.py
-        sim_pixel = 250/self.RR
+    
+    def fit_ellipse(self): 
+        sim_pixel = 250/self.RR  # reality also define
+        real_pixel = 2.2um
+        cali_x = m + (self.x - m)/self.m
+        cali_y = m + (self.y - m)/self.m
+        k = (self.first_point[1][0]/2)/((self.first_point[1][0]/2+self.first_point[1][1]/2)/2)
+        cali_x0 = m + (self.list[0][0] - m)/k
+        cali_y0 = m + (self.list[0][1] - m)/k
         #if len(self.list) >= 5:
         try:
             points = (np.array(self.list, dtype=np.float32))#.astype(float)
-            #print(1232131231, type(self.list[1][1]))
-            # print(points)
+           
             # print(type(points))
             data = cv2.fitEllipse(points)
-            # print(data)
+            
             self.x, self.y = data[0][0], data[0][1] # /1000
-            error = (self.x - self.list[0][0], self.y - self.list[0][1])
-            x = error[1]*error[1]+error[0]*error[0]
+            error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
+            x = error[0]*error[0]+error[1]*error[1]
             errer2 = math.sqrt(x)*sim_pixel
-            # self.get_logger().info('%s'%points)
+           
             self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
-            self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(self.x,self.y))
+            self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(error[0]*sim_pixel, error[1]*sim_pixel))
+                  offset: wer relative zu wem: tf , weite zum spiegel
+                  if self.list - self.x <> 0: ... mit error...
             self.get_logger().info('The error is: {0}'.format(errer2))  #error in x, y
             
         except cv2.error: 
@@ -201,10 +210,9 @@ class ImageSubscriber(Node):
         except:
             self.get_logger().error('Unknown error!')
 
-        # else:
-        #     if error < 0:
-        #         pass
-        #     self.adjust_yaml()
+        else:
+                
+            self.adjust_yaml()
 
             #return
         # print(data)
@@ -233,6 +241,21 @@ class ImageSubscriber(Node):
         #     self.get_logger().error('Error: ')
 
 
+    def align_action(self):
+        target_point = JointTrajectoryPoint()
+        target_point.positions = [-0.359, -0.0458, -0.051544, 0.0]       
+        target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+        
+        goal_msg = FollowJointTrajectory.Goal()
+        
+    
+        goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
+                                        'Z_Axis_Joint','T_Axis_Joint'
+                                            ]
+        goal_msg.trajectory.points = [target_point]
+        
+        self.action_client.send_goal_async(goal_msg) callback
+
                                                     
     def rotate_action(self):  
 
@@ -247,9 +270,9 @@ class ImageSubscriber(Node):
             goal_msg.trajectory.joint_names = ['T_Axis_Joint']
             goal_msg.trajectory.points = [target_rotation]
             self.get_logger().info('asdadasdasdasdasdasd')
-            # self.rotate_client.wait_for_server() ?
+            # self.action_client.wait_for_server() ?
             
-            self.send_goal_future = self.rotate_client.send_goal_async(goal_msg
+            self.send_goal_future = self.action_client.send_goal_async(goal_msg
                                                                   ,feedback_callback=self.feedback_callback)
             self.send_goal_future.add_done_callback(self.goal_response_callback)
 
@@ -280,9 +303,7 @@ class ImageSubscriber(Node):
         position =  np.array(feedback.actual.positions).tolist()
         self.get_logger().info('The present position is: %s'%(position) )
         # value of velocity is not 0
-        
     
-
 
 
 
