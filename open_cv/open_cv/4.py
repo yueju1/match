@@ -9,6 +9,7 @@ from control_msgs.msg import JointControllerState
 import numpy as np
 import time
 import os
+from circle_fit import taubinSVD
 #  https://blog.csdn.net/a083614/article/details/78579163
 #  https://juejin.cn/post/7026284378665811975
 
@@ -38,14 +39,14 @@ class ImageSubscriber(Node):
         m1 = 0
         m2 = 0
 
-        #im = self.br.imgmsg_to_cv2(data)
+        self.im = self.br.imgmsg_to_cv2(data)
         
-        im = cv2.imread("/home/pmlab/yue.arbeit/robot/Greifer_Unterseitenkamera.bmp")    
+        #self.im = cv2.imread("/home/pmlab/Pictures/Screenshots/Screenshot from 2023-06-30 16-21-46.png")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
-        gray2 = cv2.GaussianBlur(im, (5, 5),1)
+        gray2 = cv2.GaussianBlur(self.im, (5, 5),1)
         #gray2 = cv2.medianBlur(im, 7)
         #gray2 = cv2.bilateralFilter(im, d=5, sigmaColor=50, sigmaSpace=50)
-        canny = cv2.Canny(gray2, 5, 15,apertureSize=3) # , apertureSize = 3) #(55, 230)
+        canny = cv2.Canny(self.im, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)   # 5,15
         _, thresh = cv2.threshold(canny, 140, 120, cv2.THRESH_BINARY)  # ret
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
@@ -54,18 +55,21 @@ class ImageSubscriber(Node):
         
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
-            if len(contours[i]) >= 100 and len(contours[i]) <= 200:
+            #if len(contours[i]) >= 100 and len(contours[i]) <= 200:
                 #print(222222222222,np.size(contours))
                 #print(hierarchy)
+
+
+
                 retval = cv2.fitEllipse(contours[i])  
                 
-                cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
-                cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
+                # cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
+                # cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                 
-                col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-                cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+                # col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
+                # cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
              
-                # print(retval)
+                print(retval)
                 
                   # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
                 if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]- retval[1][0]) <= 10:
@@ -80,7 +84,7 @@ class ImageSubscriber(Node):
             #             # if (m1, m2) not in self.list:
             #                 self.list.append(retval[0])
             # print(i)
-            #print(retval)
+        
         if len(a) != 0:
             m1 += b/len(a)
             m2 += c/len(a)
@@ -94,18 +98,20 @@ class ImageSubscriber(Node):
         print(self.list)     # T_Axis: 5.64 --> leer
                     
                         #print(cv2.fitEllipse(contours[i])[0])
-        for point in self.list:
+        # for point in self.list:
     
-            cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
+        #     cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
             
             #轨迹
         print('-------------------------------------')
-        #print(self.list)
+
+        
+        
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1200,1100)
-        cv2.imshow("ellip", im)
+        cv2.imshow("ellip", self.im)
 
         # cv2.namedWindow('ellips',0)
         # cv2.resizeWindow('ellips',1000,1000)
@@ -115,6 +121,8 @@ class ImageSubscriber(Node):
     
      # first detection finished then fitellipse
     def fit_ellipse(self): # codition in image_processing.py
+        
+        
         self.get_logger().info('qweweqweqweqweqweqweqwe')
         points = (np.array(self.list)*1000).astype(int)
         data = cv2.fitEllipse(points)

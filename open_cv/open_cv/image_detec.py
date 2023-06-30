@@ -5,6 +5,7 @@ from sensor_msgs.msg import Image  # Image is the message type
 from cv_bridge import CvBridge  # Package to convert
 import cv2
 import numpy as np
+from circle_fit import taubinSVD
 
 class ImageSubscriber(Node):
 
@@ -21,15 +22,15 @@ class ImageSubscriber(Node):
 
         self.br = CvBridge()
     # is the callbackfunction a must?
-
-        # current_frame = cv2.imread(
-        # '/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp')
+        self.list=[]
+        
         
         # 先看看canny,threshold值,对检测到的个数的影响.   再  搞一下转动之后圆有偏差的问题
     def listener_callback(self, data):
 
         current_frame = self.br.imgmsg_to_cv2(data)
-        
+        # current_frame = cv2.imread(
+        # '/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp')
         
     # print(current_frame.ndim)
         a, b = current_frame.shape[0:2]
@@ -40,12 +41,10 @@ class ImageSubscriber(Node):
         # (current_frame.max())
     # print(current_frame)
     # print(current_frame.shape)
-    # self.get_logger().info('Receiving')
-    # bild=cv2.color
+
         # gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
-    # rint(gray)
-        # casd = cv2.medianBlur(gray, 7)
-        gray2 = cv2.GaussianBlur(current_frame, (5, 5), 1)
+        # gray2 = cv2.medianBlur(gray, 7)
+        # gray2 = cv2.GaussianBlur(gray, (7, 7), 1.5)
         
 
         # kernel = np.ones((5,5),np.uint8)
@@ -59,7 +58,7 @@ class ImageSubscriber(Node):
         # asd = cv2.resize(part, (0, 0), fx=10, fy=10)
         # edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
         # dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
-        canny = cv2.Canny(gray2, 140, 220, 800)
+        canny = cv2.Canny(current_frame, 140, 220, 800)
         # p2 = cv2.dilate(canny,kernel)
         
         ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
@@ -67,13 +66,21 @@ class ImageSubscriber(Node):
         contours, hierarchy = cv2.findContours(
             thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # muss a binary bild
     # cv2.drawContours(asd, contours, -1, (0, 0, 255), 1)
-
+        for x in range(2591):
+            for y in range(1493):
+                if canny[y, x] != 0:
+                    self.list.append([float(x),float(y)])
+                    #cv2.circle(current_frame, (x, y), 1, (0, 0, 255), -1)
+        col = cv2.cvtColor(canny,cv2.COLOR_GRAY2BGR)
+        q,w,e,r = taubinSVD(self.list)
+        cv2.circle(col, (int(q),int(w)), int(e), (0, 0, 255), 1)
+        cv2.circle(col, (int(q), int(w)), 5, (0, 0, 255), -1)
     #   filter?
     # double houghcircles to detect two times
         #找轮廓的点，拟合圆
 
     #     circles = cv2.HoughCircles(  # kleiner keris in 1.py
-    #     gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=160, param2=15, minRadius=15, maxRadius=90)
+    #     canny, cv2.HOUGH_GRADIENT, 1, 50, param1=30, param2=50, minRadius=15, maxRadius=200)
     #     print(circles)
     # # hough param und cany param
     # # try: ? if there is no circle, output typeerror
@@ -97,18 +104,18 @@ class ImageSubscriber(Node):
     # center_points = []
     # # print(hierarchy[0])
 
-        for contour in contours:
-            moments = cv2.moments(contour)
-            # if moments['m00'] != 0:    # or try:...?
-        # ZeroDivisionError: float division by zero
-            cX = int(moments["m10"] / moments["m00"])
-            cY = int(moments["m01"] / moments["m00"])  # ausschneiden
-        # center_points.append((cX, cY))
-            cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
-            print(cX, cY)     
-            col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-            cv2.drawContours(col, contour, -1, (0, 0, 255), 1)
-            cv2.circle(col, (cX, cY), 2, (0, 0, 255), -1)
+        # for contour in contours:
+        #     moments = cv2.moments(contour)
+        #     # if moments['m00'] != 0:    # or try:...?
+        # # ZeroDivisionError: float division by zero
+        #     cX = int(moments["m10"] / moments["m00"])
+        #     cY = int(moments["m01"] / moments["m00"])  # ausschneiden
+        # # center_points.append((cX, cY))
+        #     cv2.circle(current_frame, (cX, cY), 2, (0, 0, 255), -1)
+        #     print(cX, cY)     
+        #     col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
+        #     cv2.drawContours(col, contour, -1, (0, 0, 255), 1)
+        #     cv2.circle(col, (cX, cY), 2, (0, 0, 255), -1)
         
         # cv2.circle(current_frame, (1999, 1999), 4, (0, 0, 255), -1)
 

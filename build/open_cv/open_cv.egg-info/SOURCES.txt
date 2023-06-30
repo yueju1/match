@@ -8,7 +8,6 @@ open_cv/__init__.py
 open_cv/a.py
 open_cv/auto_center.py
 open_cv/auto_centering.py
-open_cv/back_moving.py
 open_cv/image_detec.py
 open_cv/image_processing.py
 open_cv/op.py

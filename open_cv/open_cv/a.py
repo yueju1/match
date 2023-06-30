@@ -1,2 +1,3 @@
-x = 1, 2
-print(20/2/2)
+import math
+
+print(math.pi)

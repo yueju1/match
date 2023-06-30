@@ -5,7 +5,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import numpy as np
-
+from circle_fit import taubinSVD
 
 class ImageSubscriber(Node):
 
@@ -13,61 +13,109 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-#         self.subscription = self.create_subscription(
-#             Image,
-#             '/Cam2/image_raw',
-#             self.listener_callback,
-#             10)
-#         self.subscription  # prevent unused variable warning
+        current_frame = cv2.imread(
+        '/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp')
+        f = open('/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp', 'rb')
+        image_bytes = f.read()  # b'\xff\xd8\xff\xe0\x00\x10...'
 
-#         self.br = CvBridge()
-    # is the callbackfunction a must?
-        self.list=[]
-        print("asdasdasd")
-    # def listener_callback(self, data):
-        # im = self.br.imgmsg_to_cv2(data)
+        decoded = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), -1)
         
-        im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
-        # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
-        gray2 = cv2.GaussianBlur(im, (5, 5), 1)
-        #gray2 = cv2.medianBlur(gray, 7)
-        canny = cv2.Canny(im, 40, 500) # (460,500)  有些值检测不到
-        _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
-        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)  
-            #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
-            # 检测椭圆内圈？
+    # print(current_frame.ndim)
+        a, b = current_frame.shape[0:2]
+    # print(current_frame.shape)
+    # dst = cv2.resize(current_frame, (4*x, 4*y))
+        
+        dst = cv2.pyrUp(current_frame)
+        # (current_frame.max())
+    # print(current_frame)
+    # print(current_frame.shape)
+    # self.get_logger().info('Receiving')
+    # bild=cv2.color
+        self.list=[]
+    # rint(gray)
+        # gray2 = cv2.medianBlur(gray, 7)
+        gray = cv2.GaussianBlur(current_frame, (5, 5), 1.5)
+        gray2 = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)
+        
+        # kernel = np.ones((5,5),np.uint8)
+        # # cv2.findell
+        # kernel2 = np.ones((10,10),np.uint8)
+        # pengzhang = cv2.dilate(gray,kernel2)
+        # fushi =cv2.erode(pengzhang,kernel)
+        # kai = cv2.morphologyEx(gray,cv2.MORPH_CLOSE,kernel2,iterations=1)
+       # cv2.sobel  Gradient
+        part = current_frame[680:1550, 750:1750]  # to be modified
+        # asd = cv2.resize(part, (0, 0), fx=10, fy=10)
+        # edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
+        # dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
+        canny = cv2.Canny(gray2, 40, 500)
+        # p2 = cv2.dilate(canny,kernel)
+        
+        ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
+        #na ge fangfa geng zhunque
+        contours, hierarchy = cv2.findContours(
+            canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  # muss a binary bild
+        
+        # for x in range(2591):
+        #     for y in range(1493):
+        #         if canny[y, x] != 0:
+        #             self.list.append([float(x),float(y)])
+        #             #cv2.circle(current_frame, (x, y), 1, (0, 0, 255), -1)
+        # col = cv2.cvtColor(canny,cv2.COLOR_GRAY2BGR)
+        # q,w,e,r = taubinSVD(self.list)
+        # cv2.circle(col, (int(q),int(w)), int(e), (0, 0, 255), 1)
+        # cv2.circle(col, (int(q), int(w)), 5, (0, 0, 255), -1)
+        # for contour in contours:
+        #     for i in contour:
+                
+        #         self.list.append(i)
+        # x = np.array(self.list)
+        # print(x.shape)
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
-            if len(contours[i]) >= 5 :
-                retval = cv2.fitEllipseAMS(contours[i])  
-                # print('-------')
-                # print(contours[i])
-                # print('-------')
-                cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
-                cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),3, (0, 0, 255), -2)
-                col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-                cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-                print(retval)
-                # if retval[1][0] < 240.0 and retval[1][1] > 220:
-                #     #  noch durchschnittswert
-                #     if cv2.fitEllipse(contours[i])[0] not in self.list:
-                #         self.list.append(cv2.fitEllipse(contours[i])[0])
-                #         #print(i)
-                #         print(self.list)     # T_Axis: 5.64 --> leer
-                        #print(cv2.fitEllipse(contours[i])[0])
-            # 还有别的方法画椭圆中心吗
+            # if len(contours[i]) >= 300 and len(contours[i]) < 330:
+            if len(contours[i]) >= 100 and len(contours[i]) <= 200:
+                cv2.drawContours(current_frame, contours, -1, (0, 0, 255), 1)
+                cen,rad = cv2.minEnclosingCircle(contours[i])
+        cv2.circle(current_frame, (int(cen[0]),int(cen[1])), int(rad), (0, 0, 255), 1)
+        cv2.circle(current_frame, (int(cen[0]), int(cen[1])), 5, (0, 0, 255), -1)
+
+
+
+        
+
+        circles = cv2.HoughCircles(  # kleiner keris in 1.py
+        gray2, cv2.HOUGH_GRADIENT, 1, 50, param1=500, param2=50, minRadius=15, maxRadius=100)
+        # print(circles)
+        
+    # hough param und cany param
+    # try: ? if there is no circle, output typeerror
+        # for circle in circles[0]:
+
+        #     print(circle[2])
+
+        #     x = int(circle[0])
+        #     y = int(circle[1])
+
+        #     r = int(circle[2])
+
+            
+        #     col = cv2.cvtColor(gray2, cv2.COLOR_GRAY2BGR)
+        #     cv2.circle(current_frame, (x, y), r, (0, 0, 255), 1)
+        #     cv2.circle(current_frame, (x, y), 5, (0, 0, 255), -1)
+        #     print(x, y, r)
 
         
 
 
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
-        cv2.imshow("ellip", im)
+        cv2.imshow("ellip", current_frame)
 
         cv2.namedWindow('ellips',0)
         cv2.resizeWindow('ellips',1000,1000)
         cv2.imshow("ellips", canny)
-        1300.6314697265625, 967.3241577148438
-        cv2.waitKey()
+        
+        cv2.waitKey(0)
         
 def main():
     rclpy.init()
@@ -79,36 +127,4 @@ def main():
  
 if __name__ == "__main__":
     main()
-                  #对比 圆 椭圆
-#     im = cv2.imread("/home/pmlab/yueju3/robot/Greifer_Unterseitenkamera.bmp")    
-#     gray = cv2.cv2tColor(im, cv2.COLOR_BGR2GRAY)    
-#     gray2 = cv2.GaussianBlur(gray, (5, 5), 1)
-#     #gray2 = cv2.medianBlur(gray, 7)
-#     canny = cv2.Canny(gray2, 460, 800) # (460,500)  有些值检测不到
-#     _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
-#     contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
-#          #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
-#          # 检测椭圆内圈？
-#     for i in contours:  #sobel? kaolv geng fuza yidian
-#         if len(i) >= 5 :
-#             retval = cv2.fitEllipse(i)  
-#             cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
-#             cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),3, (0, 0, 255), -2)
-#             col = cv2.cv2tColor(canny, cv2.COLOR_GRAY2BGR)
-#             cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-#             print(retval) 
-#         # 还有别的方法画椭圆中心吗
-# cv2.namedWindow('ellip',0)
-# cv2.resizeWindow('ellip',1000,1000)
-# cv2.imshow("ellip", im)
-
-# cv2.namedWindow('ellips',0)
-# cv2.resizeWindow('ellips',1000,1000)
-# cv2.imshow("ellips", canny)
-# 1300.6314697265625, 967.3241577148438
-# cv2.waitKey()
-
-
-# main:  if 走到了特定位置:
-
-#           执行此图像检测程序
+                  

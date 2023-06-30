@@ -14,7 +14,7 @@ from builtin_interfaces.msg import Duration
 import time
 from ruamel.yaml import YAML
 import math
-
+from circle_fit import taubinSVD
 import numpy as np                #  folge 
  #试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
 # 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
@@ -40,8 +40,9 @@ class ImageSubscriber(Node):
         self.first_point = []
         self.r_r = 0
         self.m = 0
-        
-        self.align_action()   不写这个行吗
+        self.s = 0
+
+        self.align_action()   # 不写这个行吗
         # self.ok = 0
     def state_callback(self, msg):
         
@@ -62,26 +63,26 @@ class ImageSubscriber(Node):
             
             self.fit_ellipse()
 
-            #self.return_action()  
+            self.return_action()  
             
-            # exit(0)
-    # def return_action(self):
-    #         target_point = JointTrajectoryPoint()
-    #         target_point.positions = [0.0, 0.0, 0.0, 0.0]         # ros::Time::now()  ros2 li shisha
-    #         target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
-    #         # target_point.velocities = [0.0, 0.0, 0.0, 0.0]
-    #         # target_point.accelerations = [0.0, 0.0, 0.0, 0.0]
-    #         # more smoothly: x_joint by 0.08 und y,z,t......
-    #         goal_msg = FollowJointTrajectory.Goal()
-    #         # goal_msg.trajectory.header.stamp = Clock().clock     use_sim_time in launch
+            exit(0)
+    def return_action(self):
+            target_point = JointTrajectoryPoint()
+            target_point.positions = [0.0, 0.0, 0.0, 0.0]         # ros::Time::now()  ros2 li shisha
+            target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+            # target_point.velocities = [0.0, 0.0, 0.0, 0.0]
+            # target_point.accelerations = [0.0, 0.0, 0.0, 0.0]
+            # more smoothly: x_joint by 0.08 und y,z,t......
+            goal_msg = FollowJointTrajectory.Goal()
+            # goal_msg.trajectory.header.stamp = Clock().clock     use_sim_time in launch
         
-    #         goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
-    #                                         'Z_Axis_Joint','T_Axis_Joint'
-    #                                             ]
-    #         goal_msg.trajectory.points = [target_point]
-    #         # + velocity accelerate  速度和duration2选1吗 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
+                                            'Z_Axis_Joint','T_Axis_Joint'
+                                                ]
+            goal_msg.trajectory.points = [target_point]
+            # + velocity accelerate  速度和duration2选1吗 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
-    #         self.action_client.send_goal_async(goal_msg)
+            self.action_client.send_goal_async(goal_msg)
 
            # exit()
 
@@ -97,8 +98,7 @@ class ImageSubscriber(Node):
         canny = cv2.Canny(im, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)
         _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
-            #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
-            # 检测椭圆内圈？
+          
         
         a = []
         b = 0
@@ -107,14 +107,15 @@ class ImageSubscriber(Node):
         m2 = 0
         r = 0
         diff = 0
+        area = 0
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 200:
                 
                 retval = cv2.fitEllipse(contours[i])  
                 
-                不要launch了，下面的改yaml的改了，再看下畸变比例能不能算，下面fit_ellipse里的
-                if error写一下，不行就运动回去，镜子折射的tf转换搞掉。tf 直接看gazebo运动
+                # 不要launch了，下面的改yaml的改了，再看下畸变比例能不能算，下面fit_ellipse里的
+                # if error写一下，不行就运动回去，镜子折射的tf转换搞掉。tf 直接看gazebo运动
              
                 # print(retval)
                 
@@ -122,8 +123,8 @@ class ImageSubscriber(Node):
                 if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]-retval[1][0]) <= 5:
                       #  noch durchschnittswert            
                    # print('sdadasdasdasd',contours[i])
-                    cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
-                    cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
+                    # cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
+                    # cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                     
                     col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
                     cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
@@ -133,11 +134,12 @@ class ImageSubscriber(Node):
                     c += retval[0][1]
                     while len(self.first_point) < 1:
                         self.first_point.append(retval)
-                     成像大小再想想
-                                     确保第一个ellipse的b
+                    #  成像大小再想想
+                    #                  确保第一个ellipse的b
                     r += (retval[1][0]/2 + retval[1][1]/2)/2
                     diff += (retval[1][0]/2 / r)  # or (a-b)/2
-                    
+                    area += math.pi * retval[1][0]/2 * retval[1][1]/2 
+
             #         if retval[0] not in self.list:
             #         #if cv2.fitEllipse(contours[i])[0] not in self.list:
             #             # if (m1, m2) not in self.list:
@@ -149,6 +151,7 @@ class ImageSubscriber(Node):
             m2 += c/len(a)
             self.r_r += r/len(a)
             self.m += diff/len(a)
+            self.s += area/len(a)
         # print(m1,m2)
         print('length:',len(a))
         print('its b',b)
@@ -156,6 +159,7 @@ class ImageSubscriber(Node):
         self.list.append([m1,m2])
         self.RR = self.r_r/len(self.list)
         self.mm = self.m/len(self.list) 
+        
         self.get_logger().info('last mittelpunkt:%s'%self.list[-1])
         #print(self.list)     # T_Axis: 5.64 --> leer
         # self.ok = 1         
@@ -164,7 +168,7 @@ class ImageSubscriber(Node):
     
             cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
         print('-------------------------------------')
-
+        
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
@@ -179,42 +183,54 @@ class ImageSubscriber(Node):
         
     
     def fit_ellipse(self): 
-        sim_pixel = 250/self.RR  # reality also define
-        real_pixel = 2.2um
-        cali_x = m + (self.x - m)/self.m
-        cali_y = m + (self.y - m)/self.m
-        k = (self.first_point[1][0]/2)/((self.first_point[1][0]/2+self.first_point[1][1]/2)/2)
-        cali_x0 = m + (self.list[0][0] - m)/k
-        cali_y0 = m + (self.list[0][1] - m)/k
+        self.sim_pixel = 250/self.RR  # reality also define
+
+        sr = math.sqrt(self.s/len(self.list)/math.pi)
+        self.sim2 = 250/sr
+        # real_pixel = 2.2um
+        self.x,self.y,e,r = taubinSVD(self.list)
+        # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
+        # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
+        
         #if len(self.list) >= 5:
-        try:
-            points = (np.array(self.list, dtype=np.float32))#.astype(float)
-           
-            # print(type(points))
-            data = cv2.fitEllipse(points)
-            
-            self.x, self.y = data[0][0], data[0][1] # /1000
-            error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
-            x = error[0]*error[0]+error[1]*error[1]
-            errer2 = math.sqrt(x)*sim_pixel
-           
-            self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
-            self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(error[0]*sim_pixel, error[1]*sim_pixel))
-                  offset: wer relative zu wem: tf , weite zum spiegel
-                  if self.list - self.x <> 0: ... mit error...
-            self.get_logger().info('The error is: {0}'.format(errer2))  #error in x, y
-            
-        except cv2.error: 
-            self.get_logger().error('Error: not enough points collected!')
+        # try:
+        points = (np.array(self.list, dtype=np.float32))#.astype(float)
+        
+        
+        data = cv2.fitEllipse(points)
+        
+        # self.x, self.y = data[0][0], data[0][1] # /1000
+        self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
+        x = self.error[0]*self.error[0]+self.error[1]*self.error[1]
+        errer2 = math.sqrt(x)*self.sim_pixel
 
-        except:
-            self.get_logger().error('Unknown error!')
 
-        else:
+        # cali_x = 1296 + (self.x - 1296)/self.m
+        # cali_y = 972 + (self.y - 972)/self.m
+        # k = (self.first_point[0][1][0]/2)/((self.first_point[0][1][0]/2+self.first_point[0][1][1]/2)/2)
+        # cali_x0 = 1296 + (self.list[0][0] - 1296)/k
+        # cali_y0 = 972 + (self.list[0][1] - 972)/k
+        # error3 = (cali_x0-cali_x,cali_y0-cali_y)
+        # s = error3[0]*error3[0]+error3[1]*error3[1]
+        # e4 = math.sqrt(s)*sim_pixel
+        
+        self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
+        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(self.error[0]*self.sim_pixel, self.error[1]*self.sim_pixel))
+                #offset: wer relative zu wem: tf , weite zum spiegel
                 
-            self.adjust_yaml()
+        self.get_logger().info('The error is: {0}'.format(errer2))  #error in x, y
+            
+        # except cv2.error: 
+        #     self.get_logger().error('Error: not enough points collected!')
 
-            #return
+        # except:  # besser machen
+        #     self.get_logger().error('Unknown error!')
+
+        # else:
+                
+        self.adjust_yaml()
+
+        #     return
         # print(data)
                # !!! degree !!!
         
@@ -226,12 +242,12 @@ class ImageSubscriber(Node):
         
         yaml = YAML()
     
-        with open ("/home/pmlab/ros2_ws/src/match_pm_robot/pm_robot_description/calibration_config/pm_robot_joint_calibration.yaml"
+        with open ("/home/pmlab/pm_ros2_ws/src/match_pm_robot/pm_robot_description/calibration_config/pm_robot_joint_calibration.yaml"
             , "r") as file:
             joint_calibration = yaml.load(file)
                                                                 
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.x
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = self.y
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.error[1]*self.sim_pixel  # error(0)-self.x
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = -self.error[0]*self.sim_pixel
 
         with open('/home/pmlab/asd.yaml','w') as new_file:
             yaml.dump(joint_calibration, new_file)
@@ -254,7 +270,8 @@ class ImageSubscriber(Node):
                                             ]
         goal_msg.trajectory.points = [target_point]
         
-        self.action_client.send_goal_async(goal_msg) callback
+        self.action_client.send_goal_async(goal_msg)      # callback
+
 
                                                     
     def rotate_action(self):  
