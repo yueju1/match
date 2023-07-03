@@ -26,7 +26,14 @@ class ImageSubscriber(Node):
     def __init__(self):
         #这里面的不报位置吗     
         super().__init__('image_detection')
-        # try self.sub?
+        # try self.sub
+            # if except ...
+            #        ...shutdown
+            
+            # ...
+            
+            
+            
         self.sub = self.create_subscription(JointTrajectoryControllerState,
                                              '/joint_trajectory_controller/state',
                                              self.state_callback,
@@ -270,7 +277,35 @@ class ImageSubscriber(Node):
                                             ]
         goal_msg.trajectory.points = [target_point]
         
-        self.action_client.send_goal_async(goal_msg)      # callback
+        self.action_client.wait_for_server()
+        self.send_goal_future = self.action_client.send_goal_async(goal_msg
+                                                                  ,feedback_callback=self.align_callback)
+        self.send_goal_future.add_done_callback(self.align_response_callback)
+
+
+    def align_response_callback(self, future):
+        #goal_handle = future.re
+        goal_handle = future.result()
+        if not goal_handle.accepted:
+            self.get_logger().info('Goal rejected.') # add error type
+            print(future.exception())
+            return                      # 校准多个bauteil看下这里的 if not 循环
+        
+        self.get_logger().info('Goal accepted.')
+        self.get_result_future = goal_handle.get_result_async()
+        self.get_result_future.add_done_callback(self.align_result_callback)
+
+
+    def align_result_callback(self,future):
+        self.get_logger().info('Goal reached!')
+        
+        rclpy.shutdown()
+        
+         # add some conditions ?
+      
+    def align_callback(self,feedcak_msg):
+
+        self.get_logger().info('Approaching...')
 
 
                                                     
@@ -282,14 +317,14 @@ class ImageSubscriber(Node):
             #target_rotation.velocities = [0.0]
             #target_rotation.accelerations = [0.0] # if added, offset in x or y
             
-            goal_msg = FollowJointTrajectory.Goal()
+            rotate_msg = FollowJointTrajectory.Goal()
 
-            goal_msg.trajectory.joint_names = ['T_Axis_Joint']
-            goal_msg.trajectory.points = [target_rotation]
+            rotate_msg.trajectory.joint_names = ['T_Axis_Joint']
+            rotate_msg.trajectory.points = [target_rotation]
             self.get_logger().info('asdadasdasdasdasdasd')
             # self.action_client.wait_for_server() ?
             
-            self.send_goal_future = self.action_client.send_goal_async(goal_msg
+            self.send_goal_future = self.action_client.send_goal_async(rotate_msg
                                                                   ,feedback_callback=self.feedback_callback)
             self.send_goal_future.add_done_callback(self.goal_response_callback)
 
