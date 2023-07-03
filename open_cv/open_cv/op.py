@@ -5,7 +5,7 @@ from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import numpy as np
-from circle_fit import taubinSVD
+#from circle_fit import taubinSVD
 
 class ImageSubscriber(Node):
 
@@ -14,11 +14,11 @@ class ImageSubscriber(Node):
         super().__init__('image_detection')
         
         current_frame = cv2.imread(
-        '/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp')
-        f = open('/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp', 'rb')
-        image_bytes = f.read()  # b'\xff\xd8\xff\xe0\x00\x10...'
+        '/home/yueju/yue.arbeit/robot/Greifer_Unterseitenkamera.bmp')
+        # f = open('/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp', 'rb')
+        # image_bytes = f.read()  # b'\xff\xd8\xff\xe0\x00\x10...'
 
-        decoded = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), -1)
+        # decoded = cv2.imdecode(np.frombuffer(image_bytes, np.uint8), -1)
         
     # print(current_frame.ndim)
         a, b = current_frame.shape[0:2]
@@ -48,7 +48,7 @@ class ImageSubscriber(Node):
         # asd = cv2.resize(part, (0, 0), fx=10, fy=10)
         # edges = cv2.Canny(gray2, threshold1=30, threshold2=60)
         # dst2 = cv2.pyrDown(current_frame)  #轮廓加粗!!!
-        canny = cv2.Canny(gray2, 40, 500)
+        canny = cv2.Canny(current_frame, 40, 500)
         # p2 = cv2.dilate(canny,kernel)
         
         ret, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)
