@@ -56,3 +56,10 @@ array([[[1102,  922]],
        [[1099,  922]]], dtype=int32)
 
 [[[1104.5  972.5   55.7]]]
+
+
+
+
+erster mittelpunkt: [1116.9897216796876, 1064.0425842285156]
+[INFO] [1688733494.442137915] [image_detection]: The center point of Gripper_Rot_Plate is: [39.41395064954832,37.25222199502932]
+[INFO] [1688733494.442556998] [image_detection]: The error is: 54.2327165959071

@@ -19,19 +19,19 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-        self.subscription = self.create_subscription(
-            Image,
-            '/Cam2/image_raw',
-            self.listener_callback,
-            10)
+        # self.subscription = self.create_subscription(
+        #     Image,
+        #     '/Cam2/image_raw',
+        #     self.listener_callback,
+        #     10)
         
-        self.subscription  # prevent unused variable warning
+        #self.subscription  # prevent unused variable warning
 
         self.br = CvBridge()
     # is the callbackfunction a must?
         self.list = []
                                                                  #     1483 943     1365 943
-    def listener_callback(self, data):
+   # def listener_callback(self, data):
         
         a = []
         b = 0
@@ -39,36 +39,46 @@ class ImageSubscriber(Node):
         m1 = 0
         m2 = 0
 
-        self.im = self.br.imgmsg_to_cv2(data)
+        #self.im = self.br.imgmsg_to_cv2(data)
         
-        #self.im = cv2.imread("/home/pmlab/Pictures/Screenshots/Screenshot from 2023-06-30 16-21-46.png")    
+        self.im = cv2.imread("/home/pmlab/Pictures/Screenshots/Screenshot from 2023-07-07 14-33-24.png")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
-        gray2 = cv2.GaussianBlur(self.im, (5, 5),1)
-        #gray2 = cv2.medianBlur(im, 7)
+        #gray2 = cv2.GaussianBlur(self.im, (5, 5),1)
+        gray2 = cv2.medianBlur(self.im, 7)
         #gray2 = cv2.bilateralFilter(im, d=5, sigmaColor=50, sigmaSpace=50)
-        canny = cv2.Canny(self.im, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)   # 5,15
+        canny = cv2.Canny(gray2, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)   # 5,15
+        
+        
+        
         _, thresh = cv2.threshold(canny, 140, 120, cv2.THRESH_BINARY)  # ret
-        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
+        print(123123123)
+        contours, hierarchy = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
             # 检测椭圆内圈？
         #print(11111111111,np.size(contours))
-        
-        for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
+        print(12312313)
+        # print(contours)
+        for i in range(len(contours)) :  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
-            #if len(contours[i]) >= 100 and len(contours[i]) <= 200:
+            if len(contours[i]) >= 50 and len(contours[i]) <= 120:
                 #print(222222222222,np.size(contours))
                 #print(hierarchy)
-
+                print('asdasdadasd')
 
 
                 retval = cv2.fitEllipse(contours[i])  
                 
-                # cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
-                # cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
+                cv2.ellipse(self.im, retval, (0, 0, 255), thickness=1) 
+                cv2.circle(self.im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                 
                 # col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
                 # cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-             
+                cv2.namedWindow('ellip',0)
+                cv2.resizeWindow('ellip',1200,1100)
+                cv2.imshow("ellip", self.im)
+                cv2.waitKey(0)
+
+
                 print(retval)
                 
                   # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
@@ -98,9 +108,9 @@ class ImageSubscriber(Node):
         print(self.list)     # T_Axis: 5.64 --> leer
                     
                         #print(cv2.fitEllipse(contours[i])[0])
-        # for point in self.list:
+        for point in self.list:
     
-        #     cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
+            cv2.circle(self.im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
             
             #轨迹
         print('-------------------------------------')
@@ -109,15 +119,18 @@ class ImageSubscriber(Node):
         
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
+        
+        # cv2.namedWindow('ellips',0)
+        # cv2.resizeWindow('ellips',1200,1100)
+        # cv2.imshow("ellips", canny)
+
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1200,1100)
         cv2.imshow("ellip", self.im)
-
-        # cv2.namedWindow('ellips',0)
-        # cv2.resizeWindow('ellips',1000,1000)
-        # cv2.imshow("ellips", gray2)
         
-        cv2.waitKey(1)
+        
+        
+        cv2.waitKey(0)
     
      # first detection finished then fitellipse
     def fit_ellipse(self): # codition in image_processing.py

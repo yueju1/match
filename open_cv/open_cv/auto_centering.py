@@ -20,7 +20,7 @@ class CenteringClient(Node):
         super().__init__('auto_centering')
 
         self.action_client = ActionClient(self,FollowJointTrajectory,
-                                   '/joint_trajectory_controller/follow_joint_trajectory')
+                                   '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
 
         
     def send_goal(self,points): # kann ohne points sein, und target_point.positions = []
@@ -76,7 +76,7 @@ def main(args=None):
     rclpy.init(args=args)
     
     client = CenteringClient()       #  decimal  kanxia jonit_state  position
-    client.send_goal([-0.359, -0.0458, -0.051544, 0.0]) 
+    client.send_goal([-0.359, -0.0458, 0.02, -0.00008]) 
     # future = client.send_goal([Decimal(-0.7), Decimal(-0.04), Decimal(-0.01), Decimal(12.0)]) 
     rclpy.spin(client)
     #client.destroy_node()

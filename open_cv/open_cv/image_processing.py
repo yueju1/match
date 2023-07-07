@@ -35,20 +35,23 @@ class ImageSubscriber(Node):
             
             
         self.sub = self.create_subscription(JointTrajectoryControllerState,
-                                             '/joint_trajectory_controller/state',
+                                             '/pm_robot_xyz_axis_controller/state',
                                              self.state_callback,
                                              10)
         #  self.subscription  # prevent unused variable warning ?
         self.br = CvBridge()
     
+        # self.action_client = ActionClient(self,FollowJointTrajectory,
+        #                           '/joint_trajectory_controller/follow_joint_trajectory')
         self.action_client = ActionClient(self,FollowJointTrajectory,
-                                  '/joint_trajectory_controller/follow_joint_trajectory')
+                                  '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
         self.list = []
         self.first_point = []
         self.r_r = 0
         self.m = 0
         self.s = 0
-
+        self. RR = 0
+        self.mm = 0
         self.align_action()   # 不写这个行吗
         # self.ok = 0
     def state_callback(self, msg):
@@ -56,23 +59,26 @@ class ImageSubscriber(Node):
         # for i in range(4):
 
                 # desired position is meaningful?
-        if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 0.0]):
+        if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.00004]):
+            #time.sleep(0.5)
             self.sub = self.create_subscription(Image,
-                    '/Cam2/image_raw',
+                    '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
                     self.detection_callback,
                     10)
-                #time.sleep(0.5)  
+                #time.sleep(0.5) 
+            self.get_logger().info('Detection callback started') 
             self.rotate_action()
-
+            
+            
         # for i in range(4):
-        if msg.desired.positions == array.array('d',[-0.359, -0.0458, -0.051544, 6.4]):
-            #time.sleep(0.5)
-            
+        if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, -0.00008]):
+            #    ZeroDivisionError by -0.00008 am Anfang
             self.fit_ellipse()
-
-            self.return_action()  
             
-            exit(0)
+
+            # self.return_action()  
+            
+            #exit(0)
     def return_action(self):
             target_point = JointTrajectoryPoint()
             target_point.positions = [0.0, 0.0, 0.0, 0.0]         # ros::Time::now()  ros2 li shisha
@@ -95,16 +101,18 @@ class ImageSubscriber(Node):
 
 
     def detection_callback(self,data):
+        self.get_logger().info(f'detection callback')
         #图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
         im = self.br.imgmsg_to_cv2(data)
-        
+        self.get_logger().info(f'detection callback')
         # im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
-        # gray2 = cv2.GaussianBlur(im, (5, 5),1)
+        gray2 = cv2.GaussianBlur(im, (5, 5),1)
         # gray2 = cv2.medianBlur(im, 5)  # 40, 500
-        canny = cv2.Canny(im, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)
+        canny = cv2.Canny(gray2, 50, 150,apertureSize=3) # , apertureSize = 3) #(55, 230)
+        
         _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
-        contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
+        contours, hierarchy = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
           
         
         a = []
@@ -115,27 +123,32 @@ class ImageSubscriber(Node):
         r = 0
         diff = 0
         area = 0
+        col = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
-            if len(contours[i]) >= 100 and len(contours[i]) <= 200:
-                
+            if len(contours[i]) >= 100 and len(contours[i]) <= 500:
+                # and len(contours[i]) <= 500
                 retval = cv2.fitEllipse(contours[i])  
                 
                 # 不要launch了，下面的改yaml的改了，再看下畸变比例能不能算，下面fit_ellipse里的
                 # if error写一下，不行就运动回去，镜子折射的tf转换搞掉。tf 直接看gazebo运动
              
-                # print(retval)
+                #self.get_logger().info('{0}'.format(retval))
                 
                   # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
-                if retval[1][0] < 240.0 and retval[1][1] > 100 and (retval[1][1]-retval[1][0]) <= 5:
+                if retval[1][0] > 105.0 and retval[1][1] < 120.0 and (retval[1][1]-retval[1][0]) <= 5:
+                     #if retval[1][0] < 240.0 and retval[1][1] > 100 
+                     
                       #  noch durchschnittswert            
                    # print('sdadasdasdasd',contours[i])
-                    # cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
-                    # cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
+                # cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
+                # cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                     
-                    col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-                    cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-                    
+                    # col = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
+                    # cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+                    cv2.ellipse(col, retval, (0, 0, 255), thickness=1) 
+                    cv2.circle(col, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
+
                     a.append(retval)
                     b += retval[0][0]
                     c += retval[0][1]
@@ -164,23 +177,24 @@ class ImageSubscriber(Node):
         print('its b',b)
         # if [m1, m2] not in self.list:
         self.list.append([m1,m2])
-        self.RR = self.r_r/len(self.list)
+        #self.RR = self.r_r/len(self.list)
         self.mm = self.m/len(self.list) 
         
         self.get_logger().info('last mittelpunkt:%s'%self.list[-1])
         #print(self.list)     # T_Axis: 5.64 --> leer
         # self.ok = 1         
                         #print(cv2.fitEllipse(contours[i])[0])
+        
         for point in self.list:
     
-            cv2.circle(im, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
+            cv2.circle(col, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
         print('-------------------------------------')
         
        # cv2.getRectSubPix(im,)
             # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
-        cv2.imshow("ellip", im)
+        cv2.imshow("ellip", col)
 
         # cv2.namedWindow('ellips',0)
         # cv2.resizeWindow('ellips',1000,1000)
@@ -190,26 +204,26 @@ class ImageSubscriber(Node):
         
     
     def fit_ellipse(self): 
-        self.sim_pixel = 250/self.RR  # reality also define
+        #self.sim_pixel = 250/self.RR  # reality also define
 
         sr = math.sqrt(self.s/len(self.list)/math.pi)
         self.sim2 = 250/sr
-        # real_pixel = 2.2um
+        self.real_pixel = 2.2
         self.x,self.y,e,r = taubinSVD(self.list)
         # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
         # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
         
         #if len(self.list) >= 5:
-        # try:
-        points = (np.array(self.list, dtype=np.float32))#.astype(float)
-        
-        
-        data = cv2.fitEllipse(points)
-        
-        # self.x, self.y = data[0][0], data[0][1] # /1000
-        self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
-        x = self.error[0]*self.error[0]+self.error[1]*self.error[1]
-        errer2 = math.sqrt(x)*self.sim_pixel
+        try:
+            points = (np.array(self.list, dtype=np.float32))#.astype(float)
+            
+            
+            data = cv2.fitEllipse(points)
+            
+            #self.x, self.y = data[0][0], data[0][1] # /1000
+            self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
+            x = self.error[0]*self.error[0]+self.error[1]*self.error[1]
+            errer2 = math.sqrt(x)*self.real_pixel
 
 
         # cali_x = 1296 + (self.x - 1296)/self.m
@@ -219,23 +233,24 @@ class ImageSubscriber(Node):
         # cali_y0 = 972 + (self.list[0][1] - 972)/k
         # error3 = (cali_x0-cali_x,cali_y0-cali_y)
         # s = error3[0]*error3[0]+error3[1]*error3[1]
-        # e4 = math.sqrt(s)*sim_pixel
+        # e4 = math.sqrt(s)*real_pixel
         
-        self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
-        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format(self.error[0]*self.sim_pixel, self.error[1]*self.sim_pixel))
-                #offset: wer relative zu wem: tf , weite zum spiegel
-                
-        self.get_logger().info('The error is: {0}'.format(errer2))  #error in x, y
+            self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
+            self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format
+                                   (self.error[0]*self.real_pixel, self.error[1]*self.real_pixel))
+                    #offset: wer relative zu wem: tf , weite zum spiegel
+                    
+            self.get_logger().info('The error is: {0}'.format(errer2))  #error in x, y
             
-        # except cv2.error: 
-        #     self.get_logger().error('Error: not enough points collected!')
+        except cv2.error: 
+            self.get_logger().error('Error: not enough points collected!')
 
-        # except:  # besser machen
-        #     self.get_logger().error('Unknown error!')
+        except:  # besser machen
+            self.get_logger().error('Unknown error!')
 
-        # else:
+        else:
                 
-        self.adjust_yaml()
+            self.adjust_yaml()
 
         #     return
         # print(data)
@@ -253,8 +268,8 @@ class ImageSubscriber(Node):
             , "r") as file:
             joint_calibration = yaml.load(file)
                                                                 
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.error[1]*self.sim_pixel  # error(0)-self.x
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = -self.error[0]*self.sim_pixel
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.error[1]*self.real_pixel  # error(0)-self.x
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = -self.error[0]*self.real_pixel
 
         with open('/home/pmlab/asd.yaml','w') as new_file:
             yaml.dump(joint_calibration, new_file)
@@ -265,8 +280,9 @@ class ImageSubscriber(Node):
 
 
     def align_action(self):
+        self.get_logger().info('Align action started!')
         target_point = JointTrajectoryPoint()
-        target_point.positions = [-0.359, -0.0458, -0.051544, 0.0]       
+        target_point.positions = [-0.359, -0.0458, 0.03, 0.00004]      
         target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
         
         goal_msg = FollowJointTrajectory.Goal()
@@ -295,11 +311,14 @@ class ImageSubscriber(Node):
         self.get_result_future = goal_handle.get_result_async()
         self.get_result_future.add_done_callback(self.align_result_callback)
 
-
+    
     def align_result_callback(self,future):
-        self.get_logger().info('Goal reached!')
+        error_code = future.result().result.error_code
+        if error_code != 0:
+            self.get_logger().info(f'Error code: "{error_code}"')
+        self.get_logger().info(f'Goal reached!')
         
-        rclpy.shutdown()
+        # rclpy.shutdown()
         
          # add some conditions ?
       
@@ -312,7 +331,7 @@ class ImageSubscriber(Node):
     def rotate_action(self):  
 
             target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = [6.4]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
+            target_rotation.positions = [-0.00008]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
             target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
             #target_rotation.velocities = [0.0]
             #target_rotation.accelerations = [0.0] # if added, offset in x or y
@@ -330,6 +349,7 @@ class ImageSubscriber(Node):
 
     def goal_response_callback(self, future):
         #goal_handle = future.re
+        
         goal_handle = future.result()
         if not goal_handle.accepted:
             self.get_logger().info('Rotation rejected.') # add error type
