@@ -68,11 +68,11 @@ class ImageSubscriber(Node):
                 #time.sleep(0.5) 
             self.get_logger().info('Detection callback started') 
             self.rotate_action()
-            
+            这边有问题，如何靠程序解决呢
             
         # for i in range(4):
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, -0.00008]):
-            #    ZeroDivisionError by -0.00008 am Anfang
+                ZeroDivisionError by -0.00008 am Anfang
             self.fit_ellipse()
             
 
@@ -277,8 +277,9 @@ class ImageSubscriber(Node):
         self.get_logger().info('Calibration successful!')
         # except AttributeError:
         #     self.get_logger().error('Error: ')
-
-
+        值过大：超过100
+        asdasdad的东西都清理一遍
+        删除不需要的文件
     def align_action(self):
         self.get_logger().info('Align action started!')
         target_point = JointTrajectoryPoint()
