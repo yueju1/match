@@ -16,12 +16,13 @@ from ruamel.yaml import YAML
 import math
 from circle_fit import taubinSVD
 import numpy as np                #  folge 
+import inspect
  #试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
 # 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
  #也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
-   #搞像素坐标转真实的
+   
 #     add conditions
-class ImageSubscriber(Node):
+class AutoCalibration(Node):
 
     def __init__(self):
         #这里面的不报位置吗     
@@ -31,20 +32,8 @@ class ImageSubscriber(Node):
             #        ...shutdown
             
             # ...
-            
-            
-            
-        self.sub = self.create_subscription(JointTrajectoryControllerState,
-                                             '/pm_robot_xyz_axis_controller/state',
-                                             self.state_callback,
-                                             10)
-        #  self.subscription  # prevent unused variable warning ?
-        self.br = CvBridge()
-    
-        # self.action_client = ActionClient(self,FollowJointTrajectory,
-        #                           '/joint_trajectory_controller/follow_joint_trajectory')
-        self.action_client = ActionClient(self,FollowJointTrajectory,
-                                  '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
+        self.get_logger().info('Calibration starting...')   
+        
         self.list = []
         self.first_point = []
         self.r_r = 0
@@ -52,12 +41,24 @@ class ImageSubscriber(Node):
         self.s = 0
         self. RR = 0
         self.mm = 0
-        self.align_action()   # 不写这个行吗
-        # self.ok = 0
-    def state_callback(self, msg):
+            
+            
+        self.sub = self.create_subscription(JointTrajectoryControllerState,
+                                             '/pm_robot_xyz_axis_controller/state',
+                                             self.state_callback,
+                                             10)
         
-        # for i in range(4):
-
+        self.get_logger().info('Waiting for controller state...')
+        #  self.subscription  # prevent unused variable warning ?
+        self.br = CvBridge()
+        # self.action_client = ActionClient(self,FollowJointTrajectory,
+        #                           '/joint_trajectory_controller/follow_joint_trajectory')
+        self.action_client = ActionClient(self,FollowJointTrajectory,
+                                  '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
+        
+        self.align_action()   
+        
+    def state_callback(self, msg):
                 # desired position is meaningful?
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.00004]):
             #time.sleep(0.5)
@@ -65,46 +66,33 @@ class ImageSubscriber(Node):
                     '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
                     self.detection_callback,
                     10)
-                #time.sleep(0.5) 
-            self.get_logger().info('Detection callback started') 
+            
+            time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
+                          # because of the enough duration of 2s
+            self.get_logger().info('Waiting for kamera...')
+            if len(self.list) < 1:
+                self.get_logger().info('No ellipse detected. Please modify the parameters.')
+                rclpy.shutdown()
+                exit(0)
+            
             self.rotate_action()
-            这边有问题，如何靠程序解决呢
+            这边有问题(rueckgang)，如何靠程序解决呢，可以忽略？
             
         # for i in range(4):
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, -0.00008]):
-                ZeroDivisionError by -0.00008 am Anfang
+                # ZeroDivisionError by -0.00008 am Anfang (maybe together with multiple detection)
             self.fit_ellipse()
             
-
             # self.return_action()  
             
-            #exit(0)
-    def return_action(self):
-            target_point = JointTrajectoryPoint()
-            target_point.positions = [0.0, 0.0, 0.0, 0.0]         # ros::Time::now()  ros2 li shisha
-            target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
-            # target_point.velocities = [0.0, 0.0, 0.0, 0.0]
-            # target_point.accelerations = [0.0, 0.0, 0.0, 0.0]
-            # more smoothly: x_joint by 0.08 und y,z,t......
-            goal_msg = FollowJointTrajectory.Goal()
-            # goal_msg.trajectory.header.stamp = Clock().clock     use_sim_time in launch
-        
-            goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
-                                            'Z_Axis_Joint','T_Axis_Joint'
-                                                ]
-            goal_msg.trajectory.points = [target_point]
-            # + velocity accelerate  速度和duration2选1吗 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            # rclpy.shutdown()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
-            self.action_client.send_goal_async(goal_msg)
-
-           # exit()
-
+            exit(0)
 
     def detection_callback(self,data):
-        self.get_logger().info(f'detection callback')
+        self.get_logger().info('Detection starts!') 
         #图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
         im = self.br.imgmsg_to_cv2(data)
-        self.get_logger().info(f'detection callback')
         # im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5),1)
@@ -129,18 +117,11 @@ class ImageSubscriber(Node):
             if len(contours[i]) >= 100 and len(contours[i]) <= 500:
                 # and len(contours[i]) <= 500
                 retval = cv2.fitEllipse(contours[i])  
-                
-                # 不要launch了，下面的改yaml的改了，再看下畸变比例能不能算，下面fit_ellipse里的
-                # if error写一下，不行就运动回去，镜子折射的tf转换搞掉。tf 直接看gazebo运动
-             
                 #self.get_logger().info('{0}'.format(retval))
                 
-                  # 就用这个半径， 具体数值看下pixel。 看看哪个是a哪个是b。 
                 if retval[1][0] > 105.0 and retval[1][1] < 120.0 and (retval[1][1]-retval[1][0]) <= 5:
                      #if retval[1][0] < 240.0 and retval[1][1] > 100 
-                     
-                      #  noch durchschnittswert            
-                   # print('sdadasdasdasd',contours[i])
+
                 # cv2.ellipse(im, retval, (0, 0, 255), thickness=1) 
                 # cv2.circle(im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                     
@@ -154,7 +135,7 @@ class ImageSubscriber(Node):
                     c += retval[0][1]
                     while len(self.first_point) < 1:
                         self.first_point.append(retval)
-                    #  成像大小再想想
+
                     #                  确保第一个ellipse的b
                     r += (retval[1][0]/2 + retval[1][1]/2)/2
                     diff += (retval[1][0]/2 / r)  # or (a-b)/2
@@ -216,15 +197,13 @@ class ImageSubscriber(Node):
         #if len(self.list) >= 5:
         try:
             points = (np.array(self.list, dtype=np.float32))#.astype(float)
-            
-            
+                        
             data = cv2.fitEllipse(points)
             
             #self.x, self.y = data[0][0], data[0][1] # /1000
             self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
             x = self.error[0]*self.error[0]+self.error[1]*self.error[1]
-            errer2 = math.sqrt(x)*self.real_pixel
-
+            error2 = math.sqrt(x)*self.real_pixel
 
         # cali_x = 1296 + (self.x - 1296)/self.m
         # cali_y = 972 + (self.y - 972)/self.m
@@ -240,8 +219,8 @@ class ImageSubscriber(Node):
                                    (self.error[0]*self.real_pixel, self.error[1]*self.real_pixel))
                     #offset: wer relative zu wem: tf , weite zum spiegel
                     
-            self.get_logger().info('The error is: {0}'.format(errer2))  #error in x, y
-            
+            self.get_logger().info('The error is: {0}'.format(error2))  #error in x, y
+                   
         except cv2.error: 
             self.get_logger().error('Error: not enough points collected!')
 
@@ -249,9 +228,15 @@ class ImageSubscriber(Node):
             self.get_logger().error('Unknown error!')
 
         else:
-                
-            self.adjust_yaml()
+            if error2 >= 100.0:
+                self.get_logger().info('A possible mistake: The detected deviation is too large.\nPlease calibrate again!')
 
+                rclpy.shutdown() # no return_action no shutdown?
+                exit(0)
+           
+            else:    
+                self.adjust_yaml()
+               
         #     return
         # print(data)
                # !!! degree !!!
@@ -281,7 +266,7 @@ class ImageSubscriber(Node):
         asdasdad的东西都清理一遍
         删除不需要的文件
     def align_action(self):
-        self.get_logger().info('Align action started!')
+        self.get_logger().info('Starting align...')
         target_point = JointTrajectoryPoint()
         target_point.positions = [-0.359, -0.0458, 0.03, 0.00004]      
         target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
@@ -326,11 +311,9 @@ class ImageSubscriber(Node):
     def align_callback(self,feedcak_msg):
 
         self.get_logger().info('Approaching...')
-
-
                                                     
     def rotate_action(self):  
-
+            self.get_logger().info('Starting ratation...')
             target_rotation = JointTrajectoryPoint()
             target_rotation.positions = [-0.00008]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
             target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
@@ -341,7 +324,7 @@ class ImageSubscriber(Node):
 
             rotate_msg.trajectory.joint_names = ['T_Axis_Joint']
             rotate_msg.trajectory.points = [target_rotation]
-            self.get_logger().info('asdadasdasdasdasdasd')
+           
             # self.action_client.wait_for_server() ?
             
             self.send_goal_future = self.action_client.send_goal_async(rotate_msg
@@ -361,7 +344,6 @@ class ImageSubscriber(Node):
         self.get_result_future = goal_handle.get_result_async()
         self.get_result_future.add_done_callback(self.get_result_callback)
 
-
     def get_result_callback(self,future):
         result = future.result().result
         self.get_logger().info('Rotation finished!')
@@ -377,6 +359,25 @@ class ImageSubscriber(Node):
         self.get_logger().info('The present position is: %s'%(position) )
         # value of velocity is not 0
     
+    def return_action(self):
+            target_point = JointTrajectoryPoint()
+            target_point.positions = [0.0, 0.0, 0.0, 0.0]         # ros::Time::now()  ros2 li shisha
+            target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+            # target_point.velocities = [0.0, 0.0, 0.0, 0.0]
+            # target_point.accelerations = [0.0, 0.0, 0.0, 0.0]
+            # more smoothly: x_joint by 0.08 und y,z,t......
+            goal_msg = FollowJointTrajectory.Goal()
+            # goal_msg.trajectory.header.stamp = Clock().clock     use_sim_time in launch
+        
+            goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
+                                            'Z_Axis_Joint','T_Axis_Joint'
+                                                ]
+            goal_msg.trajectory.points = [target_point]
+            # + velocity accelerate  速度和duration2选1吗 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            
+            self.action_client.send_goal_async(goal_msg)
+
+           # exit()
 
 
 
@@ -385,13 +386,11 @@ def main():
     
     rclpy.init()
    
-     
-
-    image_subscriber = ImageSubscriber()
+    # image_subscriber = AutoCalibration()
     # rclpy.spin(image_subscriber)
-
     #future = image_subscriber.rotate_action([-0.7, -0.0458, -0.026791, 1.08]) 
-    rclpy.spin(image_subscriber)
+    
+    rclpy.spin(AutoCalibration())
 
     rclpy.shutdown()
     
