@@ -47,10 +47,14 @@ class AutoCalibration(Node):
                                              '/pm_robot_xyz_axis_controller/state',
                                              self.state_callback,
                                              10)
-        
+        # self.sub = self.create_subscription(JointTrajectoryControllerState,
+        #                                      '/joint_trajectory_controller/state',
+        #                                      self.state_callback,
+        #                                      10)
+        self.br = CvBridge()
         self.get_logger().info('Waiting for controller state...')
         #  self.subscription  # prevent unused variable warning ?
-        self.br = CvBridge()
+        
         # self.action_client = ActionClient(self,FollowJointTrajectory,
         #                           '/joint_trajectory_controller/follow_joint_trajectory')
         self.action_client = ActionClient(self,FollowJointTrajectory,
@@ -59,24 +63,29 @@ class AutoCalibration(Node):
         self.align_action()   
         
     def state_callback(self, msg):
-                # desired position is meaningful?
-        if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.00004]):
-            #time.sleep(0.5)
+        
+        self.get_logger().info('state_callback')
+        if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.0]):
+           
             self.sub = self.create_subscription(Image,
                     '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
                     self.detection_callback,
                     10)
+            # self.sub = self.create_subscription(Image,
+            #         '/Cam2/image_raw',
+            #         self.detection_callback,
+            #         10)
             
-            time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
+            #time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
                           # because of the enough duration of 2s
-            self.get_logger().info('Waiting for kamera...')
-            if len(self.list) < 1:
-                self.get_logger().info('No ellipse detected. Please modify the parameters.')
-                rclpy.shutdown()
-                exit(0)
+            #self.get_logger().info('Waiting for kamera...')
+            # if len(self.list) < 1:
+            #     self.get_logger().info('No ellipse detected. Please modify the parameters.')
+            #     rclpy.shutdown()
+            #     exit(0)
             
             self.rotate_action()
-            这边有问题(rueckgang)，如何靠程序解决呢，可以忽略？
+            
             
         # for i in range(4):
         if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, -0.00008]):
@@ -87,11 +96,11 @@ class AutoCalibration(Node):
             
             # rclpy.shutdown()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             
-            exit(0)
+            exit(1)
 
     def detection_callback(self,data):
         self.get_logger().info('Detection starts!') 
-        #图像处理完了还要在回到原位置，除此以外需要从任意位置开始运动到指定点吗
+        
         im = self.br.imgmsg_to_cv2(data)
         # im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
@@ -153,14 +162,12 @@ class AutoCalibration(Node):
             self.r_r += r/len(a)
             self.m += diff/len(a)
             self.s += area/len(a)
-        # print(m1,m2)
-        print('length:',len(a))
-        print('its b',b)
-        # if [m1, m2] not in self.list:
-        self.list.append([m1,m2])
-        #self.RR = self.r_r/len(self.list)
+        print(self.list)
+        if [m1, m2] not in self.list:
+            self.list.append([m1,m2])
+            #self.RR = self.r_r/len(self.list)
         self.mm = self.m/len(self.list) 
-        
+            
         self.get_logger().info('last mittelpunkt:%s'%self.list[-1])
         #print(self.list)     # T_Axis: 5.64 --> leer
         # self.ok = 1         
@@ -187,55 +194,59 @@ class AutoCalibration(Node):
     def fit_ellipse(self): 
         #self.sim_pixel = 250/self.RR  # reality also define
 
-        sr = math.sqrt(self.s/len(self.list)/math.pi)
-        self.sim2 = 250/sr
+        #sr = math.sqrt(self.s/len(self.list)/math.pi)
+        #self.sim2 = 250/sr
         self.real_pixel = 2.2
-        self.x,self.y,e,r = taubinSVD(self.list)
+        #self.x,self.y,e,r = taubinSVD(self.list)
         # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
         # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
+
+        # points = np.array(self.list)*1000
+        # points = np.array(points).astype(int)
+
         
         #if len(self.list) >= 5:
-        try:
-            points = (np.array(self.list, dtype=np.float32))#.astype(float)
-                        
-            data = cv2.fitEllipse(points)
-            
-            #self.x, self.y = data[0][0], data[0][1] # /1000
-            self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
-            x = self.error[0]*self.error[0]+self.error[1]*self.error[1]
-            error2 = math.sqrt(x)*self.real_pixel
-
-        # cali_x = 1296 + (self.x - 1296)/self.m
-        # cali_y = 972 + (self.y - 972)/self.m
-        # k = (self.first_point[0][1][0]/2)/((self.first_point[0][1][0]/2+self.first_point[0][1][1]/2)/2)
-        # cali_x0 = 1296 + (self.list[0][0] - 1296)/k
-        # cali_y0 = 972 + (self.list[0][1] - 972)/k
-        # error3 = (cali_x0-cali_x,cali_y0-cali_y)
-        # s = error3[0]*error3[0]+error3[1]*error3[1]
-        # e4 = math.sqrt(s)*real_pixel
-        
-            self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
-            self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format
-                                   (self.error[0]*self.real_pixel, self.error[1]*self.real_pixel))
-                    #offset: wer relative zu wem: tf , weite zum spiegel
+        #try:
+        points = np.array(self.list, dtype=np.float32)#.astype(int)
                     
-            self.get_logger().info('The error is: {0}'.format(error2))  #error in x, y
+        data = cv2.fitEllipse(points)
+        
+        self.x, self.y = data[0][0], data[0][1] # /1000
+        self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
+        x = self.error[0]*self.error[0]+self.error[1]*self.error[1]
+        error2 = math.sqrt(x)*self.real_pixel
+
+    # cali_x = 1296 + (self.x - 1296)/self.m
+    # cali_y = 972 + (self.y - 972)/self.m
+    # k = (self.first_point[0][1][0]/2)/((self.first_point[0][1][0]/2+self.first_point[0][1][1]/2)/2)
+    # cali_x0 = 1296 + (self.list[0][0] - 1296)/k
+    # cali_y0 = 972 + (self.list[0][1] - 972)/k
+    # error3 = (cali_x0-cali_x,cali_y0-cali_y)
+    # s = error3[0]*error3[0]+error3[1]*error3[1]
+    # e4 = math.sqrt(s)*real_pixel
+    
+        self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
+        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format
+                                (self.error[0]*self.real_pixel, self.error[1]*self.real_pixel))
+                #offset: wer relative zu wem: tf , weite zum spiegel
+                
+        self.get_logger().info('The error is: {0}'.format(error2))  #error in x, y
                    
-        except cv2.error: 
-            self.get_logger().error('Error: not enough points collected!')
+        # except cv2.error: 
+        #     self.get_logger().error('Error: not enough points collected!')
 
-        except:  # besser machen
-            self.get_logger().error('Unknown error!')
+        # except:  # besser machen
+        #     self.get_logger().error('Unknown error!')
 
-        else:
-            if error2 >= 100.0:
-                self.get_logger().info('A possible mistake: The detected deviation is too large.\nPlease calibrate again!')
+        # else:
+        #     if error2 >= 100.0:
+        #         self.get_logger().info('A possible mistake: The detected deviation is too large.\nPlease calibrate again!')
 
-                rclpy.shutdown() # no return_action no shutdown?
-                exit(0)
+        #         rclpy.shutdown() # no return_action no shutdown?
+        #         exit(0)
            
-            else:    
-                self.adjust_yaml()
+        #     else:    
+        self.adjust_yaml()
                
         #     return
         # print(data)
@@ -262,14 +273,11 @@ class AutoCalibration(Node):
         self.get_logger().info('Calibration successful!')
         # except AttributeError:
         #     self.get_logger().error('Error: ')
-        值过大：超过100
-        asdasdad的东西都清理一遍
-        删除不需要的文件
     def align_action(self):
         self.get_logger().info('Starting align...')
         target_point = JointTrajectoryPoint()
-        target_point.positions = [-0.359, -0.0458, 0.03, 0.00004]      
-        target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+        target_point.positions = [-0.359, -0.0458, 0.03, 0.0]      
+        #target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
         
         goal_msg = FollowJointTrajectory.Goal()
         
@@ -299,10 +307,10 @@ class AutoCalibration(Node):
 
     
     def align_result_callback(self,future):
-        error_code = future.result().result.error_code
-        if error_code != 0:
-            self.get_logger().info(f'Error code: "{error_code}"')
-        self.get_logger().info(f'Goal reached!')
+        # error_code = future.result().result.error_code
+        # if error_code != 0:
+        #     self.get_logger().info(f'Error code: "{error_code}"')
+        self.get_logger().info('Goal reached!')
         
         # rclpy.shutdown()
         
@@ -316,7 +324,7 @@ class AutoCalibration(Node):
             self.get_logger().info('Starting ratation...')
             target_rotation = JointTrajectoryPoint()
             target_rotation.positions = [-0.00008]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
-            target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
+            #target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
             #target_rotation.velocities = [0.0]
             #target_rotation.accelerations = [0.0] # if added, offset in x or y
             

@@ -19,11 +19,11 @@ class ImageSubscriber(Node):
 
         super().__init__('image_detection')
         
-        # self.subscription = self.create_subscription(
-        #     Image,
-        #     '/Cam2/image_raw',
-        #     self.listener_callback,
-        #     10)
+        self.subscription = self.create_subscription(
+            Image,
+            '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+            self.listener_callback,
+            10)
         
         #self.subscription  # prevent unused variable warning
 
@@ -31,7 +31,7 @@ class ImageSubscriber(Node):
     # is the callbackfunction a must?
         self.list = []
                                                                  #     1483 943     1365 943
-   # def listener_callback(self, data):
+    def listener_callback(self, data):
         
         a = []
         b = 0
@@ -39,9 +39,9 @@ class ImageSubscriber(Node):
         m1 = 0
         m2 = 0
 
-        #self.im = self.br.imgmsg_to_cv2(data)
+        self.im = self.br.imgmsg_to_cv2(data)
         
-        self.im = cv2.imread("/home/pmlab/Pictures/Screenshots/Screenshot from 2023-07-07 14-33-24.png")    
+        #self.im = cv2.imread("/home/pmlab/Pictures/Screenshots/Screenshot from 2023-07-07 14-33-24.png")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         #gray2 = cv2.GaussianBlur(self.im, (5, 5),1)
         gray2 = cv2.medianBlur(self.im, 7)

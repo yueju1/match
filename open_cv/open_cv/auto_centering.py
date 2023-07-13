@@ -27,7 +27,7 @@ class CenteringClient(Node):
         
         target_point = JointTrajectoryPoint()
         target_point.positions = points          # ros::Time::now()  ros2 li shisha
-        target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+        #target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
         # target_point.velocities = [0.0, 0.0, 0.0, 0.0]
         # target_point.accelerations = [0.0, 0.0, 0.0, 0.0]
         # more smoothly: x_joint by 0.08 und y,z,t......
@@ -76,7 +76,7 @@ def main(args=None):
     rclpy.init(args=args)
     
     client = CenteringClient()       #  decimal  kanxia jonit_state  position
-    client.send_goal([-0.359, -0.0458, 0.02, -0.00008]) 
+    client.send_goal([-0.359, -0.0458, 0.02, -0.0000]) 
     # future = client.send_goal([Decimal(-0.7), Decimal(-0.04), Decimal(-0.01), Decimal(12.0)]) 
     rclpy.spin(client)
     #client.destroy_node()
