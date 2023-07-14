@@ -68,7 +68,7 @@ class AutoCalibration(Node):
             #         '/Cam2/image_raw',
             #         self.detection_callback,
             #         10)
-        print(msg.desired.positions.tolist())
+        print(msg.desired.positions.tolist()[3])
         for i in range(len(msg.actual.positions)):
             
             if msg.actual.positions[i] > self.posit[i]-0.001 and msg.actual.positions[i] < self.posit[i]+0.001:

@@ -28,8 +28,8 @@ class CenteringClient(Node):
         
         target_point = JointTrajectoryPoint()
         target_point.positions = points          # ros::Time::now()  ros2 li shisha
-        #target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
-        target_point.velocities = [6.0, 6.0, 6.0, 6.0]
+        target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+        #target_point.velocities = [6.0, 6.0, 6.0, 6.0]
         #target_point.accelerations = [0.0, 0.0, 0.0, 0.0]
         # more smoothly: x_joint by 0.08 und y,z,t......
         goal_msg = FollowJointTrajectory.Goal()

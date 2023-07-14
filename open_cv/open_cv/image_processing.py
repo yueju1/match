@@ -102,8 +102,8 @@ class AutoCalibration(Node):
             
         # for i in range(4):
         #for i in range(len(msg.actual.positions)):
-        if msg.desired.positions.tolist()[3] == Parameter[5] and msg.actual.positions[3] > Parameter[5]-0.000001 and msg.actual.positions[3] < Parameter[5]+0.000001:
-             
+      ! if msg.actual.positions[3] > Parameter[5][0]-0.04 and msg.actual.positions[3] < Parameter[5][0]+0.04:
+      !      # msg.desired.positions.tolist()[3] == Parameter[5][0] and 
                 # ZeroDivisionError by -0.00008 am Anfang (maybe together with multiple detection)
             #if self.reached_points < i+3:
                 self.reached_points += 1
