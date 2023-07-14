@@ -9,11 +9,3 @@ for i in range(len(a)):
 
 print(n)
 
-
-def main():
-    global my_variable
-    my_variable = 10
-
-if __name__ == "__main__":
-    main()
-    print(my_variable)

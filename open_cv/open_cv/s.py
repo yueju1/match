@@ -24,10 +24,7 @@ import sys
    
 #     add conditions
 class AutoCalibration(Node):
-
-
     
-
     def __init__(self):
         #这里面的不报位置吗     
         super().__init__('image_detection')
@@ -35,28 +32,19 @@ class AutoCalibration(Node):
             # if except ...
             #        ...shutdown
             # ...
-        global qwe
-
         
-        mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
-        self.p1 = [3,3,3,3]
-        self.p2 = (4,4,4,4)
-        # self.Parameter = []    
-        if mode == 1:
-            self.Parameter = self.p1
-            qwe = [6,6,6,6]
-        self.get_logger().info('Calibration starting...')   
-        print(asd)
+        
+        print(Parameter)
         self.n = 0
             
-        self.sub = self.create_subscription(JointTrajectoryControllerState,
-                                             '/pm_robot_xyz_axis_controller/state',
-                                             self.state_callback,
-                                             10)
         # self.sub = self.create_subscription(JointTrajectoryControllerState,
-        #                                      '/joint_trajectory_controller/state',
+        #                                      '/pm_robot_xyz_axis_controller/state',
         #                                      self.state_callback,
         #                                      10)
+        self.sub = self.create_subscription(JointTrajectoryControllerState,
+                                             '/joint_trajectory_controller/state',
+                                             self.state_callback,
+                                             10)
         
         #  self.subscription  # prevent unused variable warning ?
         
@@ -65,10 +53,9 @@ class AutoCalibration(Node):
         # self.action_client = ActionClient(self,FollowJointTrajectory,
         #                           '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
         
-        self.posit = [-0.359, -0.0458, 0.02, 0.01]
-        print(qwe[1])
+        self.posit = [-0.359, -0.0458, -0.051544, 6.4]
+        #print(self.Parameter[1])
     def state_callback(self, msg):
-        pass
         #print(self.Parameter[1])
          
         # if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.0]):
@@ -81,17 +68,20 @@ class AutoCalibration(Node):
             #         '/Cam2/image_raw',
             #         self.detection_callback,
             #         10)
-
-        # for i in range(len(msg.actual.positions)):
+        print(msg.desired.positions.tolist())
+        for i in range(len(msg.actual.positions)):
             
-        #     if msg.actual.positions[i] > self.posit[i]-0.015 and msg.actual.positions[i] < self.posit[i]+0.015:
-        #         if self.n < i:
-        #             self.n += 1
-        #         #print(123)
-        #         #continue
-        #         #print(self.n)
-        # if self.n == 2:
-        #     print(self.n)
+            if msg.actual.positions[i] > self.posit[i]-0.001 and msg.actual.positions[i] < self.posit[i]+0.001:
+            
+                if self.n < i:
+                    self.n += 1
+                #print(123)
+                #continue
+                #print(self.n)
+        
+        if self.n == 3:
+            print('gogogo')
+        
         
         
         # if self.n == 1:
@@ -102,12 +92,12 @@ class AutoCalibration(Node):
 
 
 def main():
-    global Parameter
+    # global Parameter
     
-    Parameter = []
-    global oad, asd
-    asd = [5,5,5]
-    oad = [1,2,3]
+    # Parameter = []
+    # global oad, asd
+    # asd = [5,5,5]
+    # oad = [1,2,3]
     rclpy.init()
     
     # image_subscriber = AutoCalibration()
@@ -123,7 +113,26 @@ if __name__ == "__main__":
     # mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
     
     # if mode == 1:
-        
-    main()
+    mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
 
+    Para_real = ('/pm_robot_xyz_axis_controller/state',
+                 '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
+                 '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+                 [-0.359, -0.0458, 0.03, 0.0],
+                 [-0.359, -0.0458, 0.03, -0.00008],
+                 [-0.00008])
     
+    Para_sim = ('/joint_trajectory_controller/state',
+                '/joint_trajectory_controller/follow_joint_trajectory',
+                '/Cam2/image_raw',
+                [-0.359, -0.0458, -0.051544, 0.0],
+                [-0.359, -0.0458, -0.051544, 6.4],
+                [6.4])
+  
+    if mode == '1':
+        Parameter = Para_real
+        
+    if mode == '2':
+        Parameter = Para_sim
+    
+    main()

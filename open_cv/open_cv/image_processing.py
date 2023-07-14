@@ -41,40 +41,53 @@ class AutoCalibration(Node):
         self.s = 0
         self. RR = 0
         self.mm = 0
-            
-            
-        self.sub = self.create_subscription(JointTrajectoryControllerState,
-                                             '/pm_robot_xyz_axis_controller/state',
-                                             self.state_callback,
-                                             10)
+        print(Parameter) 
+        self.reached_points = 0    
         # self.sub = self.create_subscription(JointTrajectoryControllerState,
-        #                                      '/joint_trajectory_controller/state',
+        #                                      '/pm_robot_xyz_axis_controller/state',
         #                                      self.state_callback,
         #                                      10)
+        self.sub = self.create_subscription(JointTrajectoryControllerState,
+                                             Parameter[0],
+                                             self.state_callback,
+                                             10)
         self.br = CvBridge()
         self.get_logger().info('Waiting for controller state...')
         #  self.subscription  # prevent unused variable warning ?
         
-        # self.action_client = ActionClient(self,FollowJointTrajectory,
-        #                           '/joint_trajectory_controller/follow_joint_trajectory')
         self.action_client = ActionClient(self,FollowJointTrajectory,
-                                  '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
+                                  Parameter[1])
+        # self.action_client = ActionClient(self,FollowJointTrajectory,
+        #                           '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
         
         self.align_action()   
-        
+        # print(msg.desired.positions.tolist())
+        # print(type(msg.desired.positions.tolist()))
     def state_callback(self, msg):
         
         self.get_logger().info('state_callback')
-        if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.0]):
-           
+        # if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.0]):
+        for i in range(len(msg.actual.positions)):
+            
+            if msg.desired.positions.tolist() == Parameter[3] and msg.actual.positions[i] > Parameter[3][i]-0.000001 and msg.actual.positions[i] < Parameter[3][i]+0.000001:
+            
+                if self.reached_points < i:
+                    self.reached_points += 1
+                    print(123)
+                #continue
+                #print(self.reached_points)
+        print(self.reached_points)
+        if self.reached_points == 3:
+            print('gogogo') 
+            
+        #     self.sub = self.create_subscription(Image,
+        #             '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+        #             self.detection_callback,
+        #             10)
             self.sub = self.create_subscription(Image,
-                    '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+                    Parameter[2],
                     self.detection_callback,
                     10)
-            # self.sub = self.create_subscription(Image,
-            #         '/Cam2/image_raw',
-            #         self.detection_callback,
-            #         10)
             
             #time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
                           # because of the enough duration of 2s
@@ -88,10 +101,16 @@ class AutoCalibration(Node):
             
             
         # for i in range(4):
-        if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, -0.00008]):
+        #for i in range(len(msg.actual.positions)):
+        if msg.desired.positions.tolist()[3] == Parameter[5] and msg.actual.positions[3] > Parameter[5]-0.000001 and msg.actual.positions[3] < Parameter[5]+0.000001:
+             
                 # ZeroDivisionError by -0.00008 am Anfang (maybe together with multiple detection)
+            #if self.reached_points < i+3:
+                self.reached_points += 1
+        if self.reached_points == 4:
+            print('backbackbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') 
+            self.reached_points = 0 
             self.fit_ellipse()
-            
             # self.return_action()  
             
             # rclpy.shutdown()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -99,7 +118,7 @@ class AutoCalibration(Node):
             exit(1)
 
     def detection_callback(self,data):
-        self.get_logger().info('Detection starts!') 
+        #self.get_logger().info('Detection starts!') 
         
         im = self.br.imgmsg_to_cv2(data)
         # im = cv2.imread("/home/pmlab/Desktop/Greifer_Unterseitenkamera.bmp")    
@@ -124,9 +143,9 @@ class AutoCalibration(Node):
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 500:
-                # and len(contours[i]) <= 500
+      
                 retval = cv2.fitEllipse(contours[i])  
-                #self.get_logger().info('{0}'.format(retval))
+                
                 
                 if retval[1][0] > 105.0 and retval[1][1] < 120.0 and (retval[1][1]-retval[1][0]) <= 5:
                      #if retval[1][0] < 240.0 and retval[1][1] > 100 
@@ -150,36 +169,23 @@ class AutoCalibration(Node):
                     diff += (retval[1][0]/2 / r)  # or (a-b)/2
                     area += math.pi * retval[1][0]/2 * retval[1][1]/2 
 
-            #         if retval[0] not in self.list:
-            #         #if cv2.fitEllipse(contours[i])[0] not in self.list:
-            #             # if (m1, m2) not in self.list:
-            #                 self.list.append(retval[0])
-                    # print(i)
-                    # print(retval)
         if len(a) != 0: 
             m1 += b/len(a)
             m2 += c/len(a)
             self.r_r += r/len(a)
             self.m += diff/len(a)
             self.s += area/len(a)
-        print(self.list)
+        #print(self.list)
         if [m1, m2] not in self.list:
             self.list.append([m1,m2])
             #self.RR = self.r_r/len(self.list)
         self.mm = self.m/len(self.list) 
-            
-        self.get_logger().info('last mittelpunkt:%s'%self.list[-1])
-        #print(self.list)     # T_Axis: 5.64 --> leer
-        # self.ok = 1         
-                        #print(cv2.fitEllipse(contours[i])[0])
-        
+              
         for point in self.list:
     
             cv2.circle(col, (int(point[0]),int(point[1])),1, (0, 0, 255), -2)
         print('-------------------------------------')
         
-       # cv2.getRectSubPix(im,)
-            # 还有别的方法画椭圆中心吗
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
         cv2.imshow("ellip", col)
@@ -276,8 +282,8 @@ class AutoCalibration(Node):
     def align_action(self):
         self.get_logger().info('Starting align...')
         target_point = JointTrajectoryPoint()
-        target_point.positions = [-0.359, -0.0458, 0.03, 0.0]      
-        #target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
+        target_point.positions = Parameter[3]     
+        target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
         
         goal_msg = FollowJointTrajectory.Goal()
         
@@ -323,8 +329,8 @@ class AutoCalibration(Node):
     def rotate_action(self):  
             self.get_logger().info('Starting ratation...')
             target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = [-0.00008]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
-            #target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
+            target_rotation.positions = Parameter[5]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
+            target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
             #target_rotation.velocities = [0.0]
             #target_rotation.accelerations = [0.0] # if added, offset in x or y
             
@@ -403,4 +409,27 @@ def main():
     rclpy.shutdown()
     
 if __name__ == "__main__":
+
+    mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
+
+    Para_real = ('/pm_robot_xyz_axis_controller/state',
+                 '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
+                 '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+                 [-0.359, -0.0458, 0.03, 0.0],
+                 [-0.359, -0.0458, 0.03, -0.00008],
+                 [-0.00008])
+    
+    Para_sim = ('/joint_trajectory_controller/state',
+                '/joint_trajectory_controller/follow_joint_trajectory',
+                '/Cam2/image_raw',
+                [-0.359, -0.0458, -0.051544, 0.0],
+                [-0.359, -0.0458, -0.051544, 6.4],
+                [6.4])
+  
+    if mode == '1':
+        Parameter = Para_real
+        
+    if mode == '2':
+        Parameter = Para_sim
+
     main()
