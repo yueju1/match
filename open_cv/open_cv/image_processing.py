@@ -255,8 +255,8 @@ class AutoCalibration(Node):
         self.get_logger().info('The error is: {0}'.format(deviation))  #error in x, y
         
         
-        # except Exception as e:
-        #     print(e)
+        # except Exception as e: 
+        #     print(e)          !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         
                   
         # except cv2.error: 
