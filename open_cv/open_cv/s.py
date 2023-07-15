@@ -14,7 +14,7 @@ from builtin_interfaces.msg import Duration
 import time
 from ruamel.yaml import YAML
 import math
-from circle_fit import taubinSVD
+
 import numpy as np                #  folge 
 import inspect
 import sys
@@ -57,7 +57,7 @@ class AutoCalibration(Node):
         #print(self.Parameter[1])
     def state_callback(self, msg):
         #print(self.Parameter[1])
-         
+        self.asd()
         # if msg.desired.positions == array.array('d',[-0.359, -0.0458, 0.03, 0.0]):
            
             # self.sub = self.create_subscription(Image,
@@ -69,12 +69,12 @@ class AutoCalibration(Node):
             #         self.detection_callback,
             #         10)
         print(msg.desired.positions.tolist()[3])
-        for i in range(len(msg.actual.positions)):
+        # for i in range(len(msg.actual.positions)):
             
-            if msg.actual.positions[i] > self.posit[i]-0.001 and msg.actual.positions[i] < self.posit[i]+0.001:
+        #     if msg.actual.positions[i] > self.posit[i]-0.001 and msg.actual.positions[i] < self.posit[i]+0.001:
             
-                if self.n < i:
-                    self.n += 1
+        #         if self.n < i:
+        #             self.n += 1
                 #print(123)
                 #continue
                 #print(self.n)
@@ -83,11 +83,17 @@ class AutoCalibration(Node):
             print('gogogo')
         
         
+    def asd(self):
+        self.b = 12
+        self.c = 34
+        if mode == "1":
+            self.a = self.b
+
+        self.zxc()
+    
+    def zxc(self):
         
-        # if self.n == 1:
-        #     print(123)
-
-
+        print(self.a)
 
 
 

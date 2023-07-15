@@ -9,22 +9,21 @@ from control_msgs.msg import JointControllerState
 import numpy as np
 import time
 import os
-from circle_fit import taubinSVD
-#  https://blog.csdn.net/a083614/article/details/78579163
-#  https://juejin.cn/post/7026284378665811975
+from rcl_interfaces.msg import ParameterEvent
+
 
 class ImageSubscriber(Node):
  
     def __init__(self):
 
         super().__init__('image_detection')
-        
+        print(123)
         self.subscription = self.create_subscription(
             Image,
-            '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+            '/Cam1/image_raw',
             self.listener_callback,
             10)
-        
+        print(234)
         #self.subscription  # prevent unused variable warning
 
         self.br = CvBridge()
@@ -32,35 +31,37 @@ class ImageSubscriber(Node):
         self.list = []
                                                                  #     1483 943     1365 943
     def listener_callback(self, data):
-        
+        print(345)
         a = []
         b = 0
         c = 0
         m1 = 0
         m2 = 0
 
-        self.im = self.br.imgmsg_to_cv2(data)
+        #self.im = self.br.imgmsg_to_cv2(data)
         
-        #self.im = cv2.imread("/home/pmlab/Pictures/Screenshots/Screenshot from 2023-07-07 14-33-24.png")    
+        self.im = cv2.imread("/home/yueju/下载/_cgi-bin_mmwebwx-bin_webwxgetmsgimg &MsgID=8469812677115518599&skey=@crypt_8a8c9738_b2b65b258a21ea87ec9e30ab9adc417b&mmweb_appid=wx_webfilehelper.jpeg")    
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         #gray2 = cv2.GaussianBlur(self.im, (5, 5),1)
         gray2 = cv2.medianBlur(self.im, 7)
         #gray2 = cv2.bilateralFilter(im, d=5, sigmaColor=50, sigmaSpace=50)
-        canny = cv2.Canny(gray2, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)   # 5,15
+        canny = cv2.Canny(self.im, 40, 500,apertureSize=3) # , apertureSize = 3) #(55, 230)   # 5,15
         
-        
+        print(123)
         
         _, thresh = cv2.threshold(canny, 140, 120, cv2.THRESH_BINARY)  # ret
-        print(123123123)
+        
         contours, hierarchy = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
             #最小二乘法拟合椭圆  椭圆检测能检测圆吗 摄像机侧边拍真的是椭圆吗（不倾斜，相互平行）
             # 检测椭圆内圈？
         #print(11111111111,np.size(contours))
-        print(12312313)
-        # print(contours)
-        for i in range(len(contours)) :  #sobel? kaolv geng fuza yidian
+        
+        print(contours)
+        col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
+        for i in range(len(contours)) :  
+            print(123)#sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
-            if len(contours[i]) >= 50 and len(contours[i]) <= 120:
+            if len(contours[i]) >= 5:# and len(contours[i]) <= 120:
                 #print(222222222222,np.size(contours))
                 #print(hierarchy)
                 print('asdasdadasd')
@@ -68,15 +69,16 @@ class ImageSubscriber(Node):
 
                 retval = cv2.fitEllipse(contours[i])  
                 
-                cv2.ellipse(self.im, retval, (0, 0, 255), thickness=1) 
-                cv2.circle(self.im, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
+                cv2.ellipse(col, retval, (0, 0, 255), thickness=1) 
+                cv2.circle(col, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -2)
                 
-                # col = cv2.cvtColor(canny, cv2.COLOR_GRAY2BGR)
-                # cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
-                cv2.namedWindow('ellip',0)
-                cv2.resizeWindow('ellip',1200,1100)
-                cv2.imshow("ellip", self.im)
-                cv2.waitKey(0)
+                
+                
+                cv2.drawContours(col, contours, -1, (0, 0, 255), 1)
+                # cv2.namedWindow('ellip',0)
+                # cv2.resizeWindow('ellip',1200,1100)
+                # cv2.imshow("ellip", self.im)
+                # cv2.waitKey(0)
 
 
                 print(retval)
@@ -126,7 +128,7 @@ class ImageSubscriber(Node):
 
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1200,1100)
-        cv2.imshow("ellip", self.im)
+        cv2.imshow("ellip", col)
         
         
         
@@ -153,6 +155,7 @@ def main():
     rclpy.shutdown()
     
 if __name__ == "__main__":
+    
     main()
     
     

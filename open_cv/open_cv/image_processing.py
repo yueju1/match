@@ -17,6 +17,7 @@ import math
 from circle_fit import taubinSVD
 import numpy as np                #  folge 
 import inspect
+import traceback
  #试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
 # 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
  #也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
@@ -42,7 +43,7 @@ class AutoCalibration(Node):
         self. RR = 0
         self.mm = 0
         print(Parameter) 
-        self.reached_points = 0    
+        self.reached_position_number = 0    
         # self.sub = self.create_subscription(JointTrajectoryControllerState,
         #                                      '/pm_robot_xyz_axis_controller/state',
         #                                      self.state_callback,
@@ -71,13 +72,13 @@ class AutoCalibration(Node):
             
             if msg.desired.positions.tolist() == Parameter[3] and msg.actual.positions[i] > Parameter[3][i]-0.000001 and msg.actual.positions[i] < Parameter[3][i]+0.000001:
             
-                if self.reached_points < i:
-                    self.reached_points += 1
+                if self.reached_position_number < i:
+                    self.reached_position_number += 1
                     print(123)
                 #continue
-                #print(self.reached_points)
-        print(self.reached_points)
-        if self.reached_points == 3:
+                #print(self.reached_position_number)
+        print(self.reached_position_number)
+        if self.reached_position_number == 3:
             print('gogogo') 
             
         #     self.sub = self.create_subscription(Image,
@@ -100,16 +101,18 @@ class AutoCalibration(Node):
             self.rotate_action()
             
             
-        # for i in range(4):
+                list[0]?
+                
         #for i in range(len(msg.actual.positions)):
       ! if msg.actual.positions[3] > Parameter[5][0]-0.04 and msg.actual.positions[3] < Parameter[5][0]+0.04:
-      !      # msg.desired.positions.tolist()[3] == Parameter[5][0] and 
+        !      # msg.desired.positions.tolist()[3] == Parameter[5][0] and 
+      
                 # ZeroDivisionError by -0.00008 am Anfang (maybe together with multiple detection)
-            #if self.reached_points < i+3:
-                self.reached_points += 1
-        if self.reached_points == 4:
+            #if self.reached_position_number < i+3:
+                self.reached_position_number += 1
+        if self.reached_position_number == 4:
             print('backbackbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') 
-            self.reached_points = 0 
+            self.reached_position_number = 0 
             self.fit_ellipse()
             # self.return_action()  
             
@@ -140,6 +143,9 @@ class AutoCalibration(Node):
         diff = 0
         area = 0
         col = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
+#          File "/home/yueju/led/change/open_cv/open_cv/4.py", line 129, in listener_callback
+#     cv2.imshow("ellip", col)
+# UnboundLocalError: local variable 'col' referenced before assignment
         for i in range(len(contours)):  #sobel? kaolv geng fuza yidian
             # if len(contours[i]) >= 300 and len(contours[i]) < 330:
             if len(contours[i]) >= 100 and len(contours[i]) <= 500:
@@ -175,10 +181,10 @@ class AutoCalibration(Node):
             self.r_r += r/len(a)
             self.m += diff/len(a)
             self.s += area/len(a)
-        #print(self.list)
+        
         if [m1, m2] not in self.list:
             self.list.append([m1,m2])
-            #self.RR = self.r_r/len(self.list)
+        self.RR = self.r_r/len(self.list)
         self.mm = self.m/len(self.list) 
               
         for point in self.list:
@@ -198,11 +204,21 @@ class AutoCalibration(Node):
         
     
     def fit_ellipse(self): 
-        #self.sim_pixel = 250/self.RR  # reality also define
+        
+        self.real_pixel_size = 2.2
+        self.sim_pixel_size = 250/self.RR
+        
+        if mode == '1':
+            
+            self.pixel_size = self.real_pixel_size
 
-        #sr = math.sqrt(self.s/len(self.list)/math.pi)
-        #self.sim2 = 250/sr
-        self.real_pixel = 2.2
+        elif mode == '2':
+            
+            self.pixel_size = self.sim_pixel_size
+
+        # sr = math.sqrt(self.s/len(self.list)/math.pi)      !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        # self.sim2 = 250/sr                                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         #self.x,self.y,e,r = taubinSVD(self.list)
         # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
         # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
@@ -219,8 +235,8 @@ class AutoCalibration(Node):
         
         self.x, self.y = data[0][0], data[0][1] # /1000
         self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
-        x = self.error[0]*self.error[0]+self.error[1]*self.error[1]
-        error2 = math.sqrt(x)*self.real_pixel
+        square = self.error[0]*self.error[0]+self.error[1]*self.error[1]
+        deviation = math.sqrt(square)*self.pixel_size
 
     # cali_x = 1296 + (self.x - 1296)/self.m
     # cali_y = 972 + (self.y - 972)/self.m
@@ -233,11 +249,16 @@ class AutoCalibration(Node):
     
         self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
         self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format
-                                (self.error[0]*self.real_pixel, self.error[1]*self.real_pixel))
+                                (self.error[0]*self.pixel_size, self.error[1]*self.pixel_size))
                 #offset: wer relative zu wem: tf , weite zum spiegel
                 
-        self.get_logger().info('The error is: {0}'.format(error2))  #error in x, y
-                   
+        self.get_logger().info('The error is: {0}'.format(deviation))  #error in x, y
+        
+        
+        # except Exception as e:
+        #     print(e)
+        
+                  
         # except cv2.error: 
         #     self.get_logger().error('Error: not enough points collected!')
 
@@ -270,8 +291,8 @@ class AutoCalibration(Node):
             , "r") as file:
             joint_calibration = yaml.load(file)
                                                                 
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.error[1]*self.real_pixel  # error(0)-self.x
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = -self.error[0]*self.real_pixel
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.error[1]*self.pixel_size  # error(0)-self.x
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = -self.error[0]*self.pixel_size
 
         with open('/home/pmlab/asd.yaml','w') as new_file:
             yaml.dump(joint_calibration, new_file)
