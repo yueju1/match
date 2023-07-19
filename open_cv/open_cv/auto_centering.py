@@ -78,8 +78,8 @@ def main(args=None):
     
     client = CenteringClient()       #  decimal  kanxia jonit_state  position
     #client.send_goal([-0.359, -0.0458, 0.03, -0.00004]) 
-    client.send_goal([-0.359, -0.0458, -0.051544, 6.0]) 
-    rclpy.spin(client)
+    client.send_goal([-0.359, -0.0458, -0.051544, 6.4]) 
+    rclpy.spin_once(client)
     #client.destroy_node()
     
     
