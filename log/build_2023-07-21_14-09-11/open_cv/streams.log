@@ -1,0 +1,28 @@
+[0.446s] Invoking command in '/home/pmlab/yueju/change/build/open_cv': PYTHONPATH=/home/pmlab/yueju/change/build/open_cv/prefix_override:/home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/pmlab/yueju/change/build/open_cv/build --no-deps install_data
+[0.629s] running develop
+[0.629s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[0.629s]   warnings.warn(
+[0.630s] /usr/lib/python3/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[0.630s]   warnings.warn(
+[0.672s] /usr/lib/python3/dist-packages/pkg_resources/__init__.py:116: PkgResourcesDeprecationWarning: 1.16.0-unknown is an invalid version and will not be supported in a future release
+[0.672s]   warnings.warn(
+[0.672s] /usr/lib/python3/dist-packages/pkg_resources/__init__.py:116: PkgResourcesDeprecationWarning: 1.1build1 is an invalid version and will not be supported in a future release
+[0.673s]   warnings.warn(
+[0.749s] running egg_info
+[0.749s] writing open_cv.egg-info/PKG-INFO
+[0.749s] writing dependency_links to open_cv.egg-info/dependency_links.txt
+[0.749s] writing entry points to open_cv.egg-info/entry_points.txt
+[0.750s] writing requirements to open_cv.egg-info/requires.txt
+[0.750s] writing top-level names to open_cv.egg-info/top_level.txt
+[0.751s] reading manifest file 'open_cv.egg-info/SOURCES.txt'
+[0.751s] writing manifest file 'open_cv.egg-info/SOURCES.txt'
+[0.752s] running build_ext
+[0.752s] Creating /home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages/open-cv.egg-link (link to .)
+[0.753s] Installing asd script to /home/pmlab/yueju/change/install/open_cv/lib/open_cv
+[0.753s] Installing auto_centering script to /home/pmlab/yueju/change/install/open_cv/lib/open_cv
+[0.753s] Installing go script to /home/pmlab/yueju/change/install/open_cv/lib/open_cv
+[0.753s] Installing image_processing script to /home/pmlab/yueju/change/install/open_cv/lib/open_cv
+[0.753s] 
+[0.753s] Installed /home/pmlab/yueju/change/build/open_cv
+[0.753s] running install_data
+[0.771s] Invoked command in '/home/pmlab/yueju/change/build/open_cv' returned '0': PYTHONPATH=/home/pmlab/yueju/change/build/open_cv/prefix_override:/home/pmlab/yueju/change/install/open_cv/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py develop --editable --build-directory /home/pmlab/yueju/change/build/open_cv/build --no-deps install_data

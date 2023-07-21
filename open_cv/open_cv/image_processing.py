@@ -105,6 +105,13 @@ class AutoCalibration(Node):
             #        ...shutdown
         
             # ...
+        global Parameter
+        Parameter = ('/joint_trajectory_controller/state',
+                '/joint_trajectory_controller/follow_joint_trajectory',
+                '/Cam2/image_raw',
+                [-0.359, -0.0458, -0.051544, 0.0],
+                [-0.359, -0.0458, -0.051544, 6.2],
+                [6.2])
         self.get_logger().info('Calibration starting...')   
         self.ok = 0
         self.list = []
@@ -117,8 +124,8 @@ class AutoCalibration(Node):
         print(Parameter) 
         self.reached_joint_number = 0    
 
-        self.declare_parameter('ok',0)
-        self.timer = self.create_timer(1,self.da_ba)
+        #self.declare_parameter('ok',0)
+        #self.timer = self.create_timer(1,self.da_ba)
 
         # # self.sub = self.create_subscription(JointTrajectoryControllerState,
         # #                                      '/pm_robot_xyz_axis_controller/state',
@@ -137,12 +144,13 @@ class AutoCalibration(Node):
         # # self.action_client = ActionClient(self,FollowJointTrajectory,
         # #                           '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
         # self. ok = 0
-        self.align_action()   
-    def da_ba(self):
-        ad = self.get_parameter('ok').value
-        if ad == 1:
-            self.rotate_action()
-            self.timer.cancel()
+        #self.align_action() 
+        #   
+    # def da_ba(self):
+    #     ad = self.get_parameter('ok').value
+    #     if ad == 1:
+    #         #self.rotate_action()
+    #         self.timer.cancel()
         
         
 
@@ -202,15 +210,7 @@ class AutoCalibration(Node):
             # rclpy.shutdown()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
               
             exit(1)
-    
-    # def judge(self):
-    #     self.ok = 1
-    #     self.asd()
-    # def asd(self):
-    #     if self.ok==1:  
-    #         self.rotate_action()
-
-
+ 
     def detection_callback(self,data):
         #self.get_logger().info('Detection starts!') 
         
@@ -273,8 +273,8 @@ class AutoCalibration(Node):
             self.m += diff/len(a)
             self.s += area/len(a)
         
-        if [m1, m2] not in self.list:
-            self.list.append([m1,m2])
+        #if [m1, m2] not in self.list:
+        self.list.append([m1,m2])
         self.RR = self.r_r/len(self.list)
         self.mm = self.m/len(self.list) 
               
@@ -310,7 +310,7 @@ class AutoCalibration(Node):
         # sr = math.sqrt(self.s/len(self.list)/math.pi)      !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         # self.sim2 = 250/sr                                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
-        self.x,self.y,e,r = taubinSVD(self.list)
+        #self.x,self.y,e,r = taubinSVD(self.list)
         # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
         # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
 
@@ -324,7 +324,7 @@ class AutoCalibration(Node):
                     
         data = cv2.fitEllipse(points)
         
-        #self.x, self.y = data[0][0], data[0][1] # /1000
+        self.x, self.y = data[0][0], data[0][1] # /1000
         self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
         square = self.error[0]*self.error[0]+self.error[1]*self.error[1]
         deviation = math.sqrt(square)*self.pixel_size
@@ -522,27 +522,27 @@ def main():
     
 if __name__ == "__main__":
 
-    mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
+    # mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
 
-    Para_real = ('/pm_robot_xyz_axis_controller/state',
-                 '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
-                 '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
-                 [-0.359, -0.0458, 0.03, -1200000.0],
-                 [-0.359, -0.0458, 0.03, 600000.0],
-                 [600000.0])
+    # Para_real = ('/pm_robot_xyz_axis_controller/state',
+    #              '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
+    #              '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+    #              [-0.359, -0.0458, 0.03, -1200000.0],
+    #              [-0.359, -0.0458, 0.03, 600000.0],
+    #              [600000.0])
     
-    Para_sim = ('/joint_trajectory_controller/state',
-                '/joint_trajectory_controller/follow_joint_trajectory',
-                '/Cam2/image_raw',
-                [-0.359, -0.0458, -0.051544, 0.0],
-                [-0.359, -0.0458, -0.051544, 6.2],
-                [6.2])
+    # Para_sim = ('/joint_trajectory_controller/state',
+    #             '/joint_trajectory_controller/follow_joint_trajectory',
+    #             '/Cam2/image_raw',
+    #             [-0.359, -0.0458, -0.051544, 0.0],
+    #             [-0.359, -0.0458, -0.051544, 6.2],
+    #             [6.2])
   
-    if mode == '1':
-        Parameter = Para_real
+    # if mode == '1':
+    #     Parameter = Para_real
         
-    if mode == '2':
-        Parameter = Para_sim
+    # if mode == '2':
+    #     Parameter = Para_sim
 
     main()
     

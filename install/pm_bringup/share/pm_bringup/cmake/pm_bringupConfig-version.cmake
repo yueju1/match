@@ -1,1 +1,1 @@
-/home/pmlab/yueju2/change/build/pm_bringup/ament_cmake_core/pm_bringupConfig-version.cmake
+/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_core/pm_bringupConfig-version.cmake

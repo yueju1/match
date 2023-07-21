@@ -1,4 +1,6 @@
 [console_scripts]
+al = open_cv.a:main
 auto_centering = open_cv.auto_centering:main
 image_processing = open_cv.image_processing:main
+text = open_cv.text:main
 

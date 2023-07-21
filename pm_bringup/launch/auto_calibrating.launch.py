@@ -9,7 +9,7 @@ def generate_launch_description():
     
     auto_centering_node = Node(
         package="open_cv", 
-        executable="auto_centering"
+        executable="text"
     )
     
     image_processing_node = Node(

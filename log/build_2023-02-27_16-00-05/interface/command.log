@@ -1,2 +1,0 @@
-Invoking command in '/home/yueju/led/build/interface': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/yueju/led/src/interface -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/interface
-Invoked command in '/home/yueju/led/build/interface' returned '1': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/yueju/led/src/interface -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/interface

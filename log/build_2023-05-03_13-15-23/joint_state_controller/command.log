@@ -1,2 +1,0 @@
-Invoking command in '/home/yueju/led/build/joint_state_controller': /usr/bin/cmake /home/yueju/led/ros_controllers/joint_state_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/joint_state_controller
-Invoked command in '/home/yueju/led/build/joint_state_controller' returned '1': /usr/bin/cmake /home/yueju/led/ros_controllers/joint_state_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/joint_state_controller

@@ -1,5 +1,0 @@
-[0.000000] (-) TimerEvent: {}
-[0.000169] (-) JobUnselected: {'identifier': 'battery_node'}
-[0.000222] (-) JobUnselected: {'identifier': 'interface'}
-[0.000762] (-) JobUnselected: {'identifier': 'pm_robot_description'}
-[0.000807] (-) EventReactorShutdown: {}

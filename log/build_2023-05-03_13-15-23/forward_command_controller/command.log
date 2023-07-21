@@ -1,2 +1,0 @@
-Invoking command in '/home/yueju/led/build/forward_command_controller': /usr/bin/cmake /home/yueju/led/ros_controllers/forward_command_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/forward_command_controller
-Invoked command in '/home/yueju/led/build/forward_command_controller' returned '1': /usr/bin/cmake /home/yueju/led/ros_controllers/forward_command_controller -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/home/yueju/led/install/forward_command_controller

@@ -1,7 +1,0 @@
-/home/yueju/.local/lib/python3.10/site-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
-  warnings.warn(
-  File "/home/yueju/led/install/open_cv/lib/python3.10/site-packages/open_cv/cv_node.py", line 14
-    cv2.
-        ^
-SyntaxError: invalid syntax
-

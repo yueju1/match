@@ -107,6 +107,13 @@ class AutoCa(Node):
             #        ...shutdown
            
             # ...
+        global Parameter
+        Parameter = ('/joint_trajectory_controller/state',
+                '/joint_trajectory_controller/follow_joint_trajectory',
+                '/Cam2/image_raw',
+                [-0.359, -0.0458, -0.051544, 0.0],
+                [-0.359, -0.0458, -0.051544, 6.2],
+                [6.2])
         self.get_logger().info('Calibration starting...')   
         self.ok = 0
         self.list = []
@@ -175,10 +182,10 @@ class AutoCa(Node):
         #             self.detection_callback,
         #             10)
             
-            self.sub = self.create_subscription(Image,
-                    Parameter[2],
-                    self.detection_callback,
-                    10)
+            # self.sub = self.create_subscription(Image,
+            #         Parameter[2],
+            #         self.detection_callback,
+            #         10)
             self.set_parameters([rclpy.Parameter('ok',value=1)])
             #time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
                           # because of the enough duration of 2s
@@ -199,12 +206,12 @@ class AutoCa(Node):
         if self.reached_joint_number == 4:
             print('backbackbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') 
             self.reached_joint_number = 0 
-            self.fit_ellipse()
+            #self.fit_ellipse()
             # self.return_action()  
             
             # rclpy.shutdown()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
               
-            exit(1)
+            #exit(1)
     
     # def judge(self):
     #     self.ok = 1
@@ -521,26 +528,26 @@ if __name__ == "__main__":
     
     
     
-    mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
+    # mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
 
-    Para_real = ('/pm_robot_xyz_axis_controller/state',
-                 '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
-                 '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
-                 [-0.359, -0.0458, 0.03, -1200000.0],
-                 [-0.359, -0.0458, 0.03, 600000.0],
-                 [600000.0])
+    # Para_real = ('/pm_robot_xyz_axis_controller/state',
+    #              '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
+    #              '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+    #              [-0.359, -0.0458, 0.03, -1200000.0],
+    #              [-0.359, -0.0458, 0.03, 600000.0],
+    #              [600000.0])
     
-    Para_sim = ('/joint_trajectory_controller/state',
-                '/joint_trajectory_controller/follow_joint_trajectory',
-                '/Cam1/image_raw',
-                [-0.359, -0.0458, -0.051544, 0.0],
-                [-0.359, -0.0458, -0.051544, 6.2],
-                [6.2])
+    # Para_sim = ('/joint_trajectory_controller/state',
+    #             '/joint_trajectory_controller/follow_joint_trajectory',
+    #             '/Cam2/image_raw',
+    #             [-0.359, -0.0458, -0.051544, 0.0],
+    #             [-0.359, -0.0458, -0.051544, 6.2],
+    #             [6.2])
   
-    if mode == '1':
-        Parameter = Para_real
+    # if mode == '1':
+    #     Parameter = Para_real
         
-    if mode == '2':
-        Parameter = Para_sim
+    # if mode == '2':
+    #     Parameter = Para_sim
 
     main()
