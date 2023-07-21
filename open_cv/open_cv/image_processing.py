@@ -24,76 +24,78 @@ import traceback
    
 #     add conditions
 
-class asdf(Node):
+# class asdf(Node):
     
-    def __init__(self):
-        #这里面的不报位置吗     
-        super().__init__('image_detecn')
-        self.reached_joint_number = 0
-        self.action_client = ActionClient(self,FollowJointTrajectory,
-                                  Parameter[1])
-        print(000000000000000000000000000)
-        self.sub2 = self.create_subscription(JointTrajectoryControllerState,Parameter[0],self.call_b2,10)
-    def call_b2(self,mc):
-        for i in range(len(mc.actual.positions)):
+#     def __init__(self):
+#         #这里面的不报位置吗     
+#         super().__init__('image_detecn')
+#         self.reached_joint_number = 0
+#         self.action_client = ActionClient(self,FollowJointTrajectory,
+#                                   Parameter[1])
+#         print(000000000000000000000000000)
+#         self.sub2 = self.create_subscription(JointTrajectoryControllerState,Parameter[0],self.call_b2,10)
+#     def call_b2(self,mc):
+#         for i in range(len(mc.actual.positions)):
             
-            if mc.desired.positions.tolist() == Parameter[3] and mc.actual.positions[i] > Parameter[3][i]-0.000001 and mc.actual.positions[i] < Parameter[3][i]+0.000001:
+#             if mc.desired.positions.tolist() == Parameter[3] and mc.actual.positions[i] > Parameter[3][i]-0.000001 and mc.actual.positions[i] < Parameter[3][i]+0.000001:
             
-                if self.reached_joint_number < i:
-                    self.reached_joint_number += 1
-                    print(123)
-                #continue
-                #print(self.reached_joint_number)
+#                 if self.reached_joint_number < i:
+#                     self.reached_joint_number += 1
+#                     print(123)
+#                 #continue
+#                 #print(self.reached_joint_number)
         
-        if self.reached_joint_number == 3:
-            self.rotate_action()
-    def rotate_action(self):  
-            self.get_logger().info('Starting ratation...')
-            target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = Parameter[5]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
-            target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
-            #target_rotation.velocities = [0.0]
-            #target_rotation.accelerations = [0.0] # if added, offset in x or y
+#         if self.reached_joint_number == 3:
+#             self.rotate_action()
+#     def rotate_action(self):  
+#             self.get_logger().info('Starting ratation...')
+#             target_rotation = JointTrajectoryPoint()
+#             target_rotation.positions = Parameter[5]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
+#             target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
+#             #target_rotation.velocities = [0.0]
+#             #target_rotation.accelerations = [0.0] # if added, offset in x or y
             
-            rotate_msg = FollowJointTrajectory.Goal()
+#             rotate_msg = FollowJointTrajectory.Goal()
 
-            rotate_msg.trajectory.joint_names = ['T_Axis_Joint']
-            rotate_msg.trajectory.points = [target_rotation]
+#             rotate_msg.trajectory.joint_names = ['T_Axis_Joint']
+#             rotate_msg.trajectory.points = [target_rotation]
            
-            # self.action_client.wait_for_server() ?
+#             # self.action_client.wait_for_server() ?
             
-            self.send_goal_future = self.action_client.send_goal_async(rotate_msg
-                                                                  ,feedback_callback=self.feedback_callback)
-            self.send_goal_future.add_done_callback(self.goal_response_callback)
+#             self.send_goal_future = self.action_client.send_goal_async(rotate_msg
+#                                                                   ,feedback_callback=self.feedback_callback)
+#             self.send_goal_future.add_done_callback(self.goal_response_callback)
 
-    def goal_response_callback(self, future):
-        #goal_handle = future.re
+#     def goal_response_callback(self, future):
+#         #goal_handle = future.re
         
-        goal_handle = future.result()
-        if not goal_handle.accepted:
-            self.get_logger().info('Rotation rejected.') # add error type
-            print(future.exception())
-            return                      # 校准多个bauteil看下这里的 if not 循环
+#         goal_handle = future.result()
+#         if not goal_handle.accepted:
+#             self.get_logger().info('Rotation rejected.') # add error type
+#             print(future.exception())
+#             return                      # 校准多个bauteil看下这里的 if not 循环
         
-        self.get_logger().info('Rotation starts.')
-        self.get_result_future = goal_handle.get_result_async()
-        self.get_result_future.add_done_callback(self.get_result_callback)
+#         self.get_logger().info('Rotation starts.')
+#         self.get_result_future = goal_handle.get_result_async()
+#         self.get_result_future.add_done_callback(self.get_result_callback)
 
-    def get_result_callback(self,future):
-        result = future.result().result
-        self.get_logger().info('Rotation finished!')
+#     def get_result_callback(self,future):
+#         result = future.result().result
+#         self.get_logger().info('Rotation finished!')
         
-        # rclpy.shutdown()
+#         # rclpy.shutdown()
         
-         # add some conditions ?
+#          # add some conditions ?
       
-    def feedback_callback(self,feedback_msg):
-        feedback = feedback_msg.feedback
-        self.get_logger().info('Rotating...')
-        position =  np.array(feedback.actual.positions).tolist()
-        self.get_logger().info('The present position is: %s'%(position) )
+#     def feedback_callback(self,feedback_msg):
+#         feedback = feedback_msg.feedback
+#         self.get_logger().info('Rotating...')
+#         position =  np.array(feedback.actual.positions).tolist()
+#         self.get_logger().info('The present position is: %s'%(position) )
 
 class AutoCalibration(Node):
+    
+
 
     def __init__(self):
         #这里面的不报位置吗     
@@ -101,7 +103,7 @@ class AutoCalibration(Node):
         # try self.sub
             # if except ...
             #        ...shutdown
-            
+        
             # ...
         self.get_logger().info('Calibration starting...')   
         self.ok = 0
@@ -114,10 +116,14 @@ class AutoCalibration(Node):
         self.mm = 0
         print(Parameter) 
         self.reached_joint_number = 0    
-        # self.sub = self.create_subscription(JointTrajectoryControllerState,
-        #                                      '/pm_robot_xyz_axis_controller/state',
-        #                                      self.state_callback,
-        #                                      10)
+
+        self.declare_parameter('ok',0)
+        self.timer = self.create_timer(1,self.da_ba)
+
+        # # self.sub = self.create_subscription(JointTrajectoryControllerState,
+        # #                                      '/pm_robot_xyz_axis_controller/state',
+        # #                                      self.state_callback,
+        # #                                      10)
         self.sub = self.create_subscription(JointTrajectoryControllerState,
                                              Parameter[0],
                                              self.state_callback,
@@ -128,11 +134,15 @@ class AutoCalibration(Node):
         
         self.action_client = ActionClient(self,FollowJointTrajectory,
                                   Parameter[1])
-        # self.action_client = ActionClient(self,FollowJointTrajectory,
-        #                           '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
-        self. ok = 0
+        # # self.action_client = ActionClient(self,FollowJointTrajectory,
+        # #                           '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
+        # self. ok = 0
         self.align_action()   
-        
+    def da_ba(self):
+        ad = self.get_parameter('ok').value
+        if ad == 1:
+            self.rotate_action()
+            self.timer.cancel()
         
         
 
@@ -166,7 +176,7 @@ class AutoCalibration(Node):
                     Parameter[2],
                     self.detection_callback,
                     10)
-            rclpy.spin_once(asdf())
+            self.set_parameters([rclpy.Parameter('ok',value=1)])
             #time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
                           # because of the enough duration of 2s
             #self.get_logger().info('Waiting for kamera...')
@@ -300,7 +310,7 @@ class AutoCalibration(Node):
         # sr = math.sqrt(self.s/len(self.list)/math.pi)      !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         # self.sim2 = 250/sr                                 !!!!!!!!!!!!!!!!!!!!!!!!!!!!
         
-        #self.x,self.y,e,r = taubinSVD(self.list)
+        self.x,self.y,e,r = taubinSVD(self.list)
         # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
         # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
 
@@ -314,7 +324,7 @@ class AutoCalibration(Node):
                     
         data = cv2.fitEllipse(points)
         
-        self.x, self.y = data[0][0], data[0][1] # /1000
+        #self.x, self.y = data[0][0], data[0][1] # /1000
         self.error = (self.list[0][0]-self.x, self.list[0][1]-self.y)
         square = self.error[0]*self.error[0]+self.error[1]*self.error[1]
         deviation = math.sqrt(square)*self.pixel_size
@@ -327,7 +337,7 @@ class AutoCalibration(Node):
     # error3 = (cali_x0-cali_x,cali_y0-cali_y)
     # s = error3[0]*error3[0]+error3[1]*error3[1]
     # e4 = math.sqrt(s)*real_pixel
-    
+        self.get_logger().info('real mitte[{0},{1}]'.format(self.x,self.y))
         self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
         self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format
                                 (self.error[0]*self.pixel_size, self.error[1]*self.pixel_size))
@@ -496,7 +506,6 @@ class AutoCalibration(Node):
            # exit()
 
 
-
 def main():
     # time.sleep(5.0)
     
@@ -536,3 +545,4 @@ if __name__ == "__main__":
         Parameter = Para_sim
 
     main()
+    

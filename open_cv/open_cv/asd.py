@@ -1,23 +1,32 @@
-
 import time
-
 import rclpy
 from rclpy.node import Node
 
-class Imag(Node):
+class fdg():
+    def abc():
+        print(123)
 
-    # if asd.ImageSubscriber().ok == 1:
+class ImageSubscriber(Node):
 
-    #     print(s.AutoCalibration().m)
-    def __init__(self):
+     def __init__(self):
         #这里面的不报位置吗     
         super().__init__('image_detecn')
-        self.declare_parameter('asd',1)
+        # time.sleep(6.0)
+
+        self.ok = 1
+
+        # ins= input('asd')
+        # if ins == '2':
+        #     self.ok = 2
+
+        print(self.ok)
+
+
 
 
 def main():
     rclpy.init()
-    image_subscriber = Imag()
+    image_subscriber = ImageSubscriber()
 
     rclpy.spin(image_subscriber)
     image_subscriber.destroy_node()

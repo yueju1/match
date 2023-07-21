@@ -20,7 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': ['auto_centering = open_cv.auto_centering:main',
-                            'image_processing = open_cv.image_processing:main'
+                            'image_processing = open_cv.image_processing:main',
+                            'go =open_cv.go:main',
+                            'al = open_cv.a:main'
         ],
     },
 )
