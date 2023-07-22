@@ -46,7 +46,7 @@ class asdf(Node):
             
         if self.mode == '2':
             self.Parameter = Para_sim
-
+        time.sleep(6.0)
         self.reached_joint_number = 0
         self.action_client = ActionClient(self,FollowJointTrajectory,
                                   self.Parameter[1])
@@ -114,7 +114,7 @@ class asdf(Node):
 
 
 def main():
-    time.sleep(6.0)
+    
     
     rclpy.init()
    
@@ -122,7 +122,7 @@ def main():
     # rclpy.spin(image_subscriber)
     #future = image_subscriber.rotate_action([-0.7, -0.0458, -0.026791, 1.08]) 
     #rclpy.spin_once(aasd())
-    rclpy.spin_once(asdf())
+    rclpy.spin(asdf())
     
 
     rclpy.shutdown()

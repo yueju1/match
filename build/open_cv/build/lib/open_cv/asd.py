@@ -8,22 +8,18 @@ class fdg():
 
 class ImageSubscriber(Node):
 
-    def __init__(self):
+     def __init__(self):
         #这里面的不报位置吗     
-        super().__init__('image_detecn',allow_undeclared_parameters=True)
+        super().__init__('image_detecn')
         # time.sleep(6.0)
-        a= self.create_timer(1,self.call_b)
-    def call_b(self):
-        ak = self.get_parameter('ok').value
-        if ak == 2:
-            print(123)
-      
+
+        self.ok = 1
 
         # ins= input('asd')
         # if ins == '2':
         #     self.ok = 2
 
- 
+        print(self.ok)
 
 
 

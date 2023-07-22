@@ -25,77 +25,77 @@ import threading
    
 #     add conditions
 
-class asdf(Node):
+# class asdf(Node,threading):
     
-    def __init__(self):
-        #这里面的不报位置吗     
-        super().__init__('idetecn')
+#     def __init__(self):
+#         #这里面的不报位置吗     
+#         super().__init__('idetecn')
         
-        self.reached_joint_number = 0
-        self.action_client = ActionClient(self,FollowJointTrajectory,
-                                  Parameter[1])
-        print(000000000000000000000000000)
-        self.sub2 = self.create_subscription(JointTrajectoryControllerState,Parameter[0],self.call_b2,10)
+#         self.reached_joint_number = 0
+#         self.action_client = ActionClient(self,FollowJointTrajectory,
+#                                   Parameter[1])
+#         print(000000000000000000000000000)
+#         self.sub2 = self.create_subscription(JointTrajectoryControllerState,Parameter[0],self.call_b2,10)
         
         
-    def call_b2(self,mc):
-        for i in range(len(mc.actual.positions)):
+#     def call_b2(self,mc):
+#         for i in range(len(mc.actual.positions)):
             
-            if mc.desired.positions.tolist() == Parameter[3] and mc.actual.positions[i] > Parameter[3][i]-0.000001 and mc.actual.positions[i] < Parameter[3][i]+0.000001:
+#             if mc.desired.positions.tolist() == Parameter[3] and mc.actual.positions[i] > Parameter[3][i]-0.000001 and mc.actual.positions[i] < Parameter[3][i]+0.000001:
             
-                if self.reached_joint_number < i:
-                    self.reached_joint_number += 1
-                    print(123)
-                #continue
-                #print(self.reached_joint_number)
+#                 if self.reached_joint_number < i:
+#                     self.reached_joint_number += 1
+#                     print(123)
+#                 #continue
+#                 #print(self.reached_joint_number)
         
-        if self.reached_joint_number == 3:
-            self.rotate_action()
-    def rotate_action(self):  
-            self.get_logger().info('Starting ratation...')
-            target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = Parameter[5]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
-            target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
-            #target_rotation.velocities = [0.0]
-            #target_rotation.accelerations = [0.0] # if added, offset in x or y
+#         if self.reached_joint_number == 3:
+#             self.rotate_action()
+#     def rotate_action(self):  
+#             self.get_logger().info('Starting ratation...')
+#             target_rotation = JointTrajectoryPoint()
+#             target_rotation.positions = Parameter[5]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
+#             target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
+#             #target_rotation.velocities = [0.0]
+#             #target_rotation.accelerations = [0.0] # if added, offset in x or y
             
-            rotate_msg = FollowJointTrajectory.Goal()
+#             rotate_msg = FollowJointTrajectory.Goal()
 
-            rotate_msg.trajectory.joint_names = ['T_Axis_Joint']
-            rotate_msg.trajectory.points = [target_rotation]
+#             rotate_msg.trajectory.joint_names = ['T_Axis_Joint']
+#             rotate_msg.trajectory.points = [target_rotation]
            
-            # self.action_client.wait_for_server() ?
+#             # self.action_client.wait_for_server() ?
            
-            self.send_goal_future = self.action_client.send_goal_async(rotate_msg
-                                                                  ,feedback_callback=self.feedback_callback)
-            self.send_goal_future.add_done_callback(self.goal_response_callback)
+#             self.send_goal_future = self.action_client.send_goal_async(rotate_msg
+#                                                                   ,feedback_callback=self.feedback_callback)
+#             self.send_goal_future.add_done_callback(self.goal_response_callback)
 
-    def goal_response_callback(self, future):
-        #goal_handle = future.re
+#     def goal_response_callback(self, future):
+#         #goal_handle = future.re
         
-        goal_handle = future.result()
-        if not goal_handle.accepted:
-            self.get_logger().info('Rotation rejected.') # add error type
-            print(future.exception())
-            return                      # 校准多个bauteil看下这里的 if not 循环
+#         goal_handle = future.result()
+#         if not goal_handle.accepted:
+#             self.get_logger().info('Rotation rejected.') # add error type
+#             print(future.exception())
+#             return                      # 校准多个bauteil看下这里的 if not 循环
         
-        self.get_logger().info('Rotation starts.')
-        self.get_result_future = goal_handle.get_result_async()
-        self.get_result_future.add_done_callback(self.get_result_callback)
+#         self.get_logger().info('Rotation starts.')
+#         self.get_result_future = goal_handle.get_result_async()
+#         self.get_result_future.add_done_callback(self.get_result_callback)
 
-    def get_result_callback(self,future):
-        result = future.result().result
-        self.get_logger().info('Rotation finished!')
+#     def get_result_callback(self,future):
+#         result = future.result().result
+#         self.get_logger().info('Rotation finished!')
         
-        # rclpy.shutdown()
+#         # rclpy.shutdown()
         
-         # add some conditions ?
+#          # add some conditions ?
       
-    def feedback_callback(self,feedback_msg):
-        feedback = feedback_msg.feedback
-        self.get_logger().info('Rotating...')
-        position =  np.array(feedback.actual.positions).tolist()
-        self.get_logger().info('The present position is: %s'%(position) )
+#     def feedback_callback(self,feedback_msg):
+#         feedback = feedback_msg.feedback
+#         self.get_logger().info('Rotating...')
+#         position =  np.array(feedback.actual.positions).tolist()
+#         self.get_logger().info('The present position is: %s'%(position) )
 
 class AutoCa(Node):
 
@@ -107,6 +107,13 @@ class AutoCa(Node):
             #        ...shutdown
            
             # ...
+        global Parameter
+        Parameter = ('/joint_trajectory_controller/state',
+                '/joint_trajectory_controller/follow_joint_trajectory',
+                '/Cam2/image_raw',
+                [-0.359, -0.0458, -0.051544, 0.0],
+                [-0.359, -0.0458, -0.051544, 6.2],
+                [6.2])
         self.get_logger().info('Calibration starting...')   
         self.ok = 0
         self.list = []
@@ -117,6 +124,9 @@ class AutoCa(Node):
         self. RR = 0
         self.mm = 0
         print(Parameter) 
+        self.declare_parameter('ok',0)
+        self.timer = self.create_timer(1,self.da_ba)
+
         self.reached_joint_number = 0    
         # self.sub = self.create_subscription(JointTrajectoryControllerState,
         #                                      '/pm_robot_xyz_axis_controller/state',
@@ -135,7 +145,12 @@ class AutoCa(Node):
         # self.action_client = ActionClient(self,FollowJointTrajectory,
         #                           '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
         self. ok = 0
-        self.align_action()   
+        self.align_action()  
+    def da_ba(self):
+        ad = self.get_parameter('ok').value
+        if ad == 1:
+            self.rotate_action()
+            self.timer.cancel()
         
         
         
@@ -167,11 +182,11 @@ class AutoCa(Node):
         #             self.detection_callback,
         #             10)
             
-            self.sub = self.create_subscription(Image,
-                    Parameter[2],
-                    self.detection_callback,
-                    10)
-            
+            # self.sub = self.create_subscription(Image,
+            #         Parameter[2],
+            #         self.detection_callback,
+            #         10)
+            self.set_parameters([rclpy.Parameter('ok',value=1)])
             #time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
                           # because of the enough duration of 2s
             #self.get_logger().info('Waiting for kamera...')
@@ -191,12 +206,12 @@ class AutoCa(Node):
         if self.reached_joint_number == 4:
             print('backbackbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') 
             self.reached_joint_number = 0 
-            self.fit_ellipse()
+            #self.fit_ellipse()
             # self.return_action()  
             
             # rclpy.shutdown()!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
               
-            exit(1)
+            #exit(1)
     
     # def judge(self):
     #     self.ok = 1
@@ -501,38 +516,38 @@ class AutoCa(Node):
            # exit()
 def main():
     rclpy.init()
-    th1 = threading.Thread(target=asdf(),name='asd')
-    th1.start()
-    print(123123123123)
-    th2 = threading.Thread(target=AutoCa(),name='yx')
-    th2.start()
-    rclpy.spin_once(asdf())
+    # th1 = threading.Thread(target=asdf(),name='asd')
+    # th1.start()
+    # print(123123123123)
+    # th2 = threading.Thread(target=AutoCa(),name='yx')
+    # th2.start()
+    # rclpy.spin_once(asdf())
     rclpy.spin(AutoCa()) 
 
 if __name__ == "__main__":
     
     
     
-    mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
+    # mode =input('Please select the operating mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
 
-    Para_real = ('/pm_robot_xyz_axis_controller/state',
-                 '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
-                 '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
-                 [-0.359, -0.0458, 0.03, -1200000.0],
-                 [-0.359, -0.0458, 0.03, 600000.0],
-                 [600000.0])
+    # Para_real = ('/pm_robot_xyz_axis_controller/state',
+    #              '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
+    #              '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
+    #              [-0.359, -0.0458, 0.03, -1200000.0],
+    #              [-0.359, -0.0458, 0.03, 600000.0],
+    #              [600000.0])
     
-    Para_sim = ('/joint_trajectory_controller/state',
-                '/joint_trajectory_controller/follow_joint_trajectory',
-                '/Cam1/image_raw',
-                [-0.359, -0.0458, -0.051544, 0.0],
-                [-0.359, -0.0458, -0.051544, 6.2],
-                [6.2])
+    # Para_sim = ('/joint_trajectory_controller/state',
+    #             '/joint_trajectory_controller/follow_joint_trajectory',
+    #             '/Cam2/image_raw',
+    #             [-0.359, -0.0458, -0.051544, 0.0],
+    #             [-0.359, -0.0458, -0.051544, 6.2],
+    #             [6.2])
   
-    if mode == '1':
-        Parameter = Para_real
+    # if mode == '1':
+    #     Parameter = Para_real
         
-    if mode == '2':
-        Parameter = Para_sim
+    # if mode == '2':
+    #     Parameter = Para_sim
 
     main()
