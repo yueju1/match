@@ -28,7 +28,7 @@ class AutoCalibration(Node):
     
 
 
-    def __init__(self,):
+    def __init__(self):
         #这里面的不报位置吗     
         super().__init__('image_detection',allow_undeclared_parameters = True)
         # try self.sub
@@ -68,7 +68,7 @@ class AutoCalibration(Node):
         self.get_logger().info('Calibration starting...')   
         self.ok = 0
         self.list = []
-        self.first_point = []
+        #self.first_point = []
         self.r_r = 0
         self.m = 0
         self.s = 0
@@ -99,7 +99,7 @@ class AutoCalibration(Node):
         # #                           '/pm_robot_xyz_axis_controller/follow_joint_trajectory')
         # self. ok = 0
         self.align_action() 
-          
+        
     def da_ba(self):
         ad = self.get_parameter('ok').value
         if ad == 1:
@@ -109,7 +109,7 @@ class AutoCalibration(Node):
                     10)
             self.rotate_action()
             self.timer.cancel()
-        
+            
         
 
 
@@ -122,7 +122,7 @@ class AutoCalibration(Node):
         for i in range(len(msg.actual.positions)):
             
             if msg.desired.positions.tolist() == self.Parameter[3] and msg.actual.positions[i] > self.Parameter[3][i]-0.000001 and msg.actual.positions[i] < self.Parameter[3][i]+0.000001:
-            
+        #把下面这些reached删掉呢   
                 if self.reached_joint_number < i:
                     self.reached_joint_number += 1
                     print(123)
@@ -141,7 +141,7 @@ class AutoCalibration(Node):
             
             self.set_parameters([rclpy.Parameter('ok',value=1)])
 
-            #time.sleep(2) # um es sicher zu sein, dass die erste ellipse detektiert wird
+#time.sleep(2)： self.first_point写在detection里, sleep 写在前面的rotate前面 mit no ellipse detektiert一起 # um es sicher zu sein, dass die erste ellipse detektiert wird
                           # because of the enough duration of 2s
             #self.get_logger().info('Waiting for kamera...')
             # if len(self.list) < 1:
@@ -176,7 +176,7 @@ class AutoCalibration(Node):
         # gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)    
         gray2 = cv2.GaussianBlur(im, (5, 5),1)
         # gray2 = cv2.medianBlur(im, 5)  # 40, 500
-        canny = cv2.Canny(gray2, 50, 150,apertureSize=3) # , apertureSize = 3) #(55, 230)
+        canny = cv2.Canny(gray2, 50, 150, apertureSize=3) # , apertureSize = 3) #(55, 230)
         
         _, thresh = cv2.threshold(canny, 140, 220, cv2.THRESH_BINARY)  
         contours, hierarchy = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
@@ -367,7 +367,7 @@ class AutoCalibration(Node):
         target_point = JointTrajectoryPoint()
         target_point.positions = self.Parameter[3]     
         target_point.time_from_start = Duration(sec= 6) # longer for more point detection 
-        
+#duration 还没设置呢
         goal_msg = FollowJointTrajectory.Goal()
         
     
@@ -422,7 +422,7 @@ class AutoCalibration(Node):
             rotate_msg.trajectory.joint_names = ['T_Axis_Joint']
             rotate_msg.trajectory.points = [target_rotation]
            
-            # self.action_client.wait_for_server() ?
+            self.action_client.wait_for_server()
             
             self.send_goal_future = self.action_client.send_goal_async(rotate_msg
                                                                   ,feedback_callback=self.feedback_callback)
@@ -486,6 +486,8 @@ def main():
     # rclpy.spin(image_subscriber)
     #future = image_subscriber.rotate_action([-0.7, -0.0458, -0.026791, 1.08]) 
     #rclpy.spin_once(aasd())
+    
+    #try:
     rclpy.spin(AutoCalibration())
     
 
