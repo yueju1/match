@@ -306,14 +306,11 @@ class AutoCalibration(Node):
 
     
     def align_result_callback(self,future):
-        # error_code = future.result().result.error_code
-        # if error_code != 0:
-        #     self.get_logger().info(f'Error code: "{error_code}"')
+        error_code = future.result().result.error_code
+        if error_code != 0:
+            self.get_logger().info(f'Error code: "{error_code}"')
         self.get_logger().info('Goal reached!')
-        
-        # rclpy.shutdown()
-        
-         # add some conditions ?
+
       
     def align_callback(self,feedcak_msg):
 
