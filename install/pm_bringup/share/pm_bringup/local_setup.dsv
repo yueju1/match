@@ -1,1 +1,2 @@
-/home/pmlab/yueju/change/build/pm_bringup/ament_cmake_environment_hooks/local_setup.dsv
+source;share/pm_bringup/environment/ament_prefix_path.sh
+source;share/pm_bringup/environment/path.sh
