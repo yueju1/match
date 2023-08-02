@@ -47,8 +47,8 @@ class AutoCalibration(Node):
                             '/joint_trajectory_controller/follow_joint_trajectory',
                             '/Cam2/image_raw',
                             [-0.359, -0.0458, -0.051544, 0.0],
-                            [-0.359, -0.0458, -0.051544, 6.2],
-                            [6.2])
+                            [-0.359, -0.0458, -0.051544, 2.27],
+                            [2.27])
             
                 break
 
@@ -65,10 +65,9 @@ class AutoCalibration(Node):
 
         self.list = []
         self.r_r = 0
-        self.m = 0
-        self.s = 0
+        
         self. RR = 0
-        self.mm = 0
+        
         print(self.Parameter) 
         self.reached_joint_number = 0    
 
@@ -137,10 +136,10 @@ class AutoCalibration(Node):
         self.get_logger().info('Detection starts!') 
         print(self.reached_joint_number)
         im = self.br.imgmsg_to_cv2(data)
-  
-        gray2 = cv2.GaussianBlur(im, (5, 5),1)
+        gray = cv2.medianBlur(im,9)
+        gray2 = cv2.GaussianBlur(im, (9, 9),1.1)
 
-        canny = cv2.Canny(gray2, 50, 150, apertureSize=3)
+        canny = cv2.Canny(gray, 50, 150, apertureSize=3, L2gradient=True)
 
         contours, _ = cv2.findContours(canny, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)  
 
@@ -150,7 +149,7 @@ class AutoCalibration(Node):
         m1 = 0
         m2 = 0
         r = 0
-        diff = 0
+       
         
         self.col = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
 
@@ -170,20 +169,20 @@ class AutoCalibration(Node):
                     c += retval[0][1]
 
                     r += (retval[1][0]/2 + retval[1][1]/2)/2
-                    diff += (retval[1][0]/2 / r)  
+                  
                    
 
         if len(a) != 0: 
             m1 += b/len(a)
             m2 += c/len(a)
             self.r_r += r/len(a)
-            self.m += diff/len(a)
+           
            
         
       
         self.list.append([m1,m2])
         self.RR = self.r_r/len(self.list)
-        self.mm = self.m/len(self.list) 
+       
               
         for point in self.list:
     
@@ -211,23 +210,23 @@ class AutoCalibration(Node):
             self.pixel_size = self.sim_pixel_size
         
         #self.x,self.y,e,r = taubinSVD(self.list)
-        self.x,self.y,e,r = taubinSVD(self.list)
+        self.x,self.y,e,r = prattSVD(self.list)
         # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
         # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
 
         # points = np.array(self.list)*1000
         # points = np.array(points).astype(int)
 
-        points = np.array(self.list, dtype=np.float32)#.astype(int)
+        # points = np.array(self.list, dtype=np.float32)#.astype(int)
                     
-        data = cv2.fitEllipse(points)
-        self.get_logger().info('{0}'.format(data))
+        # data = cv2.fitEllipseDirect(points)
+        # self.get_logger().info('{0}'.format(data))
 
         # cv2.ellipse(self.col, data, (0, 0, 255), thickness=1) 
-        cv2.circle(self.col, (int(data[0][0]),int(data[0][1])),1, (0, 0, 255), -1)
-        cv2.circle(self.col, (int(data[0][0]),int(data[0][1])),int((data[1][0]/2+data[1][1]/2)/2), (0, 0, 255), -1)
-        # cv2.circle(self.col, (int(self.x),int(self.y)),1, (0, 0, 255), -2)
-        # cv2.circle(self.col, (int(self.x),int(self.y)),int(e), (0, 0, 255), 2)
+        # cv2.circle(self.col, (int(data[0][0]),int(data[0][1])),1, (0, 0, 255), -1)
+        # cv2.circle(self.col, (int(data[0][0]),int(data[0][1])),int((data[1][0]/2+data[1][1]/2)/2), (0, 0, 255), -1)
+        cv2.circle(self.col, (int(self.x),int(self.y)),1, (0, 0, 255), -2)
+        cv2.circle(self.col, (int(self.x),int(self.y)),int(e), (0, 0, 255), 2)
         cv2.namedWindow('ellip',0)
         cv2.resizeWindow('ellip',1000,1000)
         cv2.imshow("ellip", self.col)
@@ -250,8 +249,8 @@ class AutoCalibration(Node):
     # e4 = math.sqrt(s)*real_pixel
         self.get_logger().info('real mitte[{0},{1}]'.format(self.x,self.y))
         self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
-        self.get_logger().info('The center point of Gripper_Rot_Plate is: [{0},{1}]'.format
-                                (self.error[0]*self.pixel_size, self.error[1]*self.pixel_size))             
+        self.get_logger().info('The center point of Gripper_Rot_Plate is: ({0},{1}) (µm)'.format
+                                (self.error[0]*self.pixel_size, -self.error[1]*self.pixel_size))             
         self.get_logger().info('The error is: {0}'.format(deviation))  #error in x, y
           
         self.adjust_yaml()
