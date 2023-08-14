@@ -1,34 +1,27 @@
 import rclpy
 from rclpy.node import Node
 from control_msgs.msg import JointTrajectoryControllerState
-from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 import cv2
-import array
 from rclpy.action import ActionClient
 from control_msgs.action import FollowJointTrajectory
 from trajectory_msgs.msg import JointTrajectoryPoint
 from builtin_interfaces.msg import Duration
-import time
 from ruamel.yaml import YAML
 import math
-from circle_fit import taubinSVD,standardLSQ,hyperLSQ,riemannSWFLa,lm,hyperSVD,kmh,prattSVD
-import numpy as np                #  folge 
-import inspect
-import traceback
- #试一下加不加中值滤波的区别 椒盐噪声    先搞destroy_node 然后看下yaml
-# 程序考虑一下顺时针逆时针，想下之前想到的关于顺逆时针的东西。会转出去吗，如果图缩放比例的话
- #也许不需要很复杂， 可能可以通过: 知道图片中 现实点和未来点之前的关系，来求出实际中未来点的位置(也许要用坐标转换)。
-   
-#     add conditions
+from circle_fit import hyperSVD
+import numpy as np               
+
+
 
 class AutoCalibration(Node):
 
     def __init__(self):
     
-        super().__init__('image_detection',allow_undeclared_parameters = True)
+        super().__init__('image_detection', allow_undeclared_parameters = True)
 
         while True:
             
@@ -64,31 +57,31 @@ class AutoCalibration(Node):
         self.get_logger().info('Calibration starting...') 
 
         self.list = []
-        self.r_r = 0
-        
-        self. RR = 0
-        
-        print(self.Parameter) 
+        self.r = 0 
+        self.R = 0
         self.reached_joint_number = 0    
 
         self.sub = self.create_subscription(JointTrajectoryControllerState,
                                             self.Parameter[0],
                                             self.state_callback,
                                             10)
+        
         self.br = CvBridge()
+        
         self.get_logger().info('Waiting for controller state...')
 
-        self.timer = self.create_timer(1,self.da_ba)
+        self.timer = self.create_timer(1,self.check_callback)
+        
         self.action_client = ActionClient(self,FollowJointTrajectory,
                                 self.Parameter[1])
 
         self.align_action() 
         
-    def da_ba(self):
+    def check_callback(self):
 
-        ad = self.get_parameter('ok').value
+        check = self.get_parameter('ok').value
 
-        if ad == 1:
+        if check == 1:
             self.sub = self.create_subscription(Image,
                     self.Parameter[2],
                     self.detection_callback,
@@ -107,13 +100,10 @@ class AutoCalibration(Node):
                 if self.reached_joint_number < i:
 
                     self.reached_joint_number += 1
-                    print(123)
               
                 self.get_logger().info('Reached joint number:%s'%self.reached_joint_number)
         
         if self.reached_joint_number == 3:
-
-            print('gogogo') 
             
             self.set_parameters([rclpy.Parameter('ok',value=1)])
 
@@ -123,9 +113,8 @@ class AutoCalibration(Node):
 
         if self.reached_joint_number == 4:
 
-            print('backbackbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb') 
-
             self.reached_joint_number = 0 
+            
             self.fit_ellipse()
 
             if self.k == ord('s'):
@@ -134,24 +123,23 @@ class AutoCalibration(Node):
     def detection_callback(self,data):
 
         self.get_logger().info('Detection starts!') 
-        print(self.reached_joint_number)
-        im = self.br.imgmsg_to_cv2(data)
-        gray = cv2.medianBlur(im,9)
-        gray2 = cv2.GaussianBlur(im, (9, 9),1.1)
 
-        canny = cv2.Canny(gray, 50, 150, apertureSize=3, L2gradient=True)
+        img = self.br.imgmsg_to_cv2(data)
+        
+        median = cv2.medianBlur(img,9)
+
+        canny = cv2.Canny(median, 50, 150, apertureSize=3, L2gradient=True)
 
         contours, _ = cv2.findContours(canny, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)  
 
-        a = []
-        b = 0
-        c = 0
+        ellipse = []
+        x = 0
+        y = 0
         m1 = 0
         m2 = 0
         r = 0
-       
-        
-        self.col = cv2.cvtColor(im, cv2.COLOR_GRAY2BGR)
+          
+        self.col = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
         for i in range(len(contours)): 
 
@@ -164,42 +152,33 @@ class AutoCalibration(Node):
                     cv2.ellipse(self.col, retval, (0, 0, 255), 1) 
                     cv2.circle(self.col, (int(retval[0][0]),int(retval[0][1])),1, (0, 0, 255), -1)
 
-                    a.append(retval)
-                    b += retval[0][0]
-                    c += retval[0][1]
+                    ellipse.append(retval)
+                    x += retval[0][0]
+                    y += retval[0][1]
 
                     r += (retval[1][0]/2 + retval[1][1]/2)/2
                   
-                   
-
-        if len(a) != 0: 
-            m1 += b/len(a)
-            m2 += c/len(a)
-            self.r_r += r/len(a)
+        if len(ellipse) != 0: 
+            m1 += x/len(ellipse)
+            m2 += y/len(ellipse)
+            self.r += r/len(ellipse)
            
-           
-        
-      
         self.list.append([m1,m2])
-        self.RR = self.r_r/len(self.list)
-       
-              
+        self.R = self.r/len(self.list)
+            
         for point in self.list:
-    
-            cv2.circle(self.col, (int(point[0]),int(point[1])),1, (0, 0, 255), -1)
-        print('-------------------------------------')
         
-        cv2.namedWindow('ellip',0)
-        cv2.resizeWindow('ellip',1000,1000)
-        cv2.imshow("ellip", self.col)
-
+            cv2.circle(self.col, (int(point[0]), int(point[1])), 1, (0, 0, 255), -1)
+        
+        cv2.namedWindow('Circle',0)
+        cv2.resizeWindow('Circle',1000,1000)
+        cv2.imshow('Circle', self.col)
         cv2.waitKey(1)
         
-    
     def fit_ellipse(self): 
 
         self.real_pixel_size = 2.2
-        self.sim_pixel_size = 250/self.RR
+        self.sim_pixel_size = 250/self.R
         
         if self.mode == '1':
             
@@ -209,52 +188,28 @@ class AutoCalibration(Node):
             
             self.pixel_size = self.sim_pixel_size
         
-        #self.x,self.y,e,r = taubinSVD(self.list)
-        self.x,self.y,e,r = prattSVD(self.list)
-        # cv2.circle(self.im, (int(self.x),int(self.y)), int(e), (0, 0, 255), 1)
-        # cv2.circle(self.im, (int(self.x), int(self.y)), 5, (0, 0, 255), -1)
-
-        # points = np.array(self.list)*1000
-        # points = np.array(points).astype(int)
-
-        # points = np.array(self.list, dtype=np.float32)#.astype(int)
-                    
-        # data = cv2.fitEllipseDirect(points)
-        # self.get_logger().info('{0}'.format(data))
-
-        # cv2.ellipse(self.col, data, (0, 0, 255), thickness=1) 
-        # cv2.circle(self.col, (int(data[0][0]),int(data[0][1])),1, (0, 0, 255), -1)
-        # cv2.circle(self.col, (int(data[0][0]),int(data[0][1])),int((data[1][0]/2+data[1][1]/2)/2), (0, 0, 255), -1)
-        cv2.circle(self.col, (int(self.x),int(self.y)),1, (0, 0, 255), -2)
-        cv2.circle(self.col, (int(self.x),int(self.y)),int(e), (0, 0, 255), 2)
-        cv2.namedWindow('ellip',0)
-        cv2.resizeWindow('ellip',1000,1000)
-        cv2.imshow("ellip", self.col)
+        self.x,self.y,e,_ = hyperSVD(self.list)
+    
+        cv2.circle(self.col, (int(self.x),int(self.y)),1, (0, 0, 255), -1)
+        cv2.circle(self.col, (int(self.x),int(self.y)),int(e), (0, 0, 255), 1)
+        
+        cv2.namedWindow('Circle',0)
+        cv2.resizeWindow('Circle',1000,1000)
+        cv2.imshow('Circle', self.col)
 
         self.k =cv2.waitKey(0)
         
-        
-        #self.x, self.y = data[0][0], data[0][1] # /1000
         self.error = (self.list[0][0]-float(self.x), self.list[0][1]-float(self.y))
         square = self.error[0]*self.error[0]+self.error[1]*self.error[1]
         deviation = math.sqrt(square)*self.pixel_size
 
-    # cali_x = 1296 + (self.x - 1296)/self.m
-    # cali_y = 972 + (self.y - 972)/self.m
-    # k = (self.first_point[0][1][0]/2)/((self.first_point[0][1][0]/2+self.first_point[0][1][1]/2)/2)
-    # cali_x0 = 1296 + (self.list[0][0] - 1296)/k
-    # cali_y0 = 972 + (self.list[0][1] - 972)/k
-    # error3 = (cali_x0-cali_x,cali_y0-cali_y)
-    # s = error3[0]*error3[0]+error3[1]*error3[1]
-    # e4 = math.sqrt(s)*real_pixel
-        self.get_logger().info('real mitte[{0},{1}]'.format(self.x,self.y))
-        self.get_logger().info('erster mittelpunkt: %s'%self.list[0])
-        self.get_logger().info('The center point of Gripper_Rot_Plate is: ({0},{1}) (µm)'.format
+        self.get_logger().info('Predicted center of the red plate in the image coordinate : ({0},{1})'.format(self.x,self.y))
+        self.get_logger().info('Position of the vacuum gripper relative to the red plate: ({0},{1}) (µm)'.format
                                 (self.error[0]*self.pixel_size, -self.error[1]*self.pixel_size))             
-        self.get_logger().info('The error is: {0}'.format(deviation))  #error in x, y
+        self.get_logger().info('The error is: {0} µm'.format(deviation))
           
         self.adjust_yaml()
-            
+             
     def adjust_yaml(self):
         
         yaml = YAML()
@@ -263,7 +218,7 @@ class AutoCalibration(Node):
             , "r") as file:
             joint_calibration = yaml.load(file)
                                                                 
-            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.error[0]*self.pixel_size  # error(0)-self.x
+            joint_calibration['PM_Robot_Tool_TCP_Joint']['x_offset'] = self.error[0]*self.pixel_size  
             joint_calibration['PM_Robot_Tool_TCP_Joint']['y_offset'] = -self.error[1]*self.pixel_size
 
         with open('/home/pmlab/asd.yaml','w') as new_file:
@@ -272,57 +227,61 @@ class AutoCalibration(Node):
         self.get_logger().info('Calibration successful!')
 
     def align_action(self):
+        
         self.get_logger().info('Starting align...')
+        
         target_point = JointTrajectoryPoint()
-        target_point.positions = self.Parameter[3]     
+        
+        target_point.positions = self.Parameter[3]   
+          
         if self.mode == '2':
+            
             target_point.time_from_start = Duration(sec= 6)
 
         goal_msg = FollowJointTrajectory.Goal()
         
         goal_msg.trajectory.joint_names = ['X_Axis_Joint','Y_Axis_Joint',
-                                        'Z_Axis_Joint','T_Axis_Joint'
-                                            ]
+                                        'Z_Axis_Joint','T_Axis_Joint' ]
         goal_msg.trajectory.points = [target_point]
         
         self.action_client.wait_for_server()
+        
         self.send_goal_future = self.action_client.send_goal_async(goal_msg
                                                                   ,feedback_callback=self.align_callback)
         self.send_goal_future.add_done_callback(self.align_response_callback)
 
-
     def align_response_callback(self, future):
-        #goal_handle = future.re
+     
         goal_handle = future.result()
         if not goal_handle.accepted:
-            self.get_logger().info('Goal rejected.') # add error type
+            self.get_logger().info('Goal rejected.') 
             print(future.exception())
-            return                      # 校准多个bauteil看下这里的 if not 循环
+            return                      
         
         self.get_logger().info('Goal accepted.')
+        
         self.get_result_future = goal_handle.get_result_async()
         self.get_result_future.add_done_callback(self.align_result_callback)
 
-    
-    def align_result_callback(self,future):
-        error_code = future.result().result.error_code
-        if error_code != 0:
-            self.get_logger().info(f'Error code: "{error_code}"')
+    def align_result_callback(self, future):
+        
         self.get_logger().info('Goal reached!')
-
-      
-    def align_callback(self,feedcak_msg):
+   
+    def align_callback(self, feedback_msg):
 
         self.get_logger().info('Approaching...')
                                                     
     def rotate_action(self):  
+        
             self.get_logger().info('Starting ratation...')
+            
             target_rotation = JointTrajectoryPoint()
-            target_rotation.positions = self.Parameter[5]  # because of the offset in x,y, can less than 2pi   !maybe!  if fitellipse() except big point then not necessary
+            
+            target_rotation.positions = self.Parameter[5] 
+            
             if self.mode == '2':
-                target_rotation.time_from_start = Duration(sec=8)   # langer for more points detection
-            #target_rotation.velocities = [0.0]
-            #target_rotation.accelerations = [0.0] # if added, offset in x or y
+                target_rotation.time_from_start = Duration(sec=6)   
+           
             
             rotate_msg = FollowJointTrajectory.Goal()
 
@@ -336,76 +295,40 @@ class AutoCalibration(Node):
             self.send_goal_future.add_done_callback(self.goal_response_callback)
 
     def goal_response_callback(self, future):
-        #goal_handle = future.re
         
         goal_handle = future.result()
         if not goal_handle.accepted:
-            self.get_logger().info('Rotation rejected.') # add error type
+            self.get_logger().info('Rotation rejected.') 
             print(future.exception())
-            return                      # 校准多个bauteil看下这里的 if not 循环
+            return                      
         
         self.get_logger().info('Rotation starts.')
+        
         self.get_result_future = goal_handle.get_result_async()
         self.get_result_future.add_done_callback(self.get_result_callback)
 
-    def get_result_callback(self,future):
-        result = future.result().result
+    def get_result_callback(self, future):
+
         self.get_logger().info('Rotation finished!')
-        
-        # rclpy.shutdown()
-        
-         # add some conditions ?
       
     def feedback_callback(self,feedback_msg):
+        
         feedback = feedback_msg.feedback
+        
         self.get_logger().info('Rotating...')
+        
         position =  np.array(feedback.actual.positions).tolist()
-        self.get_logger().info('The present position is: %s'%(position) )
-        # value of velocity is not 0
-    
+        
+        self.get_logger().info('The present position is: %s'%(position))
 
+    
 
 def main():
-    # time.sleep(5.0)
     
     rclpy.init()
-   
-    # image_subscriber = AutoCalibration()
-    # rclpy.spin(image_subscriber)
-    #future = image_subscriber.rotate_action([-0.7, -0.0458, -0.026791, 1.08]) 
-    #rclpy.spin_once(aasd())
-    
-    #try:
     rclpy.spin(AutoCalibration())
-    
-
     rclpy.shutdown()
     
 if __name__ == "__main__":
     
-    # self.mode =input('Please select the operating self.mode: \n1: Calibration of the realistic equipment\n2: Calibration in simulation\n')
-
-    # Para_real = ('/pm_robot_xyz_axis_controller/state',
-    #              '/pm_robot_xyz_axis_controller/follow_joint_trajectory',
-    #              '/Camera_Bottom_View/pylon_ros2_camera_node/image_raw',
-    #              [-0.359, -0.0458, 0.03, -1200000.0],
-    #              [-0.359, -0.0458, 0.03, 600000.0],
-    #              [600000.0])
-    
-    # Para_sim = ('/joint_trajectory_controller/state',
-    #             '/joint_trajectory_controller/follow_joint_trajectory',
-    #             '/Cam2/image_raw',
-    #             [-0.359, -0.0458, -0.051544, 0.0],
-    #             [-0.359, -0.0458, -0.051544, 6.2],
-    #             [6.2])
-  
-    # if self.mode == '1':
-    #     self.Parameter = Para_real
-    
-    # if self.mode == '2':
-    #     self.Parameter = Para_sim
     main()
-    # try:
-    #     main()
-    # except Exception as e: 
-    #         Aut().get_logger().info('%s'%e)
